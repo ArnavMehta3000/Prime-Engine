@@ -66,6 +66,12 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(ProjectDir)src\PrimeEngine.h" "D:\ARNAV\DEV\CPP\PrimeTestbench\PrimeTestbench\include" &amp;&amp; copy /Y "$(SolutionDir)bin\x64-Debug\PrimeEngine.dll" "D:\ARNAV\DEV\CPP\PrimeTestbench\PrimeTestbench\include" &amp;&amp; copy /Y "$(SolutionDir)bin\x64-Debug\PrimeEngine.lib" "D:\ARNAV\DEV\CPP\PrimeTestbench\PrimeTestbench\include"</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying DLL | LIB | HEADER files</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -86,6 +92,12 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(ProjectDir)src\PrimeEngine.h" "D:\ARNAV\DEV\CPP\PrimeTestbench\PrimeTestbench\include" &amp;&amp; copy /Y "$(SolutionDir)bin\x64-Release\PrimeEngine.dll" "D:\ARNAV\DEV\CPP\PrimeTestbench\PrimeTestbench\include" &amp;&amp; copy /Y "$(SolutionDir)bin\x64-Release\PrimeEngine.lib" "D:\ARNAV\DEV\CPP\PrimeTestbench\PrimeTestbench\include"</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying DLL | LIB | HEADER files</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\PrimeApp.cpp" />

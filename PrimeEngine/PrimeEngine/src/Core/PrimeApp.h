@@ -10,6 +10,8 @@ namespace Prime
 		virtual ~PrimeApp();
 
 		PRIME_API void Run();
+	private:
+		
 	};
 }
 
