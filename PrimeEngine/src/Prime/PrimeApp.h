@@ -10,6 +10,9 @@ namespace Prime
 		virtual ~PrimeApp();
 
 		void Run();
+
+	private:
+		void CreateAndAttachConsole();
 	};
 
 	PrimeApp* CreateApplication();
