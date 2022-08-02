@@ -18,10 +18,16 @@
     <ClInclude Include="src\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ApiDefines.h">
+    <ClInclude Include="src\Prime\ApiDefines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\PrimeApp.h">
+    <ClInclude Include="src\Prime\PrimeApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Prime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PrimeEntry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -29,7 +35,7 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\PrimeApp.cpp">
+    <ClCompile Include="src\Prime\PrimeApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

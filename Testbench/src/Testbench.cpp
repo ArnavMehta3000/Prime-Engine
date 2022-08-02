@@ -1,7 +1,21 @@
 #include "pch.h"
+#include <Prime.h>
 
-int main()
+class TestApp : public Prime::PrimeApp
 {
-	std::cout << "Hello World" << std::endl;
-	return 0;
+public:
+	TestApp() : Prime::PrimeApp()
+	{
+		
+	}
+	
+	~TestApp()
+	{
+		
+	}
+};
+
+Prime::PrimeApp* Prime::CreateApplication()
+{
+	return new TestApp();
 }
