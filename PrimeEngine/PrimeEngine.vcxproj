@@ -88,13 +88,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Prime\Core\D3D.h" />
+    <ClInclude Include="src\Prime\Constants.h" />
+    <ClInclude Include="src\Prime\Core\IService.h" />
+    <ClInclude Include="src\Prime\Core\PrimeWindow.h" />
     <ClInclude Include="src\Prime.h" />
     <ClInclude Include="src\PrimeEntry.h" />
+    <ClInclude Include="src\Prime\Logger.h" />
     <ClInclude Include="src\Prime\PrimeApp.h" />
     <ClInclude Include="src\Prime\ApiDefines.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Prime\Core\D3D.cpp" />
+    <ClCompile Include="src\Prime\Core\IService.cpp" />
+    <ClCompile Include="src\Prime\Core\PrimeWindow.cpp" />
     <ClCompile Include="src\Prime\PrimeApp.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -102,6 +110,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
