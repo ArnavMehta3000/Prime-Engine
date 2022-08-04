@@ -5,7 +5,6 @@ namespace Prime
 {
 	D3D::D3D() : IService()
 	{
-
 	}
 
 	D3D::~D3D()

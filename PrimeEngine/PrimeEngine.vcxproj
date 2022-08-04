@@ -88,6 +88,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Prime\Core\Locator.h" />
     <ClInclude Include="src\Prime\Core\D3D.h" />
     <ClInclude Include="src\Prime\Constants.h" />
     <ClInclude Include="src\Prime\Core\IService.h" />
@@ -100,6 +101,7 @@
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Prime\Core\Locator.cpp" />
     <ClCompile Include="src\Prime\Core\D3D.cpp" />
     <ClCompile Include="src\Prime\Core\IService.cpp" />
     <ClCompile Include="src\Prime\Core\PrimeWindow.cpp" />

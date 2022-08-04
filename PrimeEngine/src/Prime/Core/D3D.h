@@ -8,7 +8,6 @@ namespace Prime
 	public:
 		D3D();
 		~D3D();
-
 	};
 }
 

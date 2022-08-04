@@ -2,6 +2,7 @@
 #include "ApiDefines.h"
 #include "Prime/Core/PrimeWindow.h"
 #include "Prime/Core/D3D.h"
+#include "Prime/Core/Locator.h"
 
 namespace Prime
 {
@@ -20,7 +21,6 @@ namespace Prime
 
 	private:
 		PrimeWindow* m_window;
-		D3D* m_d3d;
 	};
 
 	PrimeApp* CreateApplication();

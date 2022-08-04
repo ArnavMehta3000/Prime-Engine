@@ -16,13 +16,6 @@ namespace Prime
 
 	void PrimeApp::ShutDown()
 	{
-		if (m_d3d)
-		{
-			//m_d3d->ShutDown();
-			delete m_d3d;
-			m_d3d = nullptr;
-		}
-
 		if (m_window)
 		{
 			delete m_window;
@@ -49,8 +42,12 @@ namespace Prime
 		TRACE("Initializing app");
 		
 		m_window = new PrimeWindow();
-		m_d3d    = new D3D();
-
+		Locator::RegisterService<D3D>();
+		if (Locator::HasService<D3D>())
+		{
+			auto d3d = Locator::ResolveService<D3D>();
+		}
+		
 		TRACE("Pre-run Initialise complete")
 	}
 

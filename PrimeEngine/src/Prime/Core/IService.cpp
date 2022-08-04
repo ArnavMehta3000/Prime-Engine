@@ -9,6 +9,7 @@ namespace Prime
 		: m_id(++s_currentId)
 	{
 	}
+
 	IService::~IService()
 	{
 		m_id = -999;
