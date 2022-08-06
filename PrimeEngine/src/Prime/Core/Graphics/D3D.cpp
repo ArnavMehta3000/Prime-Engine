@@ -14,6 +14,8 @@ namespace Prime
 
 	bool D3D::Init(D3D_INIT_PARAMS p)
 	{
+		m_initParams = p;
+
 		// Create DirectX graphics interface factory
 		IDXGIFactory* factory;
 		ThrowHr(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory), "Failed to create IDXGI Factory");
@@ -137,16 +139,17 @@ namespace Prime
 		
 		backBuffer->Release();
 		backBuffer = nullptr;
-
 		return true;
 	}
 
 	void D3D::Shutdown()
 	{
-		m_device->Release();
+		m_swapChain->SetFullscreenState(false, NULL);
+
+		m_renderTargetView->Release();
 		m_context->Release();
 		m_swapChain->Release();
-		m_renderTargetView->Release();
+		m_device->Release();
 	}
 
 	void D3D::ThrowHr(HRESULT hr, const char* msg)

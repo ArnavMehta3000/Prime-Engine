@@ -42,29 +42,33 @@ namespace Prime
 	
 	void Prime::PrimeApp::PreRunInit()
 	{
-		TRACE("Initializing app");
+		WARN("Initializing app");
 		
 		m_window = new PrimeWindow();
 		Locator::RegisterService<GraphicsEngine>();
 
-		D3D_INIT_PARAMS init{};
-		init.Window.Width = WINDOW_WIDTH;
-		init.Window.Height = WINDOW_HEIGHT;
-		init.Window.Handle = m_window->GetHWND();
+		D3D_INIT_PARAMS d3dInit{};
+		d3dInit.Window.Width = WINDOW_WIDTH;
+		d3dInit.Window.Height = WINDOW_HEIGHT;
+		d3dInit.Window.Handle = m_window->GetHWND();
+
 
 		auto gfx = Locator::ResolveService<GraphicsEngine>();
-		gfx->Init(init);
+		gfx->Init(d3dInit);
 		
-		TRACE("Pre-run Initialise complete")
+		WARN("Pre-run Initialise complete")
 	}
 
 	void PrimeApp::Run()
 	{
 		PreRunInit();
 		
+		auto gfx = Locator::ResolveService<GraphicsEngine>();
 		while (m_window->ProcessMessages())
 		{
-		
+			gfx->BeginFrame();
+			
+			gfx->EndFrame();
 		}
 
 		ShutDown();

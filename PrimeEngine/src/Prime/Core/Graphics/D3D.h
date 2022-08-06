@@ -34,13 +34,14 @@ namespace Prime
 		D3D();
 		~D3D();
 
+		PRIME_API static void ThrowHr(HRESULT hr, const char* msg);
 	private:
 		PRIME_API bool Init(D3D_INIT_PARAMS p);
 		PRIME_API void Shutdown();
-		PRIME_API void ThrowHr(HRESULT hr, const char* msg);
 
 	private:
 		int m_videoCardMemory;
+		D3D_INIT_PARAMS m_initParams;
 
 		ComPtr<ID3D11Device>           m_device;
 		ComPtr<ID3D11DeviceContext>    m_context;

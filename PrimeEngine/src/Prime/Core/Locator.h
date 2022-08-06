@@ -52,7 +52,10 @@ namespace Prime
 		T* Resolve()
 		{
 			if (!Has<T>())
+			{
+				WARN("Service type: " + std::string(typeid(T).name()) + " not found. Returning nullptr");
 				return nullptr;
+			}
 
 			IService* service = m_services.at(typeid(T).name()).get();
 			std::cout << "Resolving Service: " << typeid(T).name() << std::endl;

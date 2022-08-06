@@ -25,8 +25,8 @@ namespace Prime
 		DWORD style = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
 
 		RECT rect{};
-		rect.left = 250;
-		rect.top = 250;
+		rect.left = 0;
+		rect.top = 0;
 		rect.right = rect.left + WINDOW_WIDTH;
 		rect.bottom = rect.top + WINDOW_HEIGHT;
 		AdjustWindowRect(&rect, style, FALSE);
@@ -36,8 +36,8 @@ namespace Prime
 			CLASS_NAME,
 			_T("Prime App"),
 			style,
-			rect.left,
-			rect.top,
+			CW_USEDEFAULT,
+			CW_USEDEFAULT,
 			rect.right - rect.left,
 			rect.bottom - rect.top,
 			NULL,
