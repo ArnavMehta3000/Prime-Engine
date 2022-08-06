@@ -101,7 +101,34 @@ namespace Prime
 
 		DXGI_SWAP_CHAIN_DESC swapChainDesc;
 		ZeroMemory(&swapChainDesc, sizeof(DXGI_SWAP_CHAIN_DESC));
-		swapChainDesc.BufferCount = p.BackBufferCount;
+		swapChainDesc.BufferCount                        = p.BackBufferCount;
+		swapChainDesc.BufferDesc.Width                   = p.Window.Width;
+		swapChainDesc.BufferDesc.Height                  = p.Window.Height;
+		swapChainDesc.BufferDesc.Format                  = p.SCBufferFormat;
+		swapChainDesc.BufferDesc.RefreshRate.Numerator   = (p.VSync) ? numerator : 0;
+		swapChainDesc.BufferDesc.RefreshRate.Denominator = (p.VSync) ? denominator : 1;
+		swapChainDesc.BufferUsage                        = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		swapChainDesc.OutputWindow                       = p.Window.Handle;
+		swapChainDesc.SampleDesc.Count                   = p.Multisampling.Count;
+		swapChainDesc.SampleDesc.Quality                 = p.Multisampling.Quality;
+		swapChainDesc.Windowed                           = (p.Fullscreen) ? false : true;
+		swapChainDesc.BufferDesc.ScanlineOrdering        = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+		swapChainDesc.BufferDesc.Scaling                 = DXGI_MODE_SCALING_UNSPECIFIED;
+		swapChainDesc.SwapEffect                         = DXGI_SWAP_EFFECT_DISCARD;
+		swapChainDesc.Flags                              = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+
+		D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_1;
+
+		ThrowHr(D3D11CreateDeviceAndSwapChain(NULL,
+				D3D_DRIVER_TYPE_HARDWARE,
+				NULL,
+				0,
+				&featureLevel,
+				1,
+				D3D11_SDK_VERSION,
+				&swapChainDesc, &m_swapChain, &m_device,
+				NULL,
+				&m_context), "Failed to create device and swap chain");
 
 
 

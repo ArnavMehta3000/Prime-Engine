@@ -14,6 +14,7 @@ namespace Prime
 		bool ProcessMessages();
 		
 		inline void SetTitle(LPCWSTR title) { SetWindowText(m_hWnd, title); }
+		inline HWND GetHWND() { return m_hWnd; }
 
 		
 	private:

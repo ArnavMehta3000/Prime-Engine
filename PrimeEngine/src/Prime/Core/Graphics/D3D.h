@@ -5,15 +5,25 @@ namespace Prime
 {
 	struct D3D_INIT_PARAMS
 	{
+
 		struct
 		{
+			HWND Handle;
 			UINT Width;
 			UINT Height;
 		}Window;
 
-		bool VSync;
+		struct
+		{
+			UINT Count = 1;
+			UINT Quality = 0;
+		}Multisampling;
+
+		bool VSync = true;
+		bool Fullscreen = false;
 
 		UINT BackBufferCount = 1;
+		DXGI_FORMAT SCBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 	};
 
 	class D3D

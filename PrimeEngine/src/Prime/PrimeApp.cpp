@@ -48,6 +48,7 @@ namespace Prime
 		D3D_INIT_PARAMS init{};
 		init.Window.Width = WINDOW_WIDTH;
 		init.Window.Height = WINDOW_HEIGHT;
+		init.Window.Handle = m_window->GetHWND();
 
 		Locator::ResolveService<GraphicsEngine>()->Init(init);
 		
