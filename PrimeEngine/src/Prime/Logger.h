@@ -1,7 +1,6 @@
 #pragma once
 
-namespace Prime
-{
+
 #ifdef _DEBUG
 	// Debug white color to console
 #define TRACE(x)\
@@ -58,4 +57,3 @@ namespace Prime
 #define FATAL(x)
 #define FATAL_ERROR(X)
 #endif 
-}

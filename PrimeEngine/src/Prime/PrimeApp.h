@@ -14,6 +14,10 @@ namespace Prime
 
 		void Run();
 
+		virtual void OnStart() = 0;
+		virtual void OnUpdate(float dt) = 0;
+		virtual void OnRender(float dt) = 0;
+
 	private:
 		void PreRunInit();
 		void ShutDown();
@@ -24,5 +28,7 @@ namespace Prime
 	};
 
 	PrimeApp* CreateApplication();
+
+	PRIME_API GraphicsEngine* GetGraphicsEngine();
 }
 

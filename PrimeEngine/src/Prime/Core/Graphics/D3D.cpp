@@ -155,6 +155,8 @@ namespace Prime
 	void D3D::ThrowHr(HRESULT hr, const char* msg)
 	{
 		if (FAILED(hr))
-			FATAL(msg)
+		{
+			FATAL(msg);
+		}
 	}
 }

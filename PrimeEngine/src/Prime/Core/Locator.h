@@ -58,7 +58,6 @@ namespace Prime
 			}
 
 			IService* service = m_services.at(typeid(T).name()).get();
-			std::cout << "Resolving Service: " << typeid(T).name() << std::endl;
 			return static_cast<T*>(service);
 		}
 

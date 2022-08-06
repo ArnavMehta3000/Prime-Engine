@@ -3,6 +3,11 @@
 #include "Prime/Logger.h"
 #include "Prime/Constants.h"
 
+PRIME_API Prime::GraphicsEngine* Prime::GetGraphicsEngine()
+{
+	return Locator::ResolveService<GraphicsEngine>();
+}
+
 namespace Prime
 {
 	PrimeApp::PrimeApp()
@@ -62,12 +67,15 @@ namespace Prime
 	void PrimeApp::Run()
 	{
 		PreRunInit();
+		OnStart();
 		
 		auto gfx = Locator::ResolveService<GraphicsEngine>();
 		while (m_window->ProcessMessages())
 		{
 			gfx->BeginFrame();
-			
+			// Input polling here
+			OnUpdate(0.0f);
+			OnRender(0.0f);
 			gfx->EndFrame();
 		}
 
