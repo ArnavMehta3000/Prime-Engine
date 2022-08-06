@@ -50,8 +50,8 @@ namespace Prime
 		init.Window.Height = WINDOW_HEIGHT;
 		init.Window.Handle = m_window->GetHWND();
 
-		Locator::ResolveService<GraphicsEngine>()->Init(init);
-		
+		auto gfx = Locator::ResolveService<GraphicsEngine>();
+		gfx->Init(init);
 		
 		TRACE("Pre-run Initialise complete")
 	}

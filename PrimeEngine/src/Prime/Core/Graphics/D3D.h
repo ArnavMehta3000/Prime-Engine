@@ -29,13 +29,14 @@ namespace Prime
 	class D3D
 	{
 	public:
+		friend class GraphicsEngine;
+
 		D3D();
 		~D3D();
 
 		PRIME_API bool Init(D3D_INIT_PARAMS p);
 		PRIME_API void Shutdown();
 
-		//friend GraphicsEngine;
 
 	private:
 		PRIME_API void ThrowHr(HRESULT hr, const char* msg);

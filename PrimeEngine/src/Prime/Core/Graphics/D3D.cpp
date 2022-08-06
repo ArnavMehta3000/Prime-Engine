@@ -74,8 +74,8 @@ namespace Prime
 				}
 			}
 		}
-		TRACE("Monitor Width: " + std::to_string(displayModeList[num].Width));
-		TRACE("Monitor Height: " + std::to_string(displayModeList[num].Height));
+		TRACE("Applied window width: " + std::to_string(displayModeList[num].Width));
+		TRACE("Applied window height: " + std::to_string(displayModeList[num].Height));
 		TRACE("Refresh rate numerator: " + std::to_string(numerator));
 		TRACE("Refresh rate denominator: " + std::to_string(denominator));
 
@@ -130,7 +130,13 @@ namespace Prime
 				NULL,
 				&m_context), "Failed to create device and swap chain");
 
-
+		// Create render target view using the back buffer pointer
+		ID3D11Texture2D* backBuffer;
+		ThrowHr(m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer), "Failed to get back buffer");
+		ThrowHr(m_device->CreateRenderTargetView(backBuffer, NULL, &m_renderTargetView), "Failed to create render target view");
+		
+		backBuffer->Release();
+		backBuffer = nullptr;
 
 		return true;
 	}
