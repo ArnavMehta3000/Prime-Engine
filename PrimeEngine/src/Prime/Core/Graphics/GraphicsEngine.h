@@ -1,0 +1,23 @@
+#pragma once
+#include "D3D.h"
+#include "Prime/Core/IService.h"
+
+
+namespace Prime
+{
+	class GraphicsEngine : public IService
+	{
+	public:
+		GraphicsEngine();
+		~GraphicsEngine();
+
+		PRIME_API void Init(D3D_INIT_PARAMS d3dInit);
+		PRIME_API void Shutdown();
+		PRIME_API void BeginFrame();
+		PRIME_API void EndFrame();
+
+	private:
+		std::unique_ptr<D3D> m_d3d;
+	};
+}
+

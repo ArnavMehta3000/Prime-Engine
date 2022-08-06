@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PrimeApp.h"
-#include "Logger.h"
+#include "Prime/Logger.h"
+#include "Prime/Constants.h"
 
 namespace Prime
 {
@@ -42,11 +43,14 @@ namespace Prime
 		TRACE("Initializing app");
 		
 		m_window = new PrimeWindow();
-		Locator::RegisterService<D3D>();
-		if (Locator::HasService<D3D>())
-		{
-			auto d3d = Locator::ResolveService<D3D>();
-		}
+		Locator::RegisterService<GraphicsEngine>();
+
+		D3D_INIT_PARAMS init{};
+		init.Window.Width = WINDOW_WIDTH;
+		init.Window.Height = WINDOW_HEIGHT;
+
+		Locator::ResolveService<GraphicsEngine>()->Init(init);
+		
 		
 		TRACE("Pre-run Initialise complete")
 	}

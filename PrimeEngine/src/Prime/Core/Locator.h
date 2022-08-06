@@ -7,6 +7,7 @@ namespace Prime
 	{
 	public:
 		static Locator* Instance();
+		static PRIME_API void Shutdown();
 
 		template <typename T>
 		static void RegisterService()
@@ -15,7 +16,7 @@ namespace Prime
 		}
 
 		template <typename T>
-		static T& ResolveService()
+		static T* ResolveService()
 		{
 			return Instance()->Resolve<T>();
 		}
@@ -34,15 +35,20 @@ namespace Prime
 		{
 			auto& serviceType = typeid(T);
 			m_services[serviceType.name()] = std::make_shared<T>();
-			std::cout << "Registering Service: " << serviceType.name() << std::endl;			
+			std::cout << "-----Registering Service: " << serviceType.name()
+					  << "Service ID : " << m_services[serviceType.name()]->GetServiceId()
+					  << "-----" << std::endl;
 		}
 
 		template <typename T>
-		T& Resolve()
+		T* Resolve()
 		{
+			if (!Has<T>())
+				return nullptr;
+
 			IService* service = m_services.at(typeid(T).name()).get();
 			std::cout << "Resolving Service: " << typeid(T).name() << std::endl;
-			return *static_cast<T*>(service);
+			return static_cast<T*>(service);
 		}
 
 		template <typename T>
@@ -53,6 +59,8 @@ namespace Prime
 
 			return true;
 		}
+
+		PRIME_API void ShutdownImpl();
 
 	private:
 		 std::unordered_map<const char*, std::shared_ptr<IService>> m_services;

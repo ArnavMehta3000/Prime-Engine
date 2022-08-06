@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "PrimeWindow.h"
-#include "Prime/Logger.h"
 #include "Prime/Constants.h"
 
 namespace Prime

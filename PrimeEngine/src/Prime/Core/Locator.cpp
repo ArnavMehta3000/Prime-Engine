@@ -12,4 +12,17 @@ namespace Prime
 
 		return s_instance;
 	}
+
+	PRIME_API void Locator::Shutdown()
+	{
+		Instance()->ShutdownImpl();
+	}
+	void Locator::ShutdownImpl()
+	{
+		for (const auto& [key, value] : m_services)
+		{
+			
+
+		}
+	}
 }
