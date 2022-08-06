@@ -19,13 +19,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -55,7 +55,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)PRIME_EXPORT</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -73,7 +73,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)PRIME_EXPORT</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -89,23 +89,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Prime\Core\Graphics\GraphicsEngine.h" />
-    <ClInclude Include="src\Prime\Core\Locator.h" />
+    <ClInclude Include="src\Prime\Core\Service Locator\Locator.h" />
     <ClInclude Include="src\Prime\Core\Graphics\D3D.h" />
     <ClInclude Include="src\Prime\Constants.h" />
-    <ClInclude Include="src\Prime\Core\IService.h" />
+    <ClInclude Include="src\Prime\Core\Service Locator\IService.h" />
     <ClInclude Include="src\Prime\Core\PrimeWindow.h" />
     <ClInclude Include="src\Prime.h" />
     <ClInclude Include="src\PrimeEntry.h" />
     <ClInclude Include="src\Prime\Logger.h" />
     <ClInclude Include="src\Prime\PrimeApp.h" />
-    <ClInclude Include="src\Prime\ApiDefines.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Prime\Core\Graphics\GraphicsEngine.cpp" />
-    <ClCompile Include="src\Prime\Core\Locator.cpp" />
+    <ClCompile Include="src\Prime\Core\Service Locator\Locator.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\D3D.cpp" />
-    <ClCompile Include="src\Prime\Core\IService.cpp" />
+    <ClCompile Include="src\Prime\Core\Service Locator\IService.cpp" />
     <ClCompile Include="src\Prime\Core\PrimeWindow.cpp" />
     <ClCompile Include="src\Prime\PrimeApp.cpp" />
     <ClCompile Include="src\pch.cpp">
@@ -116,7 +115,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="cpp.hint" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

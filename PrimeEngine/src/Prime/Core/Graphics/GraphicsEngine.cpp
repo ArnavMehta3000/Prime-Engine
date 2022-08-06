@@ -13,7 +13,7 @@ namespace Prime
 
 
 
-	PRIME_API void GraphicsEngine::Init(D3D_INIT_PARAMS d3dInit)
+	void GraphicsEngine::Init(D3D_INIT_PARAMS d3dInit)
 	{
 		m_d3d->Init(d3dInit);
 
@@ -120,7 +120,7 @@ namespace Prime
 		m_d3d->m_context->RSSetViewports(1, &viewport);
 	}
 
-	PRIME_API void GraphicsEngine::Shutdown()
+	void GraphicsEngine::Shutdown()
 	{
 		m_d3d->Shutdown();
 		m_d3d.release();
@@ -128,14 +128,14 @@ namespace Prime
 
 
 
-	PRIME_API void GraphicsEngine::BeginFrame()
+	void GraphicsEngine::BeginFrame()
 	{
 		float color[4] = { 0.15f, 0.15f, 0.15f, 1.0f };
 		m_d3d->m_context->ClearRenderTargetView(m_d3d->m_renderTargetView.Get(), color);
 		m_d3d->m_context->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	}
 
-	PRIME_API void GraphicsEngine::EndFrame()
+	void GraphicsEngine::EndFrame()
 	{
 		if (m_d3d->m_initParams.VSync)
 			m_d3d->m_swapChain->Present(1, 0);  // Lock present to refresh rate
@@ -143,7 +143,7 @@ namespace Prime
 			m_d3d->m_swapChain->Present(0, 0);  // Present as fast as possible
 	}
 
-	PRIME_API void GraphicsEngine::SetWireframe(bool isWireframe)
+	void GraphicsEngine::SetWireframe(bool isWireframe)
 	{
 		if (isWireframe)
 		{

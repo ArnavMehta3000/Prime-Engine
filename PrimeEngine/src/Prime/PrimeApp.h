@@ -1,12 +1,11 @@
 #pragma once
-#include "ApiDefines.h"
 #include "Prime/Core/PrimeWindow.h"
 #include "Prime/Core/Graphics/GraphicsEngine.h"
-#include "Prime/Core/Locator.h"
+#include "Prime/Core/Service Locator/Locator.h"
 
 namespace Prime
 {
-	class PRIME_API PrimeApp
+	class PrimeApp
 	{
 	public:
 		PrimeApp();
@@ -29,6 +28,6 @@ namespace Prime
 
 	PrimeApp* CreateApplication();
 
-	PRIME_API GraphicsEngine* GetGraphicsEngine();
+	GraphicsEngine* GetGraphicsEngine();
 }
 

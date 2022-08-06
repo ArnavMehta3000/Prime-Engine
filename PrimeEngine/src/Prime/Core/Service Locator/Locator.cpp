@@ -13,7 +13,7 @@ namespace Prime
 		return s_instance;
 	}
 
-	PRIME_API void Locator::Shutdown()
+	void Locator::Shutdown()
 	{
 		Instance()->ShutdownImpl();
 	}

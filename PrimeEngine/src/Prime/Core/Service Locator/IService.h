@@ -1,9 +1,8 @@
 #pragma once
-#include "Prime/ApiDefines.h"
 
 namespace Prime
 {
-	class PRIME_API IService
+	class IService
 	{
 	public:
 		IService();

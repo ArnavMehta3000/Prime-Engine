@@ -1,5 +1,4 @@
 #pragma once
-#include "Prime/ApiDefines.h"
 
 namespace Prime
 {
@@ -34,10 +33,10 @@ namespace Prime
 		D3D();
 		~D3D();
 
-		PRIME_API static void ThrowHr(HRESULT hr, const char* msg);
+		static void ThrowHr(HRESULT hr, const char* msg);
 	private:
-		PRIME_API bool Init(D3D_INIT_PARAMS p);
-		PRIME_API void Shutdown();
+		bool Init(D3D_INIT_PARAMS p);
+		void Shutdown();
 
 	private:
 		int m_videoCardMemory;

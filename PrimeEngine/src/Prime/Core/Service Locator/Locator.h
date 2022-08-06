@@ -1,5 +1,5 @@
 #pragma once
-#include "Prime/Core/IService.h"
+#include "Prime/Core/Service Locator/IService.h"
 
 namespace Prime
 {
@@ -7,7 +7,7 @@ namespace Prime
 	{
 	public:
 		static Locator* Instance();
-		static PRIME_API void Shutdown();
+		static void Shutdown();
 
 		template <typename T>
 		static void RegisterService()
@@ -70,7 +70,7 @@ namespace Prime
 			return true;
 		}
 
-		PRIME_API void ShutdownImpl();
+		void ShutdownImpl();
 
 	private:
 		 std::unordered_map<const char*, std::shared_ptr<IService>> m_services;

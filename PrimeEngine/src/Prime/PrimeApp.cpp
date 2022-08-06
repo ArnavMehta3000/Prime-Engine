@@ -3,7 +3,7 @@
 #include "Prime/Logger.h"
 #include "Prime/Constants.h"
 
-PRIME_API Prime::GraphicsEngine* Prime::GetGraphicsEngine()
+Prime::GraphicsEngine* Prime::GetGraphicsEngine()
 {
 	return Locator::ResolveService<GraphicsEngine>();
 }
