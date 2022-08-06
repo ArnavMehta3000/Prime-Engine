@@ -30,3 +30,5 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
+
+#define SHADER_PATH std::wstring(L"../PrimeEngine/Shaders/")

@@ -19,6 +19,7 @@ namespace Prime
 
 		void SetWireframe(bool isWireframe);
 
+
 	private:
 		std::unique_ptr<D3D> m_d3d;
 

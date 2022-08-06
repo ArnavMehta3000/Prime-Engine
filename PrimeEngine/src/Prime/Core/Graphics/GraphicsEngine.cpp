@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GraphicsEngine.h"
+#include "Prime/Structures.h"
 
 namespace Prime
 {
@@ -133,6 +134,49 @@ namespace Prime
 		float color[4] = { 0.15f, 0.15f, 0.15f, 1.0f };
 		m_d3d->m_context->ClearRenderTargetView(m_d3d->m_renderTargetView.Get(), color);
 		m_d3d->m_context->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+
+		Vertex vertices[] =
+		{
+			Vertex(0.0f,  0.5f, 0.0f),  // Top
+			Vertex(0.5f, -0.5f, 0.0f),  // Bottom right
+			Vertex(-0.5f, -0.5f, 0.0f)  // Bottom left
+		};
+
+		ComPtr<ID3D11Buffer> vertexBuffer;
+		D3D11_BUFFER_DESC vbd{};
+		vbd.BindFlags           = D3D11_BIND_VERTEX_BUFFER;
+		vbd.Usage               = D3D11_USAGE_DEFAULT;
+		vbd.CPUAccessFlags      = 0u;
+		vbd.MiscFlags           = 0u;
+		vbd.ByteWidth           = sizeof(vertices);
+		vbd.StructureByteStride = sizeof(Vertex);
+		D3D11_SUBRESOURCE_DATA vsd{};
+		vsd.pSysMem = vertices;
+		D3D::ThrowHr(m_d3d->m_device->CreateBuffer(&vbd, &vsd, vertexBuffer.GetAddressOf()),
+			"Failed to create vertex buffer");
+
+		UINT stride = sizeof(Vertex);
+		UINT offset = 0u;
+		m_d3d->m_context->IASetVertexBuffers(0u, 1u, vertexBuffer.GetAddressOf(), &stride, &offset);
+
+		ComPtr<ID3D11VertexShader> vertexShader;
+		ComPtr<ID3D10Blob> vBlob;
+		HRESULT hr;
+		D3D::ThrowHr(hr = D3DReadFileToBlob((SHADER_PATH + L"DefaultVertex.cso").c_str(), vBlob.GetAddressOf()),
+			"Failed to read vertex shader to blob");
+
+		ComPtr<ID3D11InputLayout> inputLayout;
+		D3D11_INPUT_ELEMENT_DESC desc[] =
+		{
+			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+		};
+
+		//D3D::ThrowHr(m_d3d->m_device->CreateInputLayout(&desc, ARRAYSIZE(desc)))
+	
+	
+		m_d3d->m_context->Draw(3u, 0u);
 	}
 
 	void GraphicsEngine::EndFrame()
@@ -156,4 +200,6 @@ namespace Prime
 			TRACE("Set raster state: solid");
 		}
 	}
+	
+
 }
