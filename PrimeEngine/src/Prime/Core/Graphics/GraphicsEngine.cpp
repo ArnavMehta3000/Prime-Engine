@@ -21,6 +21,7 @@ namespace Prime
 	PRIME_API void GraphicsEngine::Shutdown()
 	{
 		m_d3d->Shutdown();
+		m_d3d.release();
 	}
 
 

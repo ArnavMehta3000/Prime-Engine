@@ -34,11 +34,9 @@ namespace Prime
 		D3D();
 		~D3D();
 
+	private:
 		PRIME_API bool Init(D3D_INIT_PARAMS p);
 		PRIME_API void Shutdown();
-
-
-	private:
 		PRIME_API void ThrowHr(HRESULT hr, const char* msg);
 
 	private:

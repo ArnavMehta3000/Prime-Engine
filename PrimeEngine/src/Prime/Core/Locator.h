@@ -34,6 +34,14 @@ namespace Prime
 		void Register()
 		{
 			auto& serviceType = typeid(T);
+
+			// Check if service already exists in map
+			if (Has<T>())
+			{
+				WARN("Service type: " + std::string(serviceType.name()) + " already exists. Returning...");
+				return;
+			}
+
 			m_services[serviceType.name()] = std::make_shared<T>();
 			std::cout << "-----Registering Service: " << serviceType.name()
 					  << "Service ID : " << m_services[serviceType.name()]->GetServiceId()

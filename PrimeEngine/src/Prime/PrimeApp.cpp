@@ -17,6 +17,8 @@ namespace Prime
 
 	void PrimeApp::ShutDown()
 	{
+		Locator::ResolveService<GraphicsEngine>()->Shutdown();
+
 		if (m_window)
 		{
 			delete m_window;
