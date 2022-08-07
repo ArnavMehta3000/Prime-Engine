@@ -2,6 +2,8 @@
 #include "PrimeApp.h"
 #include "Prime/Logger.h"
 #include "Prime/Constants.h"
+#include "Effects.h"
+#include <DirectXHelpers.h>
 
 Prime::GraphicsEngine* Prime::GetGraphicsEngine()
 {
@@ -100,9 +102,13 @@ namespace Prime
 		UINT offset = 0u;
 		gfx->GetContext()->IASetVertexBuffers(0u, 1u, m_vertexBuffer.GetAddressOf(), &stride, &offset);
 
+
 		ComPtr<ID3D10Blob> vertexBlob;
 		THROW_HR(D3DReadFileToBlob((SHADER_PATH + L"DefaultVertex.cso").c_str(), vertexBlob.GetAddressOf()),
-			"Failed to create vertex shader");
+			"Failed to read vertex shader to blob");
+
+		THROW_HR(gfx->GetDevice()->CreateVertexShader(vertexBlob->GetBufferPointer(), vertexBlob->GetBufferSize(), nullptr, &m_vertexShader),
+			"Failed to create vertex shader object");
 
 		
 		while (m_window->ProcessMessages())
