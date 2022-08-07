@@ -12,6 +12,9 @@ namespace Prime
 		GraphicsEngine();
 		~GraphicsEngine();
 
+		inline ComPtr<ID3D11Device> GetDevice() { return m_d3d->m_device; }
+		inline ComPtr<ID3D11DeviceContext> GetContext() { return m_d3d->m_context; }
+
 		void Init(D3D_INIT_PARAMS d3dInit);
 		void Shutdown();
 		void BeginFrame();

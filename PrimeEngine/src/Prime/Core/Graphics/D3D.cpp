@@ -76,10 +76,10 @@ namespace Prime
 				}
 			}
 		}
-		TRACE("Applied window width: " + std::to_string(displayModeList[num].Width));
-		TRACE("Applied window height: " + std::to_string(displayModeList[num].Height));
-		TRACE("Refresh rate numerator: " + std::to_string(numerator));
-		TRACE("Refresh rate denominator: " + std::to_string(denominator));
+		TRACE("Applied window width: "  << displayModeList[num].Width);
+		TRACE("Applied window height: "  << displayModeList[num].Height);
+		TRACE("Refresh rate numerator: "  << numerator);
+		TRACE("Refresh rate denominator: "  << denominator);
 
 		// Get adapter description
 		DXGI_ADAPTER_DESC adapterDesc;
@@ -88,7 +88,7 @@ namespace Prime
 		
 		// Store video card memory in mb
 		m_videoCardMemory = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
-		TRACE("Dedicated video card memory: " + std::to_string(m_videoCardMemory) + "MB");
+		TRACE("Dedicated video card memory: " << m_videoCardMemory << "MB");
 
 
 		delete[] displayModeList;
