@@ -102,11 +102,12 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Prime\Core\Graphics\Buffers.h" />
     <ClInclude Include="src\Prime\Core\Graphics\GraphicsEngine.h" />
-    <ClInclude Include="src\Prime\Core\Service Locator\Locator.h" />
+    <ClInclude Include="src\Prime\Core\ServiceLocator\Locator.h" />
     <ClInclude Include="src\Prime\Core\Graphics\D3D.h" />
     <ClInclude Include="src\Prime\Constants.h" />
-    <ClInclude Include="src\Prime\Core\Service Locator\IService.h" />
+    <ClInclude Include="src\Prime\Core\ServiceLocator\IService.h" />
     <ClInclude Include="src\Prime\Core\PrimeWindow.h" />
     <ClInclude Include="src\Prime.h" />
     <ClInclude Include="src\PrimeEntry.h" />
@@ -115,10 +116,11 @@
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Prime\Core\Graphics\Buffers.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\GraphicsEngine.cpp" />
-    <ClCompile Include="src\Prime\Core\Service Locator\Locator.cpp" />
+    <ClCompile Include="src\Prime\Core\ServiceLocator\Locator.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\D3D.cpp" />
-    <ClCompile Include="src\Prime\Core\Service Locator\IService.cpp" />
+    <ClCompile Include="src\Prime\Core\ServiceLocator\IService.cpp" />
     <ClCompile Include="src\Prime\Core\PrimeWindow.cpp" />
     <ClCompile Include="src\Prime\PrimeApp.cpp" />
     <ClCompile Include="src\pch.cpp">

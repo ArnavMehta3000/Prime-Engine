@@ -1,6 +1,5 @@
 #include "pch.h"
 #include <Prime.h>
-using namespace Prime;
 
 class TestApp : public Prime::PrimeApp
 {
@@ -25,7 +24,7 @@ public:
 	}
 	virtual void OnRender(float dt) override
 	{
-
+		
 	}
 };
 

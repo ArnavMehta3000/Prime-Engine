@@ -1,10 +1,15 @@
 #pragma once
 #include "Prime/Core/PrimeWindow.h"
 #include "Prime/Core/Graphics/GraphicsEngine.h"
-#include "Prime/Core/Service Locator/Locator.h"
+#include "Prime/Core/ServiceLocator/Locator.h"
 
 namespace Prime
 {
+	struct Vertex
+	{
+		float x, y, z;
+	};
+
 	class PrimeApp
 	{
 	public:
@@ -23,11 +28,12 @@ namespace Prime
 		void CreateAndAttachConsole();
 
 	private:
-		PrimeWindow*               m_window;
-		ComPtr<ID3D11VertexShader> m_vertexShader;
-		ComPtr<ID3D11PixelShader>  m_pixelShader;
-		ComPtr<ID3D11Buffer>       m_vertexBuffer;
-		ComPtr<ID3D11InputLayout>  m_inputLayout;
+		PrimeWindow*                   m_window;
+		ComPtr<ID3D11VertexShader>     m_vertexShader;
+		ComPtr<ID3D11PixelShader>      m_pixelShader;
+		std::unique_ptr<DataBuffer>    m_vertexBuffer;
+		std::unique_ptr<DataBuffer>    m_indexBuffer;
+		ComPtr<ID3D11InputLayout>      m_inputLayout;
 
 	};
 

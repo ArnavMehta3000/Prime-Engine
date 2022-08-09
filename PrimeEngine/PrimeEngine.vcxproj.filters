@@ -39,13 +39,16 @@
     <ClInclude Include="src\Prime\Core\Graphics\D3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Prime\Core\Service Locator\IService.h">
+    <ClInclude Include="src\Prime\Core\ServiceLocator\IService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Prime\Core\Service Locator\Locator.h">
+    <ClInclude Include="src\Prime\Core\ServiceLocator\Locator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Prime\Core\Graphics\GraphicsEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Prime\Core\Graphics\Buffers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,13 +65,16 @@
     <ClCompile Include="src\Prime\Core\Graphics\D3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Prime\Core\Service Locator\IService.cpp">
+    <ClCompile Include="src\Prime\Core\ServiceLocator\IService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Prime\Core\Service Locator\Locator.cpp">
+    <ClCompile Include="src\Prime\Core\ServiceLocator\Locator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Prime\Core\Graphics\GraphicsEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Prime\Core\Graphics\Buffers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
