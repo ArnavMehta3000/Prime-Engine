@@ -43,9 +43,9 @@ namespace Prime
 			}
 
 			m_services[serviceType.name()] = std::make_shared<T>();
-			std::cout << "-----Registering Service: " << serviceType.name()
-					  << "Service ID : " << m_services[serviceType.name()]->GetServiceId()
-					  << "-----" << std::endl;
+			WARN("-----Registering Service: " << serviceType.name()
+					  << "\tService ID : " << m_services[serviceType.name()]->GetServiceId()
+					  << "-----");
 		}
 
 		template <typename T>

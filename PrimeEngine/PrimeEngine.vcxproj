@@ -102,6 +102,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Prime\Core\Graphics\GraphicsFactory.h" />
     <ClInclude Include="src\Prime\Core\Graphics\Buffers.h" />
     <ClInclude Include="src\Prime\Core\Graphics\GraphicsEngine.h" />
     <ClInclude Include="src\Prime\Core\ServiceLocator\Locator.h" />
@@ -116,6 +117,7 @@
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Prime\Core\Graphics\GraphicsFactory.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\Buffers.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\GraphicsEngine.cpp" />
     <ClCompile Include="src\Prime\Core\ServiceLocator\Locator.cpp" />

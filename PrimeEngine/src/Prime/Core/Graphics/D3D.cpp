@@ -19,17 +19,14 @@ namespace Prime
 		// Create DirectX graphics interface factory
 		IDXGIFactory* factory;
 		ThrowHr(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory), "Failed to create IDXGI Factory");
-		LOG("Successfully created IDXGI Factory");
 
 		// Create adapter for primary GPU using factory
 		IDXGIAdapter* adapter;
 		ThrowHr(factory->EnumAdapters(0, &adapter), "Failed to create IDXGI Adapter");
-		LOG("Successfully created IDXGI Adapter");
 
 		// Enumerate primary adapter output (monitor)
 		IDXGIOutput* adapterOutput;
 		ThrowHr(adapter->EnumOutputs(0, &adapterOutput), "Failed to create IDXGI Output");
-		LOG("Successfully created IDXGI Output");
 
 		// Get number of modes that match the given display format
 		UINT numModes = 0;
@@ -50,14 +47,7 @@ namespace Prime
 
 		// Create a list of all the possible display modes fo this monitor GPU combination
 		if (!displayModeList)
-		{
 			FATAL("Failed to get display mode list");
-		}
-		else
-		{
-			LOG("Successfully retrived display mode list");
-			TRACE("Mode list count: " + std::to_string(numModes))
-		}
 			
 		// Cycle through all display modes in list, find one that matches with screen dimenaions
 		// When match is found store the numerator and denominator of the refresh rate of the monitor
@@ -78,13 +68,12 @@ namespace Prime
 		}
 		TRACE("Applied window width: "  << displayModeList[num].Width);
 		TRACE("Applied window height: "  << displayModeList[num].Height);
-		TRACE("Refresh rate numerator: "  << numerator);
-		TRACE("Refresh rate denominator: "  << denominator);
+		//TRACE("Refresh rate numerator: "  << numerator);
+		//TRACE("Refresh rate denominator: "  << denominator);
 
 		// Get adapter description
 		DXGI_ADAPTER_DESC adapterDesc;
 		ThrowHr(adapter->GetDesc(&adapterDesc), "Failed to get adapter description");
-		LOG("Successfully retrived adapter descripton");
 		
 		// Store video card memory in mb
 		m_videoCardMemory = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
@@ -139,6 +128,18 @@ namespace Prime
 		
 		backBuffer->Release();
 		backBuffer = nullptr;
+
+		// Setup the viewport for rendering.
+		D3D11_VIEWPORT viewport{};
+		viewport.Width = static_cast<float>(p.Window.Width);
+		viewport.Height = static_cast<float>(p.Window.Height);
+		viewport.MinDepth = 0.0f;
+		viewport.MaxDepth = 1.0f;
+		viewport.TopLeftX = 0.0f;
+		viewport.TopLeftY = 0.0f;
+
+		// Create the viewport.
+		m_context->RSSetViewports(1, &viewport);
 		return true;
 	}
 

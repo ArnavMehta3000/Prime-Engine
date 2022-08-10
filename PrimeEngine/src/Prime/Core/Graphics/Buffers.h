@@ -34,6 +34,7 @@ namespace Prime
 	class DataBuffer
 	{
 		friend class GraphicsEngine;
+		friend class GraphicsFactory;
 	public:
 		DataBuffer();
 		~DataBuffer();

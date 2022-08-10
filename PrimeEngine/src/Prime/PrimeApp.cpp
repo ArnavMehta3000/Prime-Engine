@@ -49,7 +49,7 @@ namespace Prime
 	
 	void Prime::PrimeApp::PreRunInit()
 	{
-		WARN("Initializing app");
+		LOG_LOAD("Initializing app");
 		
 		m_window = new PrimeWindow();
 		Locator::RegisterService<GraphicsEngine>();
@@ -63,7 +63,7 @@ namespace Prime
 		auto gfx = Locator::ResolveService<GraphicsEngine>();
 		gfx->Init(d3dInit);
 		
-		WARN("Pre-run Initialise complete");
+		LOG_LOAD("Pre-run Initialise complete");
 	}
 
 	void PrimeApp::Run()
@@ -71,12 +71,13 @@ namespace Prime
 		PreRunInit();
 		OnStart();
 		auto gfx = Locator::ResolveService<GraphicsEngine>();
+		auto factory = Locator::ResolveService<GraphicsFactory>();
 
 		
 
 		const Vertex vertices[] =
 		{
-			{ 0.0f, 0.5f, 0.0f },
+			{ 0.0f, 1.5f, 0.0f },
 			{ 0.5f, -0.5f, 0.0f },
 			{ -0.5f, -0.5f, 0.0f },
 		};
@@ -85,7 +86,7 @@ namespace Prime
 		vBufferDesc.Usage     = DataBufferUsage::Normal;
 		vBufferDesc.CPUAccess = DataBufferCPUAccess::None;
 		vBufferDesc.Type      = DataBufferType::VertexBuffer;
-		gfx->GetFactory()->CreateBuffer(vBufferDesc, vertices, UINT(sizeof(vertices)), UINT(sizeof(Vertex)), m_vertexBuffer);
+		factory->CreateBuffer(vBufferDesc, vertices, UINT(sizeof(vertices)), UINT(sizeof(Vertex)), m_vertexBuffer);
 		gfx->GetContext()->IASetVertexBuffers(0u, 1u, m_vertexBuffer->GetCOM().GetAddressOf(), m_vertexBuffer->GetStride(), m_vertexBuffer->GetOffset());
 
 
@@ -98,7 +99,7 @@ namespace Prime
 		iBufferDesc.Type = DataBufferType::IndexBuffer;
 		iBufferDesc.CPUAccess = DataBufferCPUAccess::None;
 		iBufferDesc.Usage = DataBufferUsage::Normal;
-		gfx->GetFactory()->CreateBuffer(iBufferDesc, indices, UINT(sizeof(UINT) * ARRAYSIZE(indices)), UINT(sizeof(UINT)), m_indexBuffer);
+		factory->CreateBuffer(iBufferDesc, indices, UINT(sizeof(UINT) * ARRAYSIZE(indices)), UINT(sizeof(UINT)), m_indexBuffer);
 		gfx->GetContext()->IASetIndexBuffer(m_indexBuffer->GetCOM().Get(), DXGI_FORMAT_R32_UINT, 0);
 
 
@@ -107,18 +108,16 @@ namespace Prime
 			"Failed to read vertex shader to blob");
 		THROW_HR(gfx->GetDevice()->CreateVertexShader(vertexBlob->GetBufferPointer(), vertexBlob->GetBufferSize(), nullptr, &m_vertexShader),
 			"Failed to create vertex shader object");
-		LOG_LOAD("Loaded and created vertex shader");
+		TRACE("Loaded and created vertex shader");
 
-		gfx->GetContext()->VSSetShader(m_vertexShader.Get(), nullptr, 0u);
 
 		ComPtr<ID3D10Blob> pixelBlob;
 		THROW_HR(D3DReadFileToBlob((SHADER_PATH + L"DefaultPixel.cso").c_str(), pixelBlob.GetAddressOf()),
 			"Failed to read pixel shader to blob");
 		THROW_HR(gfx->GetDevice()->CreatePixelShader(pixelBlob->GetBufferPointer(), pixelBlob->GetBufferSize(), nullptr, &m_pixelShader),
 			"Failed to create pixel shader object");
-		LOG_LOAD("Loaded and created pixel shader");
+		TRACE("Loaded and created pixel shader");
 
-		gfx->GetContext()->PSSetShader(m_pixelShader.Get(), nullptr, 0u);
 		gfx->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		const D3D11_INPUT_ELEMENT_DESC inputLayout[] =
@@ -132,7 +131,6 @@ namespace Prime
 													 vertexBlob->GetBufferSize(),
 													 m_inputLayout.GetAddressOf()),
 			"Failed to create input layout");
-		LOG("Successfully created input layout");
 
 		gfx->GetContext()->IASetInputLayout(m_inputLayout.Get());
 
@@ -150,7 +148,8 @@ namespace Prime
 			OnUpdate(0.0f);
 			OnRender(0.0f);
 
-
+			gfx->GetContext()->VSSetShader(m_vertexShader.Get(), nullptr, 0u);
+			gfx->GetContext()->PSSetShader(m_pixelShader.Get(), nullptr, 0u);
 			//gfx->GetContext()->DrawIndexed(3u, 0u, 0u);
 			gfx->GetContext()->Draw(3, 0);
 			
