@@ -27,17 +27,20 @@ namespace Prime
 		void ShutDown();
 		void CreateAndAttachConsole();
 
+	protected:
+		std::unique_ptr<Prime::GraphicsFactory> g_gfxFactory;
+		std::unique_ptr<Prime::GraphicsRenderer> g_gfxrenderer;
+		
+
 	private:
 		PrimeWindow*                   m_window;
-		std::unique_ptr<VertexShader>  m_vertexShader;
-		std::unique_ptr<PixelShader>   m_pixelShader;
-		std::unique_ptr<VertexBuffer>  m_vertexBuffer;
-		std::unique_ptr<IndexBuffer>   m_indexBuffer;
+		std::shared_ptr<VertexShader>  m_vertexShader;
+		std::shared_ptr<PixelShader>   m_pixelShader;
+		std::shared_ptr<VertexBuffer>  m_vertexBuffer;
+		std::shared_ptr<IndexBuffer>   m_indexBuffer;
 
 	};
 
 	PrimeApp* CreateApplication();
-
-	GraphicsEngine* GetGraphicsEngine();
 }
 

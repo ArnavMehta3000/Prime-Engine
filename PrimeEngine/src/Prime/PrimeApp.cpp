@@ -5,11 +5,6 @@
 #include "Effects.h"
 #include <DirectXHelpers.h>
 
-Prime::GraphicsEngine* Prime::GetGraphicsEngine()
-{
-	return Locator::ResolveService<GraphicsEngine>();
-}
-
 namespace Prime
 {
 	PrimeApp::PrimeApp()
@@ -71,7 +66,9 @@ namespace Prime
 		PreRunInit();
 		OnStart();
 		auto gfx = Locator::ResolveService<GraphicsEngine>();
-		auto factory = Locator::ResolveService<GraphicsFactory>();
+		g_gfxFactory.reset(Locator::ResolveService<GraphicsFactory>());
+		g_gfxrenderer.reset(Locator::ResolveService<GraphicsRenderer>());
+		
 
 		
 		// Create vertex buffer
@@ -81,35 +78,33 @@ namespace Prime
 			{ 0.5f, -0.5f, 0.0f },
 			{ -0.5f, -0.5f, 0.0f },
 		};
-		m_vertexBuffer.reset(
-			factory->CreateVertexBuffer(vertices, UINT(sizeof(Vertex)), ARRAYSIZE(vertices)));
-		UINT offset = 0u;
-		gfx->GetContext()->IASetVertexBuffers(0u, 1u, m_vertexBuffer->GetAddressOf(), m_vertexBuffer->StridePtr(), &offset);
-
+		m_vertexBuffer.reset(g_gfxFactory->CreateVertexBuffer(vertices, UINT(sizeof(Vertex)), ARRAYSIZE(vertices)));
 
 		// Create index buffer
 		DWORD indices[] =
 		{
 			1,2,3
 		};
-		m_indexBuffer.reset(
-			factory->CreateIndexBuffer(indices, ARRAYSIZE(indices)));
-		gfx->GetContext()->IASetIndexBuffer(m_indexBuffer->Get(), DXGI_FORMAT_R32_UINT, 0);
+		m_indexBuffer.reset(g_gfxFactory->CreateIndexBuffer(indices, ARRAYSIZE(indices)));
 
 		// Create vertex shader
 		D3D11_INPUT_ELEMENT_DESC inputLayout[] =
 		{
 			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};		
-		m_vertexShader.reset(
-			factory->CreateVertexShader((SHADER_PATH + L"DefaultVertex.cso").c_str(), inputLayout, ARRAYSIZE(inputLayout)));
+		
+		m_vertexShader.reset(g_gfxFactory->CreateVertexShader((SHADER_PATH + L"DefaultVertex.cso").c_str(), inputLayout, ARRAYSIZE(inputLayout)));
+		m_pixelShader.reset(g_gfxFactory->CreatePixelShader((SHADER_PATH + L"DefaultPixel.cso").c_str()));
 
-		m_pixelShader.reset(
-			factory->CreatePixelShader((SHADER_PATH + L"DefaultPixel.cso").c_str()));
 
-		gfx->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		gfx->GetContext()->IASetInputLayout(m_vertexShader->GetInputLayout().Get());
+		
+		g_gfxrenderer->Bind(m_vertexBuffer);
+		g_gfxrenderer->Bind(m_indexBuffer);
+		g_gfxrenderer->Bind(m_vertexShader);
+		g_gfxrenderer->Bind(m_pixelShader);
+		g_gfxrenderer->Bind(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 
 
 
@@ -125,10 +120,8 @@ namespace Prime
 			OnUpdate(0.0f);
 			OnRender(0.0f);
 
-			gfx->GetContext()->VSSetShader(m_vertexShader->GetShader().Get(), nullptr, 0u);
-			gfx->GetContext()->PSSetShader(m_pixelShader->GetShader().Get(), nullptr, 0u);
 			//gfx->GetContext()->DrawIndexed(m_indexBuffer->GetCount(), 0u, 0u);
-			gfx->GetContext()->Draw(3, 0);
+			g_gfxrenderer->Draw(3, 0);
 			
 			
 			gfx->EndFrame();

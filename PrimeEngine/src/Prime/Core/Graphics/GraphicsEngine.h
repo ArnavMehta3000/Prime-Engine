@@ -1,6 +1,6 @@
 #pragma once
 #include "Prime/Core/Graphics/GraphicsFactory.h"
-
+#include "Prime/Core/Graphics/GraphicsRenderer.h"
 
 namespace Prime
 {

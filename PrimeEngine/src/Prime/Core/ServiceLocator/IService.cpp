@@ -3,7 +3,7 @@
 
 namespace Prime
 {
-	int Prime::IService::s_currentId = 0;
+	int Prime::IService::s_currentId = -1;
 
 	IService::IService()
 		: m_id(++s_currentId)
