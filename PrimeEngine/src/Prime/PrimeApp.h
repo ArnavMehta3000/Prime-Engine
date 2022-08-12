@@ -28,9 +28,8 @@ namespace Prime
 		void CreateAndAttachConsole();
 
 	protected:
-		std::unique_ptr<Prime::GraphicsFactory> g_gfxFactory;
-		std::unique_ptr<Prime::GraphicsRenderer> g_gfxrenderer;
-		
+		GraphicsFactory* GetFactory();
+		GraphicsRenderer* GetRenderer();
 
 	private:
 		PrimeWindow*                   m_window;
