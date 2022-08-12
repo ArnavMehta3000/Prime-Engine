@@ -105,6 +105,7 @@
     <ClInclude Include="src\Prime\Core\Graphics\GraphicsFactory.h" />
     <ClInclude Include="src\Prime\Core\Graphics\Buffers.h" />
     <ClInclude Include="src\Prime\Core\Graphics\GraphicsEngine.h" />
+    <ClInclude Include="src\Prime\Core\Graphics\Shaders.h" />
     <ClInclude Include="src\Prime\Core\ServiceLocator\Locator.h" />
     <ClInclude Include="src\Prime\Core\Graphics\D3D.h" />
     <ClInclude Include="src\Prime\Constants.h" />
@@ -118,8 +119,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Prime\Core\Graphics\GraphicsFactory.cpp" />
-    <ClCompile Include="src\Prime\Core\Graphics\Buffers.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\GraphicsEngine.cpp" />
+    <ClCompile Include="src\Prime\Core\Graphics\Shaders.cpp" />
     <ClCompile Include="src\Prime\Core\ServiceLocator\Locator.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\D3D.cpp" />
     <ClCompile Include="src\Prime\Core\ServiceLocator\IService.cpp" />

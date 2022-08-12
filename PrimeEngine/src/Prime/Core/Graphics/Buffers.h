@@ -2,53 +2,57 @@
 
 namespace Prime
 {
-	enum class DataBufferType
+	class IBuffer
 	{
-		VertexBuffer,
-		IndexBuffer,
-		ConstantBuffer,
-	};
-
-	enum class DataBufferUsage
-	{
-		Normal,
-		Immutable,
-		Dynamic,
-		Staging,
-	};
-
-	enum class DataBufferCPUAccess
-	{
-		None,
-		CPURead,
-		CPUWrite
-	};
-
-	struct DataBufferDesc
-	{
-		DataBufferType Type;
-		DataBufferUsage Usage;
-		DataBufferCPUAccess CPUAccess = DataBufferCPUAccess::None;
-	};
-
-	class DataBuffer
-	{
-		friend class GraphicsEngine;
 		friend class GraphicsFactory;
 	public:
-		DataBuffer();
-		~DataBuffer();
+		~IBuffer()
+		{
+			m_buffer->Release();
+		}
+		
+		inline ID3D11Buffer* Get() const { return m_buffer.Get(); }
+		inline ID3D11Buffer* const* GetAddressOf() const { return m_buffer.GetAddressOf(); }
+		
+	protected:
+		ComPtr<ID3D11Buffer> m_buffer;
+	};
 
-		inline const ID3D11Buffer*        Get() const { return m_buffer.Get(); }
-		inline const ComPtr<ID3D11Buffer> GetCOM() const { return m_buffer; }
+	
 
-		inline const UINT*                GetStride() const { return m_stride; }
-		inline const UINT*                GetOffset() const { return m_offset; }
+	class VertexBuffer : public IBuffer
+	{
+		friend class GraphicsFactory;
+		
+	public:
+		VertexBuffer()
+		{
+			m_bufferSize = 0;
+		}
+		
+		inline UINT  Stride()     const { return *m_stride.get(); }
+		inline UINT* StridePtr()  const { return m_stride.get(); }
+		inline UINT  BufferSize() const { return m_bufferSize; }
+		
+	private:
+		UINT m_bufferSize;
+		std::unique_ptr<UINT> m_stride;
+	};
+
+
+	
+	class IndexBuffer : public IBuffer
+	{
+		friend class GraphicsFactory;
+	public:
+		IndexBuffer()
+		{
+			m_indexCount = 0;
+		}
+		
+		inline UINT GetCount() const { return m_indexCount; }
 
 	private:
-		const char* m_bufferType;
-		UINT* m_stride;
-		UINT* m_offset;
-		ComPtr<ID3D11Buffer> m_buffer;
+		UINT m_indexCount;
 	};
 }
