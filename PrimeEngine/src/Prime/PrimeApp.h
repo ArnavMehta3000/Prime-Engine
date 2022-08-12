@@ -29,11 +29,10 @@ namespace Prime
 
 	private:
 		PrimeWindow*                   m_window;
-		ComPtr<ID3D11VertexShader>     m_vertexShader;
+		std::unique_ptr<VertexShader>  m_vertexShader;
 		ComPtr<ID3D11PixelShader>      m_pixelShader;
-		std::unique_ptr<DataBuffer>    m_vertexBuffer;
-		std::unique_ptr<DataBuffer>    m_indexBuffer;
-		ComPtr<ID3D11InputLayout>      m_inputLayout;
+		std::unique_ptr<VertexBuffer>  m_vertexBuffer;
+		std::unique_ptr<IndexBuffer>    m_indexBuffer;
 
 	};
 

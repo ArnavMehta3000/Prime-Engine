@@ -2,6 +2,7 @@
 #include "Prime/Core/Graphics/D3D.h"
 #include "Prime/Core/ServiceLocator/IService.h"
 #include "Prime/Core/Graphics/Buffers.h"
+#include "Prime/Core/Graphics/Shaders.h"
 
 
 namespace Prime
@@ -12,13 +13,15 @@ namespace Prime
 		GraphicsFactory();
 		~GraphicsFactory() {}
 
-		void Init(ID3D11Device* device, ID3D11DeviceContext* context);
+		void Init(ID3D11Device* device);
 
-		void const CreateBuffer(DataBufferDesc desc, const void* data, UINT dataSize, UINT typeSize, std::unique_ptr<DataBuffer>& bufferPtr) const;
+		VertexBuffer* CreateVertexBuffer(const void* data, UINT dataTypeSize, UINT numVertices);
+		IndexBuffer* CreateIndexBuffer(const DWORD* data, UINT numIndices);
+		
+		VertexShader* CreateVertexShader(LPCWSTR filepath, D3D11_INPUT_ELEMENT_DESC* desc, UINT numElements);
 
 	private:
 		ID3D11Device* m_device;
-		ID3D11DeviceContext* m_context;
 	};
 }
 

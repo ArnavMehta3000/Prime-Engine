@@ -18,7 +18,7 @@ namespace Prime
 	{
 		m_d3d->Init(d3dInit);
 		Locator::RegisterService<GraphicsFactory>();
-		Locator::ResolveService<GraphicsFactory>()->Init(m_d3d->m_device.Get(), m_d3d->m_context.Get());
+		Locator::ResolveService<GraphicsFactory>()->Init(m_d3d->m_device.Get());
 
 		// Create depth buffer
 		D3D11_TEXTURE2D_DESC dbDesc{};
