@@ -15,10 +15,12 @@ namespace Prime
 
 		void Init(ID3D11Device* device);
 
+		
 		VertexBuffer* CreateVertexBuffer(const void* data, UINT dataTypeSize, UINT numVertices);
 		IndexBuffer* CreateIndexBuffer(const DWORD* data, UINT numIndices);
 		
 		VertexShader* CreateVertexShader(LPCWSTR filepath, D3D11_INPUT_ELEMENT_DESC* desc, UINT numElements);
+		PixelShader* CreatePixelShader(LPCWSTR filepath);
 
 	private:
 		ID3D11Device* m_device;

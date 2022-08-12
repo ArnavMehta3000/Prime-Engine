@@ -104,13 +104,8 @@ namespace Prime
 		m_vertexShader.reset(
 			factory->CreateVertexShader((SHADER_PATH + L"DefaultVertex.cso").c_str(), inputLayout, ARRAYSIZE(inputLayout)));
 
-
-		ComPtr<ID3D10Blob> pixelBlob;
-		THROW_HR(D3DReadFileToBlob((SHADER_PATH + L"DefaultPixel.cso").c_str(), pixelBlob.GetAddressOf()),
-			"Failed to read pixel shader to blob");
-		THROW_HR(gfx->GetDevice()->CreatePixelShader(pixelBlob->GetBufferPointer(), pixelBlob->GetBufferSize(), nullptr, &m_pixelShader),
-			"Failed to create pixel shader object");
-		TRACE("Loaded and created pixel shader");
+		m_pixelShader.reset(
+			factory->CreatePixelShader((SHADER_PATH + L"DefaultPixel.cso").c_str()));
 
 		gfx->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -131,7 +126,7 @@ namespace Prime
 			OnRender(0.0f);
 
 			gfx->GetContext()->VSSetShader(m_vertexShader->GetShader().Get(), nullptr, 0u);
-			gfx->GetContext()->PSSetShader(m_pixelShader.Get(), nullptr, 0u);
+			gfx->GetContext()->PSSetShader(m_pixelShader->GetShader().Get(), nullptr, 0u);
 			//gfx->GetContext()->DrawIndexed(m_indexBuffer->GetCount(), 0u, 0u);
 			gfx->GetContext()->Draw(3, 0);
 			

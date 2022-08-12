@@ -9,6 +9,7 @@ namespace Prime
 		VertexShader() {}
 		~VertexShader()
 		{
+			m_blob->Release();
 			m_shader->Release();
 			m_inputLayout->Release();
 		}
@@ -31,8 +32,12 @@ namespace Prime
 	class PixelShader
 	{
 	public:
-		PixelShader();
-		~PixelShader();
+		PixelShader() {}
+		~PixelShader()
+		{
+			m_blob->Release();
+			m_shader->Release();
+		}
 		
 		ComPtr<ID3D11PixelShader>& GetShader();
 		ComPtr<ID3D10Blob>& GetBlob();

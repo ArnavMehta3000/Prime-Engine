@@ -30,9 +30,9 @@ namespace Prime
 	private:
 		PrimeWindow*                   m_window;
 		std::unique_ptr<VertexShader>  m_vertexShader;
-		ComPtr<ID3D11PixelShader>      m_pixelShader;
+		std::unique_ptr<PixelShader>   m_pixelShader;
 		std::unique_ptr<VertexBuffer>  m_vertexBuffer;
-		std::unique_ptr<IndexBuffer>    m_indexBuffer;
+		std::unique_ptr<IndexBuffer>   m_indexBuffer;
 
 	};
 

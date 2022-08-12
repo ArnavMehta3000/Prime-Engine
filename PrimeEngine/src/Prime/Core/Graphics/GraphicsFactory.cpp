@@ -83,4 +83,17 @@ namespace Prime
 		return vs;
 	}
 
+	PixelShader* GraphicsFactory::CreatePixelShader(LPCWSTR filepath)
+	{
+		PixelShader* ps = new PixelShader;
+		
+		THROW_HR(D3DReadFileToBlob(filepath, ps->GetBlob().GetAddressOf()),
+			"Failed to read pixel shader to blob");
+
+		THROW_HR(m_device->CreatePixelShader(ps->GetBlob()->GetBufferPointer(), ps->GetBlob()->GetBufferSize(), nullptr, ps->GetShader().GetAddressOf()),
+			"Failed to create pixel shader object");
+
+		return ps;
+	}
+
 }
