@@ -33,13 +33,13 @@ namespace Prime
 	void GraphicsRenderer::Bind(const std::shared_ptr<VertexBuffer>& vertexBuffer)
 	{
 		UINT offset = 0u;
-		m_context->IASetVertexBuffers(0u, 1u, vertexBuffer->GetAddressOf(), vertexBuffer->StridePtr(), &offset);
+		m_context->IASetVertexBuffers(0u, 1u, vertexBuffer->GetCOM().GetAddressOf(), vertexBuffer->StridePtr(), &offset);
 	}
 
 	void GraphicsRenderer::Bind(const std::shared_ptr<IndexBuffer>& indexBuffer)
 	{
 		UINT offset = 0u;
-		m_context->IASetIndexBuffer(indexBuffer->Get(), DXGI_FORMAT_R32_UINT, 0);
+		m_context->IASetIndexBuffer(indexBuffer->GetCOM().Get(), DXGI_FORMAT_R32_UINT, 0);
 	}
 
 	

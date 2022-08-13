@@ -6,13 +6,11 @@ namespace Prime
 	{
 		friend class GraphicsFactory;
 	public:
-		~IBuffer()
+		inline void Release()
 		{
 			m_buffer->Release();
 		}
-		
-		inline ID3D11Buffer* Get() const { return m_buffer.Get(); }
-		inline ID3D11Buffer* const* GetAddressOf() const { return m_buffer.GetAddressOf(); }
+		ComPtr<ID3D11Buffer>& GetCOM() { return m_buffer; };
 		
 	protected:
 		ComPtr<ID3D11Buffer> m_buffer;
@@ -23,7 +21,6 @@ namespace Prime
 	class VertexBuffer : public IBuffer
 	{
 		friend class GraphicsFactory;
-		
 	public:
 		VertexBuffer()
 		{

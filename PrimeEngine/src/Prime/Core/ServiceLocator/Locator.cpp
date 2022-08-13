@@ -21,8 +21,7 @@ namespace Prime
 	{
 		for (const auto& [key, value] : m_services)
 		{
-			
-
+			m_services.erase(key);
 		}
 	}
 }

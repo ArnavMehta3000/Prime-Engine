@@ -34,7 +34,7 @@ namespace Prime
 		ZeroMemory(&vsd, sizeof(D3D11_SUBRESOURCE_DATA));
 		vsd.pSysMem = data;
 		
-		THROW_HR(m_device->CreateBuffer(&vbd, &vsd, buffer->m_buffer.GetAddressOf()), "Failed to create Vertex Buffer");
+		THROW_HR(m_device->CreateBuffer(&vbd, &vsd, buffer->GetCOM().GetAddressOf()), "Failed to create Vertex Buffer");
 
 		TRACE("Created Vertex Buffer");
 		return buffer;
@@ -80,6 +80,7 @@ namespace Prime
 			vs->GetInputLayout().GetAddressOf()),
 			"Failed to create input layout");
 		
+		TRACE("Created Vertex Shader");
 		return vs;
 	}
 
@@ -93,6 +94,7 @@ namespace Prime
 		THROW_HR(m_device->CreatePixelShader(ps->GetBlob()->GetBufferPointer(), ps->GetBlob()->GetBufferSize(), nullptr, ps->GetShader().GetAddressOf()),
 			"Failed to create pixel shader object");
 
+		TRACE("Created Pixel Shader");
 		return ps;
 	}
 

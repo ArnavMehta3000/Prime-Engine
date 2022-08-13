@@ -22,7 +22,7 @@ namespace Prime
 
 		RegisterClassEx(&wc);
 
-		DWORD style = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
+		DWORD style = WS_OVERLAPPEDWINDOW;
 
 		RECT rect{};
 		rect.left = 0;

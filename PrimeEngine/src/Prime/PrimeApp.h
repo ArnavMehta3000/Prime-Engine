@@ -8,6 +8,7 @@ namespace Prime
 	struct Vertex
 	{
 		float x, y, z;
+		float r, g, b, a;
 	};
 
 	class PrimeApp
@@ -21,6 +22,7 @@ namespace Prime
 		virtual void OnStart() = 0;
 		virtual void OnUpdate(float dt) = 0;
 		virtual void OnRender(float dt) = 0;
+		virtual void OnClose() = 0;
 
 	private:
 		void PreRunInit();
@@ -33,11 +35,6 @@ namespace Prime
 
 	private:
 		PrimeWindow*                   m_window;
-		std::shared_ptr<VertexShader>  m_vertexShader;
-		std::shared_ptr<PixelShader>   m_pixelShader;
-		std::shared_ptr<VertexBuffer>  m_vertexBuffer;
-		std::shared_ptr<IndexBuffer>   m_indexBuffer;
-
 	};
 
 	PrimeApp* CreateApplication();
