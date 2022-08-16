@@ -11,6 +11,11 @@ namespace Prime
 		float r, g, b, a;
 	};
 
+	struct ConstantBuffer
+	{
+		float xOffset, yOffset;
+	};
+
 	class PrimeApp
 	{
 	public:
@@ -30,6 +35,7 @@ namespace Prime
 		void CreateAndAttachConsole();
 
 	protected:
+		GraphicsEngine* GetGraphicsEngine();
 		GraphicsFactory* GetFactory();
 		GraphicsRenderer* GetRenderer();
 

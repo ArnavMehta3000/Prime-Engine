@@ -47,7 +47,6 @@ namespace Prime
 		dsDesc.DepthEnable                  = true;
 		dsDesc.DepthWriteMask               = D3D11_DEPTH_WRITE_MASK_ALL;
 		dsDesc.DepthFunc                    = D3D11_COMPARISON_LESS;
-		dsDesc.StencilEnable                = true;
 		dsDesc.StencilReadMask              = 0xFF;
 		dsDesc.StencilWriteMask             = 0xFF;
 		dsDesc.FrontFace.StencilFailOp      = D3D11_STENCIL_OP_KEEP;
@@ -62,7 +61,7 @@ namespace Prime
 			"Failed to create depth stencil state");
 
 		// Bind depth stencil state
-		m_d3d->m_context->OMSetDepthStencilState(m_depthStencilState.Get(), 1);
+		m_d3d->m_context->OMSetDepthStencilState(m_depthStencilState.Get(), 0);
 
 		// Create depth stencil view
 		D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
@@ -80,32 +79,22 @@ namespace Prime
 
 		// Create solid and wireframe raster states
 		D3D11_RASTERIZER_DESC solidRasterDesc{};
+		ZeroMemory(&solidRasterDesc, sizeof(D3D11_RASTERIZER_DESC));
 		solidRasterDesc.FillMode              = D3D11_FILL_SOLID;
 		solidRasterDesc.CullMode              = D3D11_CULL_BACK;
-		solidRasterDesc.FrontCounterClockwise = false;
-		solidRasterDesc.DepthBias             = 0;
-		solidRasterDesc.DepthBiasClamp        = 0.0f;
-		solidRasterDesc.DepthClipEnable       = true;
-		solidRasterDesc.MultisampleEnable     = false;
-		solidRasterDesc.ScissorEnable         = false;
-		solidRasterDesc.SlopeScaledDepthBias  = 0.0f;
 
 		D3D11_RASTERIZER_DESC wireRasterDesc{};
-		wireRasterDesc.FillMode              = D3D11_FILL_SOLID;
+		ZeroMemory(&wireRasterDesc, sizeof(D3D11_RASTERIZER_DESC));
+		wireRasterDesc.FillMode              = D3D11_FILL_WIREFRAME;
 		wireRasterDesc.CullMode              = D3D11_CULL_BACK;
-		wireRasterDesc.FrontCounterClockwise = false;
-		wireRasterDesc.DepthBias             = 0;
-		wireRasterDesc.DepthBiasClamp        = 0.0f;
-		wireRasterDesc.DepthClipEnable       = true;
-		wireRasterDesc.MultisampleEnable     = false;
-		wireRasterDesc.ScissorEnable         = false;
-		wireRasterDesc.SlopeScaledDepthBias  = 0.0f;
 
 		D3D::ThrowHr(m_d3d->m_device->CreateRasterizerState(&solidRasterDesc, m_rasterStateSolid.GetAddressOf()),
 			"Failed to create solid rasterizer state");
 
-		D3D::ThrowHr(m_d3d->m_device->CreateRasterizerState(&solidRasterDesc, m_rasterStateSolid.GetAddressOf()),
-			"Failed to create solid rasterizer state");
+		D3D::ThrowHr(m_d3d->m_device->CreateRasterizerState(&wireRasterDesc, m_rasterStateWireframe.GetAddressOf()),
+			"Failed to create wireframe rasterizer state");
+
+		SetWireframe(false);
 	}
 
 	void GraphicsEngine::Shutdown()

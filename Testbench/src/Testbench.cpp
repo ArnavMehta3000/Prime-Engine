@@ -43,6 +43,48 @@ public:
 		m_vertexShader.reset(GetFactory()->CreateVertexShader((SHADER_PATH + L"DefaultVertex.cso").c_str(), inputLayout, ARRAYSIZE(inputLayout)));
 		m_pixelShader.reset(GetFactory()->CreatePixelShader((SHADER_PATH + L"DefaultPixel.cso").c_str()));
 		
+		
+		
+		Prime::ConstantBuffer cb{};
+		cb.xOffset = 0.5f;
+		cb.yOffset = 0.5f;
+		
+		
+		
+		
+
+		D3D11_BUFFER_DESC desc{};
+		ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
+		desc.Usage               = D3D11_USAGE_DYNAMIC;
+		desc.BindFlags           = D3D11_BIND_CONSTANT_BUFFER;
+		desc.CPUAccessFlags      = D3D11_CPU_ACCESS_WRITE;
+		desc.MiscFlags           = 0;
+		desc.ByteWidth           = static_cast<UINT>(sizeof(Prime::ConstantBuffer)) + (16 - sizeof(Prime::ConstantBuffer) % 16);  // For 16 yte alignment
+		desc.StructureByteStride = 0;
+		D3D11_SUBRESOURCE_DATA csd{};
+		csd.pSysMem = &cb;
+		GetGraphicsEngine()->GetDevice()->CreateBuffer(&desc, &csd, m_constantbuffer.GetAddressOf());
+		GetGraphicsEngine()->GetContext()->VSSetConstantBuffers(0u, 1u, m_constantbuffer.GetAddressOf());
+
+		D3D11_MAPPED_SUBRESOURCE sub{};
+		THROW_HR(
+			GetGraphicsEngine()->GetContext()->Map(m_constantbuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &sub),
+			"Faied to map subresource data"
+		);
+		CopyMemory(sub.pData, &cb, sizeof(Prime::ConstantBuffer));
+		GetGraphicsEngine()->GetContext()->Unmap(m_constantbuffer.Get(), 0);
+
+
+
+
+
+
+
+
+
+
+
+
 
 		GetRenderer()->Bind(m_vertexBuffer);
 		GetRenderer()->Bind(m_indexBuffer);
@@ -53,6 +95,7 @@ public:
 
 	virtual void OnUpdate(float dt) override
 	{
+		
 	}
 	virtual void OnRender(float dt) override
 	{
@@ -70,6 +113,7 @@ private:
 	std::shared_ptr<Prime::PixelShader>   m_pixelShader;
 	std::shared_ptr<Prime::VertexBuffer>  m_vertexBuffer;
 	std::shared_ptr<Prime::IndexBuffer>   m_indexBuffer;
+	ComPtr<ID3D11Buffer>       m_constantbuffer;
 };
 
 Prime::PrimeApp* Prime::CreateApplication()

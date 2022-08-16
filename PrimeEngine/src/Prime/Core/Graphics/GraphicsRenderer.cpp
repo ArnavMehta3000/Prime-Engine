@@ -63,6 +63,6 @@ namespace Prime
 	}
 	void GraphicsRenderer::DrawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer)
 	{
-		m_context->DrawIndexed(indexBuffer->GetCount(), 0u, 0u);
+		m_context->DrawIndexed(indexBuffer->GetCount(), 0, 0);
 	}
 }
