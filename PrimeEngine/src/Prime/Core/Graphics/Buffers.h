@@ -53,4 +53,16 @@ namespace Prime
 	private:
 		UINT m_indexCount;
 	};
+
+
+
+	template <typename T>
+	class ConstantBuffer : public IBuffer
+	{
+		friend class GraphicsFactory;
+		friend class GraphicsRenderer;
+	public:
+		ConstantBuffer() {}
+		T Data;
+	};
 }

@@ -11,7 +11,7 @@ namespace Prime
 		float r, g, b, a;
 	};
 
-	struct ConstantBuffer
+	struct CBuffer
 	{
 		float xOffset, yOffset;
 	};

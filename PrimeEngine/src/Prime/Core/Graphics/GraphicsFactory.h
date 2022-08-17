@@ -19,6 +19,30 @@ namespace Prime
 		VertexBuffer* CreateVertexBuffer(const void* data, UINT dataTypeSize, UINT numVertices);
 		IndexBuffer* CreateIndexBuffer(const DWORD* data, UINT numIndices);
 		
+
+		template <typename T>
+		ConstantBuffer<T>* CreateConstantBuffer()
+		{
+			ConstantBuffer<T>* cBuffer = new ConstantBuffer<T>;
+
+			D3D11_BUFFER_DESC desc{};
+			ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
+			desc.Usage               = D3D11_USAGE_DYNAMIC;
+			desc.BindFlags           = D3D11_BIND_CONSTANT_BUFFER;
+			desc.CPUAccessFlags      = D3D11_CPU_ACCESS_WRITE;
+			desc.MiscFlags           = 0;
+			desc.ByteWidth           = static_cast<UINT>(sizeof(T)) + (16 - sizeof(T) % 16);  // For 16 yte alignment
+			desc.StructureByteStride = 0;
+
+			HRESULT hr = this->m_device->CreateBuffer(&desc, 0, cBuffer->GetCOM().GetAddressOf());
+			if (FAILED(hr))
+			{
+				std::cerr << "Failed to create constant buffer" << std::endl;
+			}
+
+			return cBuffer;
+		}
+		
 		VertexShader* CreateVertexShader(LPCWSTR filepath, D3D11_INPUT_ELEMENT_DESC* desc, UINT numElements);
 		PixelShader* CreatePixelShader(LPCWSTR filepath);
 
