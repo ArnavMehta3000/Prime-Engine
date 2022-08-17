@@ -2,8 +2,7 @@
 #include <comdef.h>
 #include <sstream>
 
-#ifdef _DEBUG
-	// Debug white color to console
+// Debug white color to console
 #define TRACE(x)\
 {\
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); \
@@ -72,15 +71,3 @@
 		MessageBox(NULL, wss.str().c_str(), L"HRESULT Error", MB_ICONERROR | MB_OK);\
 	}\
 }
-
-#endif // _DEBUG
-
-#ifndef _DEBUG
-#define TRACE(x)
-#define LOG(x)
-#define LOG_LOAD(x)
-#define WARN(x)
-#define FATAL(x)
-#define FATAL_ERROR(X)
-#define THROW_HR(hr, msg)
-#endif 

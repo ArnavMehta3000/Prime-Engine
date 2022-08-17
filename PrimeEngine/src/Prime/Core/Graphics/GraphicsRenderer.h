@@ -10,6 +10,11 @@ namespace Prime
 	class VertexBuffer;
 	class IndexBuffer;
 	
+	enum class ShaderType
+	{
+		VertexShader, PixelShader, 
+	};
+
 	class GraphicsRenderer : public IService
 	{
 	public:
@@ -25,6 +30,20 @@ namespace Prime
 
 		void Bind(const std::shared_ptr<VertexShader>& vertexShader);
 		void Bind(const std::shared_ptr<PixelShader>& pixelShader);
+
+		template <typename T>
+		void Bind(ShaderType shaderType, const std::shared_ptr<ConstantBuffer<T>>& constantBuffer)
+		{
+			switch (shaderType)
+			{
+			case Prime::ShaderType::VertexShader:
+				m_context->VSSetConstantBuffers(0, 1, constantBuffer->GetCOM().GetAddressOf());
+				return;
+			case Prime::ShaderType::PixelShader:
+				m_context->PSSetConstantBuffers(0, 1, constantBuffer->GetCOM().GetAddressOf());
+				return;
+			}
+		}
 
 		template <typename T>
 		bool UpdateConstantBuffer(const std::shared_ptr<ConstantBuffer<T>>& cb)

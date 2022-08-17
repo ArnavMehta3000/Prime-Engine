@@ -1,7 +1,8 @@
 cbuffer ConstantBuffer : register(b0)
 {
-    float xOffset;
-    float yOffset;
+    matrix WorldMatrix;
+    matrix ViewMatrix;
+    matrix ProjectionMatrix;
 }
 
 
@@ -23,10 +24,12 @@ VS_OUTPUT main(VS_INPUT input)
 {
     VS_OUTPUT output;
     
-    input.inPos.x += xOffset;
-    input.inPos.y += yOffset;
+    float4 pos = float4(input.inPos, 1.0f);
+    pos = mul(pos, WorldMatrix);
+    //pos = mul(pos, ViewMatrix);
+    //pos = mul(pos, ProjectionMatrix);
     
-	output.outPos = float4(input.inPos, 1.0);
+    output.outPos = pos;
 	output.outCol = input.inCol;
 	
     return output;

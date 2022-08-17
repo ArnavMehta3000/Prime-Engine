@@ -14,15 +14,14 @@ public:
 
 	}
 
-
 	virtual void OnStart() override
 	{
 		// Create vertex buffer
 		const Prime::Vertex vertices[] =
 		{
-			{ 0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
-			{ 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },
-			{ -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f },
+			{  0.0f, 0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+			{  0.5f, -0.5f, 3.0f, 0.0f, 1.0f, 0.0f, 1.0f },
+			{ -0.5f, -0.5f, 5.0f, 0.0f, 0.0f, 1.0f, 1.0f },
 		};
 		m_vertexBuffer.reset(GetFactory()->CreateVertexBuffer(vertices, UINT(sizeof(Prime::Vertex)), ARRAYSIZE(vertices)));
 
@@ -42,23 +41,29 @@ public:
 
 		m_vertexShader.reset(GetFactory()->CreateVertexShader((SHADER_PATH + L"DefaultVertex.cso").c_str(), inputLayout, ARRAYSIZE(inputLayout)));
 		m_pixelShader.reset(GetFactory()->CreatePixelShader((SHADER_PATH + L"DefaultPixel.cso").c_str()));	
+
+		using namespace SimpleMath;
+		Matrix view = XMMatrixLookAtLH(Vector3(0.0f, 0.0f, -2.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f));
+		Matrix proj = XMMatrixPerspectiveLH(WINDOW_WIDTH, WINDOW_HEIGHT, 0.1f, 100.0f);
+
 		m_constantbuffer.reset(GetFactory()->CreateConstantBuffer<Prime::CBuffer>());
+		m_constantbuffer->Data.WorldMat         = Matrix::Identity.Transpose();
+		m_constantbuffer->Data.ViewMatrix       = view.Transpose();
+		m_constantbuffer->Data.ProjectionMatrix = proj.Transpose();
+		
 
-		m_constantbuffer->Data.xOffset = -1.0f;
-		GetRenderer()->UpdateConstantBuffer(m_constantbuffer);
-
-		GetGraphicsEngine()->GetContext()->VSSetConstantBuffers(0, 1, m_constantbuffer->GetCOM().GetAddressOf());
 		
 		GetRenderer()->Bind(m_vertexBuffer);
 		GetRenderer()->Bind(m_indexBuffer);
 		GetRenderer()->Bind(m_vertexShader);
 		GetRenderer()->Bind(m_pixelShader);
 		GetRenderer()->Bind(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		GetRenderer()->Bind(Prime::ShaderType::VertexShader, m_constantbuffer);
 	}
 
 	virtual void OnUpdate(float dt) override
 	{
-		
+		GetRenderer()->UpdateConstantBuffer(m_constantbuffer);
 	}
 	virtual void OnRender(float dt) override
 	{

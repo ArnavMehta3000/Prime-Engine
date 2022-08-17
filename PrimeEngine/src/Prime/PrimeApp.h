@@ -13,7 +13,9 @@ namespace Prime
 
 	struct CBuffer
 	{
-		float xOffset, yOffset;
+		SimpleMath::Matrix WorldMat;
+		SimpleMath::Matrix ViewMatrix;
+		SimpleMath::Matrix ProjectionMatrix;
 	};
 
 	class PrimeApp
@@ -39,8 +41,8 @@ namespace Prime
 		GraphicsFactory* GetFactory();
 		GraphicsRenderer* GetRenderer();
 
-	private:
-		PrimeWindow*                   m_window;
+	protected:
+		PrimeWindow* m_window;
 	};
 
 	PrimeApp* CreateApplication();
