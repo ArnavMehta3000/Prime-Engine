@@ -6,7 +6,7 @@ class TestApp : public Prime::PrimeApp
 {
 public:
 	TestApp() 
-		: m_camera(-2.0f, 2.0f, -1.0f, 1.0f, 0.1f, 100.0f)
+		: m_camera(0.0f, (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT, 0.0f, 0.1f, 1.0f)
 	{
 	}
 
@@ -20,16 +20,43 @@ public:
 		// Create vertex buffer
 		const Prime::Vertex vertices[] =
 		{
-			{  0.0f, 0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
-			{  0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },
-			{ -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f },
+			{ -1.0f,-1.0f,-1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+			{ -1.0f,-1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f },
+			{ -1.0f, 1.0f,-1.0f, 0.0f, 0.0f, 1.0f, 1.0f },
+			{ -1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f },
+			{  1.0f,-1.0f,-1.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+			{  1.0f,-1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
+			{  1.0f, 1.0f,-1.0f, 0.0f, 0.0f, 0.0f, 1.0f },
+			{  1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f },
 		};
 		m_vertexBuffer.reset(GetFactory()->CreateVertexBuffer(vertices, UINT(sizeof(Prime::Vertex)), ARRAYSIZE(vertices)));
 
 		// Create index buffer
 		DWORD indices[] =
 		{
-			1,2,3
+			// Face 1
+			0,1,2, // -x
+			1,3,2,
+
+			// Face 2
+			4,6,5, // +x
+			5,6,7,
+
+			// Face 3
+			0,5,1, // -y
+			0,4,5,
+
+			// Face 4
+			2,7,6, // +y
+			2,3,7,
+
+			// Face 5
+			0,6,4, // -z
+			0,2,6,
+
+			// Face 6
+			1,7,3, // +z
+			1,5,7,
 		};
 		m_indexBuffer.reset(GetFactory()->CreateIndexBuffer(indices, ARRAYSIZE(indices)));
 
@@ -43,12 +70,11 @@ public:
 		m_vertexShader.reset(
 			GetFactory()->CreateVertexShader((SHADER_PATH + L"DefaultVertex.cso").c_str(), inputLayout, ARRAYSIZE(inputLayout)));
 		m_pixelShader.reset(
-			GetFactory()->CreatePixelShader((SHADER_PATH + L"DefaultPixel.cso").c_str()));	
+			GetFactory()->CreatePixelShader((SHADER_PATH + L"DefaultPixel.cso").c_str()));			
+		m_constantbuffer.reset(
+			GetFactory()->CreateConstantBuffer<Prime::CBuffer>());
 
-		
-		Matrix world = XMMatrixTranslation(0, 0, 0);
-
-		m_constantbuffer.reset(GetFactory()->CreateConstantBuffer<Prime::CBuffer>());
+		m_camera.SetPosition(Vector3(0.0f, 0.0f, -2.0f));
 
 		
 		GetRenderer()->Bind(m_vertexBuffer);
@@ -74,22 +100,24 @@ public:
 		if (GetAsyncKeyState(VK_NEXT))
 			z -= 0.001f;
 
-		//m_camera.SetPosition(Vector3(x, y, z));
+		TRACE("Position: " << x << ", " << y << ", " << z);
 
-		Matrix world = XMMatrixTranslation(x, y, z);
-		Matrix view = m_camera.GetViewMatrix();
-		Matrix proj = m_camera.GetProjectionMatrix();
+		m_camera.SetPosition(Vector3(x, y, z));
+		m_camera.UpdateMatrices();
 
-		m_constantbuffer->Data.WorldMat = world.Transpose();
-		m_constantbuffer->Data.ViewMatrix = view.Transpose();
-		m_constantbuffer->Data.ProjectionMatrix = proj.Transpose();
+		static float t;
+		t += dt;
+
+		m_constantbuffer->Data.WorldMat         = (Matrix::CreateScale(0.5f) * Matrix::CreateTranslation(x, y, z) * Matrix::CreateRotationX(t) * Matrix::CreateRotationZ(t)).Transpose();
+		m_constantbuffer->Data.ViewMatrix       = m_camera.GetViewMatrix().Transpose();
+		m_constantbuffer->Data.ProjectionMatrix = m_camera.GetProjectionMatrix().Transpose();
 
 		GetRenderer()->UpdateConstantBuffer(m_constantbuffer);
 	}
 	virtual void OnRender(float dt) override
 	{
 		GetRenderer()->DrawIndexed(m_indexBuffer);
-		GetRenderer()->Draw(3, 0);
+		GetRenderer()->Draw(3*2*6, 0);
 	}
 
 	virtual void OnClose() override

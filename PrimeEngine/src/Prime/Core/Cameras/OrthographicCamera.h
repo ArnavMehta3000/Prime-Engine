@@ -5,8 +5,7 @@ namespace Prime
 	class OrthographicCamera
 	{
 	public:
-		OrthographicCamera() {}
-		OrthographicCamera(float left, float right, float bottom, float top, float nearPlane, float farPlane);
+		OrthographicCamera(float left, float width, float height, float top, float nearPlane, float farPlane);
 
 		void SetPosition(const Vector3& position) { m_position = position; UpdateMatrices(); }
 		void SetRotation(float zRotation) { m_zRotation = zRotation; UpdateMatrices(); }
@@ -18,14 +17,13 @@ namespace Prime
 		const Matrix& GetViewMatrix()       const { return m_viewMatrix; }
 		const Matrix& GetViewProjMatrix()   const { return m_viewProjMatrix; }
 
-	private:
 		void UpdateMatrices();
 	private:
 		Matrix m_projectionMatrix;
 		Matrix m_viewMatrix;
 		Matrix m_viewProjMatrix;
 
-		Vector3 m_position;
+		Vector3 m_position = Vector3(5.0f, 3.0f, -1.0f);
 		float m_zRotation = 0.0f;
 	};
 }
