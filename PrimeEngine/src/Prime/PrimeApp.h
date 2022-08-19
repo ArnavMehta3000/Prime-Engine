@@ -2,6 +2,7 @@
 #include "Prime/Core/PrimeWindow.h"
 #include "Prime/Core/Graphics/GraphicsEngine.h"
 #include "Prime/Core/ServiceLocator/Locator.h"
+#include "Prime/Core/Timer.h"
 
 namespace Prime
 {
@@ -43,6 +44,9 @@ namespace Prime
 
 	protected:
 		PrimeWindow* m_window;
+
+	private:
+		std::unique_ptr<Timer> m_appTimer;
 	};
 
 	PrimeApp* CreateApplication();

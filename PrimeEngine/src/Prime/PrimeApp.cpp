@@ -62,6 +62,8 @@ namespace Prime
 		auto gfx = Locator::ResolveService<GraphicsEngine>();
 		gfx->Init(d3dInit);
 		
+		m_appTimer = std::make_unique<Timer>();
+		
 		LOG_LOAD("Pre-run Initialise complete");
 	}
 
@@ -73,10 +75,12 @@ namespace Prime
 		
 		while (m_window->ProcessMessages())
 		{
+			float deltaTime = m_appTimer->Mark();
+			
 			gfx->BeginFrame();
 			// Input polling here
-			OnUpdate(0.0f);
-			OnRender(0.0f);
+			OnUpdate(deltaTime);
+			OnRender(deltaTime);
 			gfx->EndFrame();
 			Sleep(0);
 		}

@@ -5,7 +5,8 @@
 class TestApp : public Prime::PrimeApp
 {
 public:
-	TestApp() : Prime::PrimeApp()
+	TestApp() 
+		: m_camera(-2.0f, 2.0f, -1.0f, 1.0f, 0.1f, 100.0f)
 	{
 	}
 
@@ -44,16 +45,10 @@ public:
 		m_pixelShader.reset(
 			GetFactory()->CreatePixelShader((SHADER_PATH + L"DefaultPixel.cso").c_str()));	
 
-		using namespace SimpleMath;
+		
 		Matrix world = XMMatrixTranslation(0, 0, 0);
-		Matrix view  = XMMatrixLookAtLH(Vector3(0.0f, 0.0f, -2.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f));
-		Matrix proj  = XMMatrixPerspectiveLH(WINDOW_WIDTH, WINDOW_HEIGHT, 0.1f, 100.0f);
 
 		m_constantbuffer.reset(GetFactory()->CreateConstantBuffer<Prime::CBuffer>());
-		m_constantbuffer->Data.WorldMat         = world.Transpose();
-		m_constantbuffer->Data.ViewMatrix       = view.Transpose();
-		m_constantbuffer->Data.ProjectionMatrix = proj.Transpose();
-		
 
 		
 		GetRenderer()->Bind(m_vertexBuffer);
@@ -79,19 +74,31 @@ public:
 		if (GetAsyncKeyState(VK_NEXT))
 			z -= 0.001f;
 
+		//m_camera.SetPosition(Vector3(x, y, z));
+
 		Matrix world = XMMatrixTranslation(x, y, z);
+		Matrix view = m_camera.GetViewMatrix();
+		Matrix proj = m_camera.GetProjectionMatrix();
+
 		m_constantbuffer->Data.WorldMat = world.Transpose();
+		m_constantbuffer->Data.ViewMatrix = view.Transpose();
+		m_constantbuffer->Data.ProjectionMatrix = proj.Transpose();
 
 		GetRenderer()->UpdateConstantBuffer(m_constantbuffer);
 	}
 	virtual void OnRender(float dt) override
 	{
 		GetRenderer()->DrawIndexed(m_indexBuffer);
+		GetRenderer()->Draw(3, 0);
 	}
 
 	virtual void OnClose() override
 	{
 		m_vertexBuffer->Release();
+		m_indexBuffer->Release();
+		m_constantbuffer->Release();
+		m_vertexShader->GetShader()->Release();
+		m_pixelShader->GetShader()->Release();
 	}
 
 private:
@@ -104,6 +111,8 @@ private:
 	float x = 0.0f;
 	float y = 0.0f;
 	float z = 0.0f;
+
+	Prime::OrthographicCamera m_camera;
 };
 
 Prime::PrimeApp* Prime::CreateApplication()

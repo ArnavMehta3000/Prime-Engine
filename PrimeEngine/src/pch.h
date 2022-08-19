@@ -20,6 +20,7 @@
 #include <wrl.h>
 
 #include "Prime/Logger.h"
+#include "Prime/Core/Timer.h"
 
 #include "SimpleMath.h"
 
