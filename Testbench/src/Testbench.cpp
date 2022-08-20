@@ -73,9 +73,6 @@ public:
 			GetFactory()->CreatePixelShader((SHADER_PATH + L"DefaultPixel.cso").c_str()));			
 		m_constantbuffer.reset(
 			GetFactory()->CreateConstantBuffer<Prime::CBuffer>());
-
-		m_orthoCam.SetPosition(Vector3(0.0f, 0.0f, -2.0f));
-
 		
 		GetRenderer()->Bind(m_vertexBuffer);
 		GetRenderer()->Bind(m_indexBuffer);
@@ -88,24 +85,23 @@ public:
 	virtual void OnUpdate(float dt) override
 	{
 		if (GetAsyncKeyState(VK_LEFT))
-			x += 0.001f;
+			x += 0.01f;
 		if (GetAsyncKeyState(VK_RIGHT))
-			x -= 0.001f;
+			x -= 0.01f;
 		if (GetAsyncKeyState(VK_UP))
-			y -= 0.001f;
+			y -= 0.01f;
 		if (GetAsyncKeyState(VK_DOWN))
-			y += 0.001f;
+			y += 0.01f;
 		if (GetAsyncKeyState(VK_PRIOR))
-			z += 0.001f;
+			z += 0.1f;
 		if (GetAsyncKeyState(VK_NEXT))
-			z -= 0.001f;
+			z -= 0.1f;
 
-		static float t;
-		t += dt;
 
 		// Update camera
 		Matrix world = Matrix::Identity;
 		m_orthoCam.SetPosition(Vector3(x, y, -5.0f));
+		m_orthoCam.SetRotation(z);
 		m_constantbuffer->Data.WVP = (world * m_orthoCam.GetViewProjMatrix()).Transpose();
 
 		GetRenderer()->UpdateConstantBuffer(m_constantbuffer);
@@ -113,7 +109,6 @@ public:
 	virtual void OnRender(float dt) override
 	{
 		GetRenderer()->DrawIndexed(m_indexBuffer);
-		GetRenderer()->Draw(3*2*6, 0);
 	}
 
 	virtual void OnClose() override

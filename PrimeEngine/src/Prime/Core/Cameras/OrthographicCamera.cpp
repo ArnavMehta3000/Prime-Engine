@@ -12,8 +12,7 @@ namespace Prime
 	
 	void OrthographicCamera::UpdateMatrices()
 	{
-		m_viewMatrix = XMMatrixLookToLH(m_position, Vector3(0.0f, 0.0f, 1.f), Vector3(0.0f, 1.0f, 0.0f));
-		m_viewMatrix *= Matrix::CreateScale(m_orthoScale) * Matrix::CreateRotationZ(XMConvertToRadians(m_zRotation));
+		m_viewMatrix = Matrix::CreateScale(m_orthoScale) * Matrix::CreateRotationZ(XMConvertToRadians(m_zRotation)) * XMMatrixLookToLH(m_position, Vector3(0.0f, 0.0f, 1.f), Vector3(0.0f, 1.0f, 0.0f));
 		m_viewProjMatrix = m_viewMatrix * m_projectionMatrix;
 	}
 }
