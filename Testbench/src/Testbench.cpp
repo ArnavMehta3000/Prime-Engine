@@ -6,7 +6,7 @@ class TestApp : public Prime::PrimeApp
 {
 public:
 	TestApp() 
-		: m_camera(0.0f, (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT, 0.0f, 0.1f, 1.0f)
+		: m_orthoCam((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT)
 	{
 	}
 
@@ -74,7 +74,7 @@ public:
 		m_constantbuffer.reset(
 			GetFactory()->CreateConstantBuffer<Prime::CBuffer>());
 
-		m_camera.SetPosition(Vector3(0.0f, 0.0f, -2.0f));
+		m_orthoCam.SetPosition(Vector3(0.0f, 0.0f, -2.0f));
 
 		
 		GetRenderer()->Bind(m_vertexBuffer);
@@ -88,28 +88,25 @@ public:
 	virtual void OnUpdate(float dt) override
 	{
 		if (GetAsyncKeyState(VK_LEFT))
-			x -= 0.001f;
-		if (GetAsyncKeyState(VK_RIGHT))
 			x += 0.001f;
+		if (GetAsyncKeyState(VK_RIGHT))
+			x -= 0.001f;
 		if (GetAsyncKeyState(VK_UP))
-			y += 0.001f;
-		if (GetAsyncKeyState(VK_DOWN))
 			y -= 0.001f;
+		if (GetAsyncKeyState(VK_DOWN))
+			y += 0.001f;
 		if (GetAsyncKeyState(VK_PRIOR))
 			z += 0.001f;
 		if (GetAsyncKeyState(VK_NEXT))
 			z -= 0.001f;
 
-
-		m_camera.SetPosition(Vector3(x, y, z));
-		m_camera.UpdateMatrices();
-
 		static float t;
 		t += dt;
-		Matrix world = (Matrix::CreateScale(0.5f) * Matrix::CreateRotationX(x) * Matrix::CreateRotationY(y) * Matrix::CreateRotationZ(z));
-		Matrix view = XMMatrixLookAtLH(Vector3(0.0f, 0.0f, -5.0f), Vector3(0.0f, 0.0f, 0.f), Vector3(0.0f, 1.0f, 0.0f));
-		Matrix proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(t*5), float(WINDOW_WIDTH/WINDOW_HEIGHT), 1.0f, 1000.0f);
-		m_constantbuffer->Data.WVP = (world * view * proj).Transpose();
+
+		// Update camera
+		Matrix world = Matrix::Identity;
+		m_orthoCam.SetPosition(Vector3(x, y, -5.0f));
+		m_constantbuffer->Data.WVP = (world * m_orthoCam.GetViewProjMatrix()).Transpose();
 
 		GetRenderer()->UpdateConstantBuffer(m_constantbuffer);
 	}
@@ -139,7 +136,7 @@ private:
 	float y = 0.0f;
 	float z = 0.0f;
 
-	Prime::OrthographicCamera m_camera;
+	Prime::OrthographicCamera m_orthoCam;
 };
 
 Prime::PrimeApp* Prime::CreateApplication()

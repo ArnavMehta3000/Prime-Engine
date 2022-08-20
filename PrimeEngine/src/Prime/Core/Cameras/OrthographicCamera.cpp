@@ -3,19 +3,17 @@
 
 namespace Prime
 {
-	OrthographicCamera::OrthographicCamera(float left, float width, float height, float top, float nearPlane, float farPlane)
+	OrthographicCamera::OrthographicCamera(float width, float height, float nearPlane, float farPlane)
+		: m_position(Vector3(0.0f, 0.0f, -5.0f)), m_zRotation(0.0f), m_orthoScale(100.0f)
 	{
-		m_projectionMatrix = XMMatrixOrthographicOffCenterLH(left, width, height, top, nearPlane, farPlane);
-		m_viewMatrix = XMMatrixIdentity();
-		m_viewProjMatrix = m_projectionMatrix * m_viewMatrix;
+		m_projectionMatrix = XMMatrixOrthographicLH(width, height, nearPlane, farPlane);
 		UpdateMatrices();
 	}
 	
 	void OrthographicCamera::UpdateMatrices()
 	{
-		Matrix translation = Matrix::CreateTranslation(m_position);
-		Matrix rotation = Matrix::CreateRotationZ(m_zRotation);
-		m_viewMatrix = rotation * translation;
-		m_viewProjMatrix = m_projectionMatrix * m_viewMatrix;
+		m_viewMatrix = XMMatrixLookToLH(m_position, Vector3(0.0f, 0.0f, 1.f), Vector3(0.0f, 1.0f, 0.0f));
+		m_viewMatrix *= Matrix::CreateScale(m_orthoScale) * Matrix::CreateRotationZ(XMConvertToRadians(m_zRotation));
+		m_viewProjMatrix = m_viewMatrix * m_projectionMatrix;
 	}
 }
