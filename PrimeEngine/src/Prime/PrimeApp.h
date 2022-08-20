@@ -3,20 +3,11 @@
 #include "Prime/Core/Graphics/GraphicsEngine.h"
 #include "Prime/Core/ServiceLocator/Locator.h"
 #include "Prime/Core/Timer.h"
+#include "Prime/Types/VertexBufferTypes.h"
+#include "Prime/Types/ConstantbufferTypes.h"
 
 namespace Prime
 {
-	struct Vertex
-	{
-		float x, y, z;
-		float r, g, b, a;
-	};
-
-	struct CBuffer
-	{
-		SimpleMath::Matrix WVP;
-	};
-
 	class PrimeApp
 	{
 	public:

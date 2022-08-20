@@ -119,6 +119,8 @@
     <ClInclude Include="src\Prime\Logger.h" />
     <ClInclude Include="src\Prime\PrimeApp.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Prime\Types\ConstantbufferTypes.h" />
+    <ClInclude Include="src\Prime\Types\VertexBufferTypes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Prime\Core\Cameras\OrthographicCamera.cpp" />
@@ -150,6 +152,10 @@
     <FxCompile Include="Shaders\DefaultVertex.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shaders\TexturedPixel.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

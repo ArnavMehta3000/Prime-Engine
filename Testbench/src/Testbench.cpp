@@ -18,7 +18,7 @@ public:
 	virtual void OnStart() override
 	{
 		// Create vertex buffer
-		const Prime::Vertex vertices[] =
+		const Prime::SimpleColorVertex cubeVerts[] =
 		{
 			{ -1.0f,-1.0f,-1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
 			{ -1.0f,-1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f },
@@ -29,10 +29,11 @@ public:
 			{  1.0f, 1.0f,-1.0f, 0.0f, 0.0f, 0.0f, 1.0f },
 			{  1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f },
 		};
-		m_vertexBuffer.reset(GetFactory()->CreateVertexBuffer(vertices, UINT(sizeof(Prime::Vertex)), ARRAYSIZE(vertices)));
+		m_vertexBuffer.reset(
+			GetFactory()->CreateVertexBuffer(cubeVerts, UINT(sizeof(Prime::SimpleColorVertex)), ARRAYSIZE(cubeVerts)));
 
 		// Create index buffer
-		DWORD indices[] =
+		DWORD cubeIndices[] =
 		{
 			// Face 1
 			0,1,2, // -x
@@ -58,9 +59,10 @@ public:
 			1,7,3, // +z
 			1,5,7,
 		};
-		m_indexBuffer.reset(GetFactory()->CreateIndexBuffer(indices, ARRAYSIZE(indices)));
+		m_indexBuffer.reset(
+			GetFactory()->CreateIndexBuffer(cubeIndices, ARRAYSIZE(cubeIndices)));
 
-		// Create vertex shader
+		// Create shaders
 		D3D11_INPUT_ELEMENT_DESC inputLayout[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -70,16 +72,16 @@ public:
 		m_vertexShader.reset(
 			GetFactory()->CreateVertexShader((SHADER_PATH + L"DefaultVertex.cso").c_str(), inputLayout, ARRAYSIZE(inputLayout)));
 		m_pixelShader.reset(
-			GetFactory()->CreatePixelShader((SHADER_PATH + L"DefaultPixel.cso").c_str()));			
-		m_constantbuffer.reset(
-			GetFactory()->CreateConstantBuffer<Prime::CBuffer>());
+			GetFactory()->CreatePixelShader((SHADER_PATH + L"TexturedPixel.cso").c_str()));			
+		m_cameraCBuffer.reset(
+			GetFactory()->CreateConstantBuffer<Prime::WVPBuffer>());
 		
 		GetRenderer()->Bind(m_vertexBuffer);
 		GetRenderer()->Bind(m_indexBuffer);
 		GetRenderer()->Bind(m_vertexShader);
 		GetRenderer()->Bind(m_pixelShader);
 		GetRenderer()->Bind(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		GetRenderer()->Bind(Prime::ShaderType::VertexShader, m_constantbuffer);
+		GetRenderer()->Bind(Prime::ShaderType::VertexShader, m_cameraCBuffer);
 	}
 
 	virtual void OnUpdate(float dt) override
@@ -102,10 +104,13 @@ public:
 		Matrix world = Matrix::Identity;
 		m_orthoCam.SetPosition(Vector3(x, y, -5.0f));
 		m_orthoCam.SetRotation(z);
-		m_constantbuffer->Data.WVP = (world * m_orthoCam.GetViewProjMatrix()).Transpose();
+		m_cameraCBuffer->Data.WorldMatrix      = world.Transpose();
+		m_cameraCBuffer->Data.ViewMatrix       = m_orthoCam.GetViewMatrix().Transpose();
+		m_cameraCBuffer->Data.ProjectionMatrix = m_orthoCam.GetProjectionMatrix().Transpose();
 
-		GetRenderer()->UpdateConstantBuffer(m_constantbuffer);
+		GetRenderer()->UpdateConstantBuffer(m_cameraCBuffer);
 	}
+
 	virtual void OnRender(float dt) override
 	{
 		GetRenderer()->DrawIndexed(m_indexBuffer);
@@ -115,17 +120,17 @@ public:
 	{
 		m_vertexBuffer->Release();
 		m_indexBuffer->Release();
-		m_constantbuffer->Release();
+		m_cameraCBuffer->Release();
 		m_vertexShader->GetShader()->Release();
 		m_pixelShader->GetShader()->Release();
 	}
 
 private:
-	std::shared_ptr<Prime::VertexShader>                         m_vertexShader;
-	std::shared_ptr<Prime::PixelShader>                          m_pixelShader;
-	std::shared_ptr<Prime::VertexBuffer>                         m_vertexBuffer;
-	std::shared_ptr<Prime::IndexBuffer>                          m_indexBuffer;
-	std::shared_ptr<Prime::ConstantBuffer<Prime::CBuffer>>       m_constantbuffer;
+	std::shared_ptr<Prime::VertexShader>                     m_vertexShader;
+	std::shared_ptr<Prime::PixelShader>                      m_pixelShader;
+	std::shared_ptr<Prime::VertexBuffer>                     m_vertexBuffer;
+	std::shared_ptr<Prime::IndexBuffer>                      m_indexBuffer;
+	std::shared_ptr<Prime::ConstantBuffer<Prime::WVPBuffer>> m_cameraCBuffer;
 
 	float x = 0.0f;
 	float y = 0.0f;
