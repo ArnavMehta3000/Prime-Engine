@@ -1,8 +1,6 @@
 cbuffer ConstantBuffer : register(b0)
 {
-    matrix WorldMatrix;
-    matrix ViewMatrix;
-    matrix ProjectionMatrix;
+    matrix WVP;
 }
 
 
@@ -25,9 +23,7 @@ VS_OUTPUT main(VS_INPUT input)
     VS_OUTPUT output;
     
     float4 pos = float4(input.inPos, 1.0f);
-    pos = mul(pos, WorldMatrix);
-    //pos = mul(pos, ViewMatrix);
-    //pos = mul(pos, ProjectionMatrix);
+    pos = mul(pos, WVP);
     
     output.outPos = pos;
 	output.outCol = input.inCol;

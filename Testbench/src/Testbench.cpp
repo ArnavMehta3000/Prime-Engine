@@ -100,17 +100,16 @@ public:
 		if (GetAsyncKeyState(VK_NEXT))
 			z -= 0.001f;
 
-		TRACE("Position: " << x << ", " << y << ", " << z);
 
 		m_camera.SetPosition(Vector3(x, y, z));
 		m_camera.UpdateMatrices();
 
 		static float t;
 		t += dt;
-
-		m_constantbuffer->Data.WorldMat         = (Matrix::CreateScale(0.5f) * Matrix::CreateTranslation(x, y, z) * Matrix::CreateRotationX(t) * Matrix::CreateRotationZ(t)).Transpose();
-		m_constantbuffer->Data.ViewMatrix       = m_camera.GetViewMatrix().Transpose();
-		m_constantbuffer->Data.ProjectionMatrix = m_camera.GetProjectionMatrix().Transpose();
+		Matrix world = (Matrix::CreateScale(0.5f) * Matrix::CreateRotationX(x) * Matrix::CreateRotationY(y) * Matrix::CreateRotationZ(z));
+		Matrix view = XMMatrixLookAtLH(Vector3(0.0f, 0.0f, -5.0f), Vector3(0.0f, 0.0f, 0.f), Vector3(0.0f, 1.0f, 0.0f));
+		Matrix proj = XMMatrixPerspectiveFovLH(XMConvertToRadians(t*5), float(WINDOW_WIDTH/WINDOW_HEIGHT), 1.0f, 1000.0f);
+		m_constantbuffer->Data.WVP = (world * view * proj).Transpose();
 
 		GetRenderer()->UpdateConstantBuffer(m_constantbuffer);
 	}

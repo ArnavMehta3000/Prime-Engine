@@ -14,9 +14,7 @@ namespace Prime
 
 	struct CBuffer
 	{
-		SimpleMath::Matrix WorldMat;
-		SimpleMath::Matrix ViewMatrix;
-		SimpleMath::Matrix ProjectionMatrix;
+		SimpleMath::Matrix WVP;
 	};
 
 	class PrimeApp
