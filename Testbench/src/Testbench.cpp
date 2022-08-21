@@ -11,11 +11,6 @@ public:
 	{
 	}
 
-	~TestApp()
-	{
-
-	}
-
 	virtual void OnStart() override
 	{
 		// Create vertex buffer
@@ -111,13 +106,10 @@ public:
 		m_texture.reset(
 			GetFactory()->CreateTextureFromFile((ASSET_PATH + L"Test.png").c_str(),	D3D11_USAGE_DEFAULT, D3D10_BIND_SHADER_RESOURCE, 0, 0, WIC_LOADER_DEFAULT));
 
-
-		GetRenderer()->Bind(m_cubeVB);
-		GetRenderer()->Bind(m_cubeIB);
-		GetRenderer()->Bind(m_colorVS);
-		GetRenderer()->Bind(m_colorPS);
+				
 		GetRenderer()->Bind(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		GetRenderer()->Bind(Prime::ShaderType::VertexShader, m_cameraCBuffer);
+		GetGraphicsEngine()->SetWireframe(true);
 	}
 
 	virtual void OnUpdate(float dt) override
@@ -149,9 +141,11 @@ public:
 
 	virtual void OnRender(float dt) override
 	{
+		// Bind buffers
 		GetRenderer()->Bind(m_quadVB);
 		GetRenderer()->Bind(m_quadIB);
 
+		// Bind shaders
 		GetRenderer()->Bind(m_textureVS);
 		GetRenderer()->Bind(m_texturePS);
 
@@ -160,23 +154,23 @@ public:
 
 	virtual void OnClose() override
 	{
-		m_cubeVB->Release();
-		m_quadVB->Release();
-
-		m_quadIB->Release();
-		m_cubeIB->Release();
-
-		m_colorVS->GetShader()->Release();
-		m_colorVS->GetInputLayout()->Release();
-		m_textureVS->GetShader()->Release();
-		m_textureVS->GetInputLayout()->Release();
+		RELEASE(m_texture)
 		
-		m_colorPS->GetShader()->Release();
-		m_texturePS->GetShader()->Release();
-
-		m_texture->Release();
+		RELEASE(m_cubeVB)
+		RELEASE(m_quadVB)
 		
-		m_cameraCBuffer->Release();
+		RELEASE(m_quadIB)
+		RELEASE(m_cubeIB)
+		
+		RELEASE(m_colorVS->GetShader())
+		RELEASE(m_colorVS->GetInputLayout())
+		RELEASE(m_textureVS->GetShader())
+		RELEASE(m_textureVS->GetInputLayout())
+		
+		RELEASE(m_colorPS->GetShader())
+		RELEASE(m_texturePS->GetShader())
+		
+		RELEASE(m_cameraCBuffer)
 	}
 
 private:

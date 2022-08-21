@@ -71,3 +71,9 @@
 		MessageBox(NULL, wss.str().c_str(), L"HRESULT Error", MB_ICONERROR | MB_OK);\
 	}\
 }
+
+#define RELEASE(x)\
+{\
+	if (x)\
+		x->Release();\
+}

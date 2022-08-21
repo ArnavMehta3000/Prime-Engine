@@ -7,6 +7,8 @@ namespace Prime
 		friend class GraphicsFactory;
 	public:
 		IBuffer() {}
+		~IBuffer() {}
+
 		inline void Release()
 		{
 			m_buffer->Release();
