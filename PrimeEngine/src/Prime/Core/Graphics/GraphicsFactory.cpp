@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "GraphicsFactory.h"
 #include "Prime/Logger.h"
+#include <atlstr.h>
 
 namespace Prime
 {
@@ -9,9 +10,10 @@ namespace Prime
 		m_device = nullptr;
 	}
 
-	void GraphicsFactory::Init(ID3D11Device* device)
+	void GraphicsFactory::Init(ID3D11Device* device, ID3D11DeviceContext* context)
 	{
 		m_device = device;
+		m_context = context;
 	}
 
 	
@@ -63,6 +65,27 @@ namespace Prime
 		return buffer;
 	}
 
+	Texture2D* GraphicsFactory::CreateTextureFromFile(LPCWSTR filepath, D3D11_USAGE usage, UINT bindFlags, UINT cpuAccessFlags, UINT miscFlags, WIC_LOADER_FLAGS loadFlags = WIC_LOADER_DEFAULT)
+	{
+		Texture2D* texture = new Texture2D;
+		ComPtr<ID3D11Resource> resource;
+		HRESULT hr = CreateWICTextureFromFileEx(
+			m_device, m_context,
+			filepath, 0,
+			usage, bindFlags, cpuAccessFlags, miscFlags, loadFlags,
+			resource.GetAddressOf(), texture->m_resourceView.GetAddressOf()
+		);
+		THROW_HR(hr, "Failed to create Texture2D");
+		texture->Init(resource);
+
+		resource->Release();
+		resource = nullptr;
+
+		auto path = CW2A(filepath);
+		TRACE("Created texture from file: " << path.m_psz);
+		return texture;
+	}
+
 	VertexShader* GraphicsFactory::CreateVertexShader(LPCWSTR filepath, D3D11_INPUT_ELEMENT_DESC* desc, UINT numElements)
 	{
 		VertexShader* vs = new VertexShader;
@@ -80,7 +103,8 @@ namespace Prime
 			vs->GetInputLayout().GetAddressOf()),
 			"Failed to create input layout");
 		
-		TRACE("Created Vertex Shader");
+		auto path = CW2A(filepath);
+		TRACE("Created Vertex Shader from file: " << path.m_psz);
 		return vs;
 	}
 
@@ -93,8 +117,9 @@ namespace Prime
 
 		THROW_HR(m_device->CreatePixelShader(ps->GetBlob()->GetBufferPointer(), ps->GetBlob()->GetBufferSize(), nullptr, ps->GetShader().GetAddressOf()),
 			"Failed to create pixel shader object");
-
-		TRACE("Created Pixel Shader");
+		
+		auto path = CW2A(filepath);
+		TRACE("Created Pixel Shader from file: " << path.m_psz);
 		return ps;
 	}
 

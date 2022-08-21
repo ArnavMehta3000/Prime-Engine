@@ -2,8 +2,6 @@
 #include "PrimeApp.h"
 #include "Prime/Logger.h"
 #include "Prime/Constants.h"
-#include "Effects.h"
-#include <DirectXHelpers.h>
 
 namespace Prime
 {
@@ -63,7 +61,7 @@ namespace Prime
 		gfx->Init(d3dInit);
 		
 		m_appTimer = std::make_unique<Timer>();
-		
+
 		LOG_LOAD("Pre-run Initialise complete");
 	}
 

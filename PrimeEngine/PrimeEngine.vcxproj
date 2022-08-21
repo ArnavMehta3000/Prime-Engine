@@ -121,6 +121,7 @@
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Prime\Types\ConstantbufferTypes.h" />
     <ClInclude Include="src\Prime\Types\VertexBufferTypes.h" />
+    <ClInclude Include="src\Prime\Core\Texture2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Prime\Core\Cameras\OrthographicCamera.cpp" />
@@ -128,6 +129,7 @@
     <ClCompile Include="src\Prime\Core\Graphics\GraphicsEngine.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\GraphicsRenderer.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\Shaders.cpp" />
+    <ClCompile Include="src\Prime\Core\Texture2D.cpp" />
     <ClCompile Include="src\Prime\Core\Timer.cpp" />
     <ClCompile Include="src\Prime\Core\ServiceLocator\Locator.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\D3D.cpp" />
@@ -156,6 +158,10 @@
     <FxCompile Include="Shaders\TexturedPixel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shaders\TexturedVertex.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -2,9 +2,9 @@
 #include "Prime/Core/PrimeWindow.h"
 #include "Prime/Core/Graphics/GraphicsEngine.h"
 #include "Prime/Core/ServiceLocator/Locator.h"
-#include "Prime/Core/Timer.h"
 #include "Prime/Types/VertexBufferTypes.h"
 #include "Prime/Types/ConstantbufferTypes.h"
+#include "Prime/Core/Timer.h"
 
 namespace Prime
 {
@@ -27,8 +27,8 @@ namespace Prime
 		void CreateAndAttachConsole();
 
 	protected:
-		GraphicsEngine* GetGraphicsEngine();
-		GraphicsFactory* GetFactory();
+		GraphicsEngine*   GetGraphicsEngine();
+		GraphicsFactory*  GetFactory();
 		GraphicsRenderer* GetRenderer();
 
 	protected:

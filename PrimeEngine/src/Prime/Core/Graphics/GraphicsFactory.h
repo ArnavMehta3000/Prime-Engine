@@ -1,8 +1,10 @@
 #pragma once
+#include "WICTextureLoader.h"
 #include "Prime/Core/Graphics/D3D.h"
 #include "Prime/Core/ServiceLocator/IService.h"
 #include "Prime/Core/Graphics/Buffers.h"
 #include "Prime/Core/Graphics/Shaders.h"
+#include "Prime/Core/Texture2D.h"
 
 
 namespace Prime
@@ -13,12 +15,13 @@ namespace Prime
 		GraphicsFactory();
 		~GraphicsFactory() {}
 
-		void Init(ID3D11Device* device);
+		void Init(ID3D11Device* device, ID3D11DeviceContext* context);
 
 		
 		VertexBuffer* CreateVertexBuffer(const void* data, UINT dataTypeSize, UINT numVertices);
 		IndexBuffer* CreateIndexBuffer(const DWORD* data, UINT numIndices);
 		
+		Texture2D* CreateTextureFromFile(LPCWSTR filepath, D3D11_USAGE usage, UINT bindFlags, UINT cpuAccessFlags, UINT miscFlags, WIC_LOADER_FLAGS loadFlags);
 
 		template <typename T>
 		ConstantBuffer<T>* CreateConstantBuffer()
@@ -48,6 +51,7 @@ namespace Prime
 
 	private:
 		ID3D11Device* m_device;
+		ID3D11DeviceContext* m_context;
 	};
 }
 

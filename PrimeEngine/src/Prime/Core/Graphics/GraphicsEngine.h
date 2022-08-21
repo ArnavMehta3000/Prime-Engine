@@ -28,6 +28,7 @@ namespace Prime
 
 		ComPtr<ID3D11DepthStencilState> m_depthStencilState;
 		ComPtr<ID3D11DepthStencilView>  m_depthStencilView;
+
 		ComPtr<ID3D11RasterizerState>   m_rasterStateSolid;
 		ComPtr<ID3D11RasterizerState>   m_rasterStateWireframe;
 	};
