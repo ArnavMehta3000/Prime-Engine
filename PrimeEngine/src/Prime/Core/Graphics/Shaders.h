@@ -7,7 +7,9 @@ namespace Prime
 	{		
 	public:
 		VertexShader() {}
-		~VertexShader()
+		~VertexShader() {}
+
+		void Release()
 		{
 			m_blob->Release();
 			m_shader->Release();
@@ -33,7 +35,9 @@ namespace Prime
 	{
 	public:
 		PixelShader() {}
-		~PixelShader()
+		~PixelShader() {}
+
+		void Release()
 		{
 			m_blob->Release();
 			m_shader->Release();
