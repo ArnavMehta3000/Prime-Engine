@@ -106,24 +106,9 @@ public:
 		m_texture.reset(
 			GetFactory()->CreateTextureFromFile((ASSET_PATH + L"Test.png").c_str(),	D3D11_USAGE_DEFAULT, D3D10_BIND_SHADER_RESOURCE, 0, 0, WIC_LOADER_DEFAULT));
 
-		D3D11_SAMPLER_DESC sampDesc{};
-		ZeroMemory(&sampDesc, sizeof(D3D11_SAMPLER_DESC));
-		sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-		sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-		sampDesc.MinLOD = 0;
-		sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-		THROW_HR(GetGraphicsEngine()->GetDevice()->CreateSamplerState(&sampDesc, m_samplerLinear.GetAddressOf()),
-			"Failed to create sampler state");
-
-		GetGraphicsEngine()->GetContext()->PSSetSamplers(0, 1, m_samplerLinear.GetAddressOf());
-		GetGraphicsEngine()->GetContext()->PSSetShaderResources(0, 1, m_texture->GetResourceView().GetAddressOf());
-
-
-				
+		GetRenderer()->Bind(Prime::ShaderType::PixelShader, Prime::GraphicsRenderer::s_samplerLinearWrap);
+		GetRenderer()->Bind(Prime::ShaderType::PixelShader, m_texture);
 		GetRenderer()->Bind(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		GetRenderer()->Bind(Prime::ShaderType::VertexShader, m_cameraCBuffer);
 		GetGraphicsEngine()->SetWireframe(false);
@@ -206,7 +191,6 @@ private:
 	std::shared_ptr<Prime::IndexBuffer>  m_quadIB;
 
 	std::shared_ptr<Prime::Texture2D>    m_texture;
-	ComPtr<ID3D11SamplerState>           m_samplerLinear;
 
 	std::shared_ptr<Prime::ConstantBuffer<Prime::WVPBuffer>> m_cameraCBuffer;
 

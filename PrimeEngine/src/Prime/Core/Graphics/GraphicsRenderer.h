@@ -9,6 +9,7 @@ namespace Prime
 	class PixelShader;
 	class VertexBuffer;
 	class IndexBuffer;
+	class Texture2D;
 	
 	enum class ShaderType
 	{
@@ -21,7 +22,7 @@ namespace Prime
 		GraphicsRenderer();
 		~GraphicsRenderer();
 		
-		void Init(ID3D11DeviceContext* context);
+		void Init(ID3D11Device* device, ID3D11DeviceContext* context);
 
 		void Bind(D3D11_PRIMITIVE_TOPOLOGY topology);
 	
@@ -62,6 +63,8 @@ namespace Prime
 			return true;
 		}
 
+		void Bind(ShaderType shaderType, const std::shared_ptr<Texture2D>& texture);
+		void Bind(ShaderType shaderType, const ComPtr<ID3D11SamplerState> sampler);
 
 		void Draw(UINT vertexCount, UINT startLocation);
 		void DrawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer);
@@ -69,5 +72,9 @@ namespace Prime
 
 	private:
 		ID3D11DeviceContext* m_context;
+		ID3D11Device* m_device;
+
+	public:
+		static ComPtr<ID3D11SamplerState> s_samplerLinearWrap;
 	};
 }

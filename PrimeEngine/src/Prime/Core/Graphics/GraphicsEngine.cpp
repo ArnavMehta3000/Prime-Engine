@@ -20,7 +20,7 @@ namespace Prime
 		Locator::RegisterService<GraphicsFactory>();
 		Locator::RegisterService<GraphicsRenderer>();
 		Locator::ResolveService<GraphicsFactory>()->Init(m_d3d->m_device.Get(), m_d3d->m_context.Get());
-		Locator::ResolveService<GraphicsRenderer>()->Init(m_d3d->m_context.Get());
+		Locator::ResolveService<GraphicsRenderer>()->Init(m_d3d->m_device.Get(), m_d3d->m_context.Get());
 		
 
 		// Create depth buffer
