@@ -19,6 +19,8 @@ namespace Prime
 		const Matrix& GetViewMatrix()       const { return m_viewMatrix; }
 		const Matrix& GetViewProjMatrix()   const { return m_viewProjMatrix; }
 
+		void OnResizeCallback(int w, int h);
+
 	private:
 		void UpdateMatrices();
 
@@ -29,5 +31,6 @@ namespace Prime
 		Vector3 m_position;
 		float m_zRotation;
 		float m_orthoScale = 100.0f;
+		float m_nearPlane, m_farPlane;
 	};
 }

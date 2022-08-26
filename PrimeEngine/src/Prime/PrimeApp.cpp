@@ -73,9 +73,6 @@ namespace Prime
 		
 		while (m_window->ProcessMessages())
 		{
-			if (m_isResizing)
-				continue;
-
 			float deltaTime = m_appTimer->Mark();
 			
 			gfx->BeginFrame();

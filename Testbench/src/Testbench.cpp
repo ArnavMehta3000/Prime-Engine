@@ -13,8 +13,6 @@ public:
 
 	virtual void OnStart() override
 	{
-		Prime::ResizeHandler::RegisterFunction(PRIME_BIND_RESIZE_FN(TestApp::OnAppResize));
-
 		// Create vertex buffer
 		const Prime::ColorVertex cubeVerts[] =
 		{
@@ -173,11 +171,6 @@ public:
 		GetRenderer()->UpdateConstantBuffer(m_cameraCBuffer);
 
 		GetRenderer()->DrawIndexed(m_quadIB);
-	}
-
-	void OnAppResize(int w, int h)
-	{
-		std::cout << w << ", " << h << std::endl;
 	}
 
 	virtual void OnClose() override

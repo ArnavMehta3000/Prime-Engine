@@ -102,7 +102,8 @@ namespace Prime
 		D3D::ThrowHr(m_d3d->m_device->CreateRasterizerState(&wireRasterDesc, m_rasterStateWireframe.GetAddressOf()),
 			"Failed to create wireframe rasterizer state");
 
-		SetWireframe(false);
+		if (!isResize)
+			SetWireframe(false);
 	}
 
 	void GraphicsEngine::Shutdown()
@@ -146,7 +147,7 @@ namespace Prime
 		m_d3d->m_renderTargetView->Release();
 
 		HRESULT hr;
-		hr = m_d3d->m_swapChain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0);
+		hr = m_d3d->m_swapChain->ResizeBuffers(1, w, h, DXGI_FORMAT_UNKNOWN, 0);
 		THROW_HR(hr, "Failed to resize swap chain");
 
 		ID3D11Texture2D* pBuffer;
@@ -158,12 +159,10 @@ namespace Prime
 
 		pBuffer->Release();
 
-		m_d3d->m_context->OMSetRenderTargets(1, m_d3d->m_renderTargetView.GetAddressOf(), NULL);
-
 		// Set up the viewport.
 		D3D11_VIEWPORT vp{};
-		vp.Width = w;
-		vp.Height = h;
+		vp.Width = (float)w;
+		vp.Height = (float)h;
 		vp.MinDepth = 0.0f;
 		vp.MaxDepth = 1.0f;
 		vp.TopLeftX = 0;

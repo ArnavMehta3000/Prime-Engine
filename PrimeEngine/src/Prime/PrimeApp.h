@@ -35,7 +35,6 @@ namespace Prime
 
 	private:
 		std::unique_ptr<Timer> m_appTimer;
-		bool m_isResizing;
 	};
 
 	PrimeApp* CreateApplication();
