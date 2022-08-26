@@ -26,4 +26,3 @@ namespace Prime
 	};
 }
 
-#define PRIME_BIND_RESIZE_FN(fn) std::bind(&fn, this, std::placeholders::_1, std::placeholders::_2)

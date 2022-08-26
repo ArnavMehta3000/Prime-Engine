@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "GraphicsEngine.h"
 #include "Prime/Core/ServiceLocator/Locator.h"
+#include "Prime/Core/Graphics/ResizeHandler.h"
 
 namespace Prime
 {
@@ -14,14 +15,21 @@ namespace Prime
 
 
 
-	void GraphicsEngine::Init(D3D_INIT_PARAMS d3dInit)
+	void GraphicsEngine::Init(D3D_INIT_PARAMS d3dInit, bool isResize)
 	{
-		m_d3d->Init(d3dInit);
-		Locator::RegisterService<GraphicsFactory>();
-		Locator::RegisterService<GraphicsRenderer>();
-		Locator::ResolveService<GraphicsFactory>()->Init(m_d3d->m_device.Get(), m_d3d->m_context.Get());
-		Locator::ResolveService<GraphicsRenderer>()->Init(m_d3d->m_device.Get(), m_d3d->m_context.Get());
-		
+		if (!isResize)
+		{
+			m_initParams = d3dInit;
+			m_d3d->Init(d3dInit);
+			Locator::RegisterService<GraphicsFactory>();
+			Locator::RegisterService<GraphicsRenderer>();
+			Locator::ResolveService<GraphicsFactory>()->Init(m_d3d->m_device.Get(), m_d3d->m_context.Get());
+			Locator::ResolveService<GraphicsRenderer>()->Init(m_d3d->m_device.Get(), m_d3d->m_context.Get());
+
+			ResizeHandler::RegisterFunction(PRIME_BIND_RESIZE_FN(GraphicsEngine::OnResize));
+		}
+
+
 
 		// Create depth buffer
 		D3D11_TEXTURE2D_DESC dbDesc{};
@@ -130,5 +138,38 @@ namespace Prime
 			m_d3d->m_context->RSSetState(m_rasterStateSolid.Get());
 			TRACE("Set raster state: solid");
 		}
+	}
+
+	void GraphicsEngine::OnResize(int w, int h)
+	{
+		m_d3d->m_context->OMSetRenderTargets(0, 0, 0);
+		m_d3d->m_renderTargetView->Release();
+
+		HRESULT hr;
+		hr = m_d3d->m_swapChain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0);
+		THROW_HR(hr, "Failed to resize swap chain");
+
+		ID3D11Texture2D* pBuffer;
+		hr = m_d3d->m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&pBuffer);
+		THROW_HR(hr, "Failed to get back buffer");
+
+		hr = m_d3d->m_device->CreateRenderTargetView(pBuffer, NULL, &m_d3d->m_renderTargetView);
+		THROW_HR(hr, "Failed to resize and create render target view");
+
+		pBuffer->Release();
+
+		m_d3d->m_context->OMSetRenderTargets(1, m_d3d->m_renderTargetView.GetAddressOf(), NULL);
+
+		// Set up the viewport.
+		D3D11_VIEWPORT vp{};
+		vp.Width = w;
+		vp.Height = h;
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+		vp.TopLeftX = 0;
+		vp.TopLeftY = 0;
+
+		m_d3d->m_context->RSSetViewports(1, &vp);
+		Init(m_initParams, true);
 	}
 }

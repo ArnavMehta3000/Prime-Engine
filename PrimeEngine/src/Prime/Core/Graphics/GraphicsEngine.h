@@ -14,16 +14,18 @@ namespace Prime
 		inline const ComPtr<ID3D11Device>        GetDevice()  const { return m_d3d->m_device; }
 		inline const ComPtr<ID3D11DeviceContext> GetContext() const { return m_d3d->m_context; }
 
-		void Init(D3D_INIT_PARAMS d3dInit);
+		void Init(D3D_INIT_PARAMS d3dInit, bool isResize = false);
 		void Shutdown();
 		void BeginFrame();
 		void EndFrame();
 
 		void SetWireframe(bool isWireframe);
 
-		
+		void OnResize(int w, int h);
 
 	private:
+		D3D_INIT_PARAMS m_initParams;
+
 		std::unique_ptr<D3D> m_d3d;
 
 		ComPtr<ID3D11DepthStencilState> m_depthStencilState;
