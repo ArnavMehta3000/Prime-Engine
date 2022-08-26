@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "PrimeApp.h"
 #include "Prime/Logger.h"
-#include "Prime/Constants.h"
+#include "Prime/Core/Graphics/ResizeHandler.h"
 
 namespace Prime
 {
@@ -48,17 +48,19 @@ namespace Prime
 	{
 		LOG_LOAD("Initializing app");
 		
-		m_window = new PrimeWindow();
+		m_window = new PrimeWindow(1280, 720, true);
 		Locator::RegisterService<GraphicsEngine>();
 
 		D3D_INIT_PARAMS d3dInit{};
-		d3dInit.Window.Width  = WINDOW_WIDTH;
-		d3dInit.Window.Height = WINDOW_HEIGHT;
+		d3dInit.Window.Width  = PrimeWindow::s_clientWidth;
+		d3dInit.Window.Height = PrimeWindow::s_clientHeight;
 		d3dInit.Window.Handle = m_window->GetHWND();
 		d3dInit.VSync         = false;
 
 		auto gfx = Locator::ResolveService<GraphicsEngine>();
-		gfx->Init(d3dInit);
+		gfx->InitCore(d3dInit);
+
+		ResizeHandler::Resize(PrimeWindow::s_clientWidth, PrimeWindow::s_clientHeight);
 		
 		m_appTimer = std::make_unique<Timer>();
 

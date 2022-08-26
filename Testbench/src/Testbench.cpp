@@ -7,7 +7,7 @@ class TestApp : public Prime::PrimeApp
 {
 public:
 	TestApp() 
-		: m_orthoCam((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT)
+		: m_orthoCam((float)Prime::PrimeWindow::s_clientWidth, (float)Prime::PrimeWindow::s_clientHeight)
 	{
 	}
 

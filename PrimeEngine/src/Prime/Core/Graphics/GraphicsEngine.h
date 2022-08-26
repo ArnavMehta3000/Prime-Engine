@@ -14,7 +14,9 @@ namespace Prime
 		inline const ComPtr<ID3D11Device>        GetDevice()  const { return m_d3d->m_device; }
 		inline const ComPtr<ID3D11DeviceContext> GetContext() const { return m_d3d->m_context; }
 
-		void Init(D3D_INIT_PARAMS d3dInit, bool isResize = false);
+		void InitCore(D3D_INIT_PARAMS d3dInit);
+		void CreateRenderObjects(D3D_INIT_PARAMS d3dInit);
+
 		void Shutdown();
 		void BeginFrame();
 		void EndFrame();

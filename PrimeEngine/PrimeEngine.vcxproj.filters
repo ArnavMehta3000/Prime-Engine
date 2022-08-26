@@ -33,9 +33,6 @@
     <ClInclude Include="src\Prime\Core\PrimeWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Prime\Constants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Prime\Core\Graphics\D3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>

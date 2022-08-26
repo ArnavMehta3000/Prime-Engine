@@ -4,6 +4,7 @@
 namespace Prime
 {
 	std::vector<std::function<void(int, int)>> ResizeHandler::s_resizeFunctions;
+	bool ResizeHandler::m_isResizeOrMoving = false;
 
 	void ResizeHandler::RegisterFunction(std::function<void(int, int)> func)
 	{

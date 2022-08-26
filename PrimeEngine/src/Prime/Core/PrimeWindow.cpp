@@ -1,13 +1,27 @@
 #include "pch.h"
 #include "PrimeWindow.h"
-#include "Prime/Constants.h"
 #include "Prime/Core/Graphics/ResizeHandler.h"
+
 
 namespace Prime
 {
-	PrimeWindow::PrimeWindow()
+	UINT PrimeWindow::s_clientWidth  = 100;
+	UINT PrimeWindow::s_clientHeight = 100;
+	
+	PrimeWindow::PrimeWindow(UINT width, UINT height, bool maximized)
 		: m_hInstance(GetModuleHandle(nullptr))
 	{
+		if (!maximized)
+		{
+			s_clientWidth = width;
+			s_clientHeight = height;
+		}
+		else
+		{
+			s_clientWidth = GetSystemMetrics(SM_CXSCREEN);
+			s_clientHeight = GetSystemMetrics(SM_CYSCREEN);
+		}
+
 		WNDCLASSEX wc    = { 0 };
 		wc.cbSize        = sizeof(WNDCLASSEX);
 		wc.style         = CS_OWNDC;
@@ -24,12 +38,14 @@ namespace Prime
 		RegisterClassEx(&wc);
 
 		DWORD style = WS_OVERLAPPEDWINDOW;
+		if (maximized)
+			style |= WS_MAXIMIZE;
 
 		RECT rect{};
 		rect.left = 0;
 		rect.top = 0;
-		rect.right = rect.left + WINDOW_WIDTH;
-		rect.bottom = rect.top + WINDOW_HEIGHT;
+		rect.right = rect.left + s_clientWidth;
+		rect.bottom = rect.top + s_clientHeight;
 		AdjustWindowRect(&rect, style, FALSE);
 		
 		m_hWnd = CreateWindowEx(
@@ -46,6 +62,7 @@ namespace Prime
 			m_hInstance,
 			this
 		);
+
 
 		if (!m_hWnd)
 		{
@@ -81,7 +98,7 @@ namespace Prime
 
 	LRESULT CALLBACK PrimeWindow::MessageRouter(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		Prime::PrimeWindow* window;
+		Prime::PrimeWindow* window{};
 
 		if (msg == WM_CREATE)
 		{
@@ -98,6 +115,8 @@ namespace Prime
 
 	LRESULT CALLBACK PrimeWindow::PrimeWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
+		RECT r{};
+
 		switch (msg)
 		{
 		case WM_CLOSE:
@@ -105,7 +124,29 @@ namespace Prime
 			break;
 
 		case WM_SIZE:
-			ResizeHandler::Resize(LOWORD(lParam), HIWORD(lParam));
+			s_clientWidth = LOWORD(lParam);
+			s_clientHeight = HIWORD(lParam);
+			if(wParam == SIZE_MAXIMIZED)
+				ResizeHandler::Resize(s_clientWidth, s_clientHeight);
+			break;
+
+		case WM_ENTERSIZEMOVE:
+			ResizeHandler::m_isResizeOrMoving = true;
+			break;
+
+		case WM_EXITSIZEMOVE:
+			if (!(s_clientWidth == 0 || s_clientHeight == 0))
+			{
+				ResizeHandler::m_isResizeOrMoving = false;
+				WARN("Exit window move / resize dimensions: [" << s_clientWidth << ", " << s_clientHeight << "]");
+				ResizeHandler::Resize(s_clientWidth, s_clientHeight);
+			}
+			break;
+
+		// Lock window size
+		case WM_GETMINMAXINFO:
+			((MINMAXINFO*)lParam)->ptMinTrackSize.x = 800;
+			((MINMAXINFO*)lParam)->ptMinTrackSize.y = 600;
 			break;
 
 		case WM_DESTROY:

@@ -15,22 +15,22 @@ namespace Prime
 
 
 
-	void GraphicsEngine::Init(D3D_INIT_PARAMS d3dInit, bool isResize)
+	void GraphicsEngine::InitCore(D3D_INIT_PARAMS d3dInit)
 	{
-		if (!isResize)
-		{
-			m_initParams = d3dInit;
-			m_d3d->Init(d3dInit);
-			Locator::RegisterService<GraphicsFactory>();
-			Locator::RegisterService<GraphicsRenderer>();
-			Locator::ResolveService<GraphicsFactory>()->Init(m_d3d->m_device.Get(), m_d3d->m_context.Get());
-			Locator::ResolveService<GraphicsRenderer>()->Init(m_d3d->m_device.Get(), m_d3d->m_context.Get());
+		m_initParams = d3dInit;
+		m_d3d->Init(d3dInit);
+		Locator::RegisterService<GraphicsFactory>();
+		Locator::RegisterService<GraphicsRenderer>();
+		Locator::ResolveService<GraphicsFactory>()->Init(m_d3d->m_device.Get(), m_d3d->m_context.Get());
+		Locator::ResolveService<GraphicsRenderer>()->Init(m_d3d->m_device.Get(), m_d3d->m_context.Get());
 
-			ResizeHandler::RegisterFunction(PRIME_BIND_RESIZE_FN(GraphicsEngine::OnResize));
-		}
+		ResizeHandler::RegisterFunction(PRIME_BIND_RESIZE_FN(GraphicsEngine::OnResize));
+		CreateRenderObjects(d3dInit);
+		SetWireframe(false);
+	}
 
-
-
+	void GraphicsEngine::CreateRenderObjects(D3D_INIT_PARAMS d3dInit)
+	{
 		// Create depth buffer
 		D3D11_TEXTURE2D_DESC dbDesc{};
 		dbDesc.Width              = d3dInit.Window.Width;
@@ -73,8 +73,8 @@ namespace Prime
 
 		// Create depth stencil view
 		D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
-		dsvDesc.Format             = dbDesc.Format;
-		dsvDesc.ViewDimension      = D3D11_DSV_DIMENSION_TEXTURE2D;
+		dsvDesc.Format = dbDesc.Format;
+		dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 
 		// Create the depth stencil view
 		D3D::ThrowHr(m_d3d->m_device->CreateDepthStencilView(m_depthBufferTexture, &dsvDesc, m_depthStencilView.GetAddressOf()),
@@ -88,22 +88,19 @@ namespace Prime
 		// Create solid and wireframe raster states
 		D3D11_RASTERIZER_DESC solidRasterDesc{};
 		ZeroMemory(&solidRasterDesc, sizeof(D3D11_RASTERIZER_DESC));
-		solidRasterDesc.FillMode              = D3D11_FILL_SOLID;
-		solidRasterDesc.CullMode              = D3D11_CULL_BACK;
+		solidRasterDesc.FillMode = D3D11_FILL_SOLID;
+		solidRasterDesc.CullMode = D3D11_CULL_BACK;
 
 		D3D11_RASTERIZER_DESC wireRasterDesc{};
 		ZeroMemory(&wireRasterDesc, sizeof(D3D11_RASTERIZER_DESC));
-		wireRasterDesc.FillMode              = D3D11_FILL_WIREFRAME;
-		wireRasterDesc.CullMode              = D3D11_CULL_BACK;
+		wireRasterDesc.FillMode = D3D11_FILL_WIREFRAME;
+		wireRasterDesc.CullMode = D3D11_CULL_BACK;
 
 		D3D::ThrowHr(m_d3d->m_device->CreateRasterizerState(&solidRasterDesc, m_rasterStateSolid.GetAddressOf()),
 			"Failed to create solid rasterizer state");
 
 		D3D::ThrowHr(m_d3d->m_device->CreateRasterizerState(&wireRasterDesc, m_rasterStateWireframe.GetAddressOf()),
 			"Failed to create wireframe rasterizer state");
-
-		if (!isResize)
-			SetWireframe(false);
 	}
 
 	void GraphicsEngine::Shutdown()
@@ -132,12 +129,10 @@ namespace Prime
 		if (isWireframe)
 		{
 			m_d3d->m_context->RSSetState(m_rasterStateWireframe.Get());
-			TRACE("Set raster state: wireframe");
 		}
 		else
 		{
 			m_d3d->m_context->RSSetState(m_rasterStateSolid.Get());
-			TRACE("Set raster state: solid");
 		}
 	}
 
@@ -145,6 +140,10 @@ namespace Prime
 	{
 		m_d3d->m_context->OMSetRenderTargets(0, 0, 0);
 		m_d3d->m_renderTargetView->Release();
+		m_depthStencilState->Release();
+		m_depthStencilView->Release();
+		m_rasterStateSolid->Release();
+		m_rasterStateWireframe->Release();
 
 		HRESULT hr;
 		hr = m_d3d->m_swapChain->ResizeBuffers(1, w, h, DXGI_FORMAT_UNKNOWN, 0);
@@ -169,6 +168,7 @@ namespace Prime
 		vp.TopLeftY = 0;
 
 		m_d3d->m_context->RSSetViewports(1, &vp);
-		Init(m_initParams, true);
+
+		CreateRenderObjects(m_initParams);
 	}
 }

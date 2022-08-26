@@ -5,7 +5,7 @@ namespace Prime
 	class PrimeWindow
 	{
 	public:
-		PrimeWindow();
+		PrimeWindow(UINT width, UINT height, bool maximise = false);
 		PrimeWindow(const PrimeWindow&) = delete;
 		PrimeWindow& operator=(const PrimeWindow&) = delete;
 		~PrimeWindow();
@@ -23,6 +23,10 @@ namespace Prime
 
 		HINSTANCE m_hInstance;
 		HWND m_hWnd;
+
+	public:
+		static UINT s_clientWidth;
+		static UINT s_clientHeight;
 	};
 }
 
