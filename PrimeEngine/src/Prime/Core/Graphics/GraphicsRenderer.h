@@ -64,7 +64,8 @@ namespace Prime
 		}
 
 		void Bind(ShaderType shaderType, const std::shared_ptr<Texture2D>& texture);
-		void Bind(ShaderType shaderType, const ComPtr<ID3D11SamplerState> sampler);
+		void Bind(ShaderType shaderType, const ComPtr<ID3D11SamplerState>& sampler);
+		void Bind(const ComPtr<ID3D11BlendState>& blendState);
 
 		void Draw(UINT vertexCount, UINT startLocation);
 		void DrawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer);
@@ -76,5 +77,12 @@ namespace Prime
 
 	public:
 		static ComPtr<ID3D11SamplerState> s_samplerLinearWrap;
+		static ComPtr<ID3D11SamplerState> s_samplerPointWrap;
+
+		// Discard alpha pixels in pixel shader
+		static ComPtr<ID3D11BlendState> s_blendStateAlphaEnabled;
+
+		// Keep alpha pixels in piel shader
+		static ComPtr<ID3D11BlendState> s_blendStateAlphaDisabled;
 	};
 }

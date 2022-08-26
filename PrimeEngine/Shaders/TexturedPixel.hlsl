@@ -9,5 +9,7 @@ struct PS_INPUT
 
 float4 main(PS_INPUT input) : SV_TARGET
 {
-    return tex.Sample(samplerState, input.inTexCoord);
+    float4 texColor = tex.Sample(samplerState, input.inTexCoord);
+    
+    return texColor;
 }

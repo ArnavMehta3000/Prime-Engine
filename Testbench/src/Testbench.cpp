@@ -108,6 +108,7 @@ public:
 
 
 		GetRenderer()->Bind(Prime::ShaderType::PixelShader, Prime::GraphicsRenderer::s_samplerLinearWrap);
+		GetRenderer()->Bind(Prime::GraphicsRenderer::s_blendStateAlphaEnabled);
 		GetRenderer()->Bind(Prime::ShaderType::PixelShader, m_texture);
 		GetRenderer()->Bind(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		GetRenderer()->Bind(Prime::ShaderType::VertexShader, m_cameraCBuffer);
@@ -128,7 +129,9 @@ public:
 			z += 1.0f * dt;
 		if (GetAsyncKeyState(VK_NEXT))
 			z -= 1.0f * dt;
+
 		
+
 
 		// Update camera
 		Matrix world = Matrix::CreateRotationX(-y) * Matrix::CreateRotationY(x) * Matrix::CreateRotationZ(z);
