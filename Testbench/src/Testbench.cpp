@@ -130,14 +130,12 @@ public:
 		if (GetAsyncKeyState(VK_NEXT))
 			z -= 1.0f * dt;
 
-		
+		if (GetAsyncKeyState(VK_CONTROL))
+			scaleCube += 1.0f * dt;
+		if (GetAsyncKeyState(VK_SHIFT))
+			scaleCube -= 1.0f * dt;
 
 
-		// Update camera
-		Matrix world = Matrix::CreateRotationX(-y) * Matrix::CreateRotationY(x) * Matrix::CreateRotationZ(z);
-		//m_orthoCam.SetPosition(Vector3(x, y, -5.0f));
-		//m_orthoCam.SetRotation(z);
-		m_cameraCBuffer->Data.WorldMatrix      = world.Transpose();
 		m_cameraCBuffer->Data.ViewMatrix       = m_orthoCam.GetViewMatrix().Transpose();
 		m_cameraCBuffer->Data.ProjectionMatrix = m_orthoCam.GetProjectionMatrix().Transpose();
 
@@ -147,12 +145,30 @@ public:
 	virtual void OnRender(float dt) override
 	{
 		// Bind buffers
+		GetRenderer()->Bind(m_cubeVB);
+		GetRenderer()->Bind(m_cubeIB);
+		// Bind shaders
+		GetRenderer()->Bind(m_colorVS);
+		GetRenderer()->Bind(m_colorPS);
+
+		// Update CB for cube
+		Matrix world = Matrix::CreateScale(scaleCube) * Matrix::CreateRotationX(-y) * Matrix::CreateRotationY(x) * Matrix::CreateRotationZ(z);
+		m_cameraCBuffer->Data.WorldMatrix = world.Transpose();
+		GetRenderer()->UpdateConstantBuffer(m_cameraCBuffer);
+
+		GetRenderer()->DrawIndexed(m_cubeIB);
+
+
+		// Bind buffers
 		GetRenderer()->Bind(m_quadVB);
 		GetRenderer()->Bind(m_quadIB);
-
 		// Bind shaders
 		GetRenderer()->Bind(m_textureVS);
 		GetRenderer()->Bind(m_texturePS);
+		// Draw quad
+		world = Matrix::CreateRotationX(-y) * Matrix::CreateRotationY(x) * Matrix::CreateRotationZ(z);
+		m_cameraCBuffer->Data.WorldMatrix = world.Transpose();
+		GetRenderer()->UpdateConstantBuffer(m_cameraCBuffer);
 
 		GetRenderer()->DrawIndexed(m_quadIB);
 	}
@@ -201,6 +217,7 @@ private:
 	float x = 0.0f;
 	float y = 0.0f;
 	float z = 0.0f;
+	float scaleCube = 0.5f;
 
 	Prime::OrthographicCamera m_orthoCam;
 };
