@@ -2,6 +2,7 @@
 #include "Prime/PrimeApp.h"
 #include "Prime/Logger.h"
 #include "Prime/Constants.h"
+#include "Prime/Core/Graphics/ResizeHandler.h"
 
 #include "Prime/Core/Graphics/Buffers.h"
 #include "Prime/Core/Graphics/Shaders.h"

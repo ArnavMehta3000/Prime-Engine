@@ -20,7 +20,6 @@ namespace Prime
 		virtual void OnUpdate(float dt) = 0;
 		virtual void OnRender(float dt) = 0;
 		virtual void OnClose() = 0;
-
 	private:
 		void PreRunInit();
 		void ShutDown();
@@ -36,6 +35,7 @@ namespace Prime
 
 	private:
 		std::unique_ptr<Timer> m_appTimer;
+		bool m_isResizing;
 	};
 
 	PrimeApp* CreateApplication();

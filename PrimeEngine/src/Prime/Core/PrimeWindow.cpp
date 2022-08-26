@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PrimeWindow.h"
 #include "Prime/Constants.h"
+#include "Prime/Core/Graphics/ResizeHandler.h"
 
 namespace Prime
 {
@@ -10,7 +11,7 @@ namespace Prime
 		WNDCLASSEX wc    = { 0 };
 		wc.cbSize        = sizeof(WNDCLASSEX);
 		wc.style         = CS_OWNDC;
-		wc.lpfnWndProc   = WindowProc;
+		wc.lpfnWndProc   = MessageRouter;
 		wc.cbClsExtra    = 0;
 		wc.cbWndExtra    = 0;
 		wc.hInstance     = m_hInstance;
@@ -43,7 +44,7 @@ namespace Prime
 			NULL,
 			NULL,
 			m_hInstance,
-			NULL
+			this
 		);
 
 		if (!m_hWnd)
@@ -77,20 +78,41 @@ namespace Prime
 
 		return true;
 	}
-}
 
-LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-	switch (msg)
+	LRESULT CALLBACK PrimeWindow::MessageRouter(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-	case WM_CLOSE:
-		DestroyWindow(hWnd);
-		break;
+		Prime::PrimeWindow* window;
 
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
+		if (msg == WM_CREATE)
+		{
+			window = (Prime::PrimeWindow*)((LPCREATESTRUCT)lParam)->lpCreateParams;
+			SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)window);
+		}
+		else
+		{
+			window = (Prime::PrimeWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+		}
+
+		return window->PrimeWndProc(hWnd, msg, wParam, lParam);
 	}
-	
-	return DefWindowProc(hWnd, msg, wParam, lParam);
+
+	LRESULT CALLBACK PrimeWindow::PrimeWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	{
+		switch (msg)
+		{
+		case WM_CLOSE:
+			DestroyWindow(hWnd);
+			break;
+
+		case WM_SIZE:
+			ResizeHandler::Resize(LOWORD(lParam), HIWORD(lParam));
+			break;
+
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			break;
+		}
+
+		return DefWindowProc(hWnd, msg, wParam, lParam);
+	}
 }

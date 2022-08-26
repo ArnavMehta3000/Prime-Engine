@@ -103,8 +103,6 @@ namespace Prime
 		m_d3d.release();
 	}
 
-
-
 	void GraphicsEngine::BeginFrame()
 	{
 		float color[4] = { 0.15f, 0.175f, 0.25f, 1.0f };

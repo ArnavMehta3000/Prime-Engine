@@ -15,6 +15,8 @@ namespace Prime
 		inline void SetTitle(LPCWSTR title) { SetWindowText(m_hWnd, title); }
 		inline HWND GetHWND() { return m_hWnd; }
 
+		static LRESULT CALLBACK MessageRouter(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+		LRESULT CALLBACK PrimeWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		
 	private:
 		const LPCWSTR CLASS_NAME = L"Prime Class";
@@ -24,4 +26,4 @@ namespace Prime
 	};
 }
 
-LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+#define PRIME_BIND_RESIZE_FN(fn) std::bind(&fn, this, std::placeholders::_1, std::placeholders::_2)
