@@ -6,8 +6,8 @@
 namespace Prime
 {
 	GraphicsEngine* PrimeApp::GetGraphicsEngine() { return Locator::ResolveService<GraphicsEngine>(); }
-	GraphicsFactory*  PrimeApp::GetFactory()  { return Locator::ResolveService<GraphicsFactory>(); }
-	GraphicsRenderer* PrimeApp::GetRenderer() { return Locator::ResolveService<GraphicsRenderer>(); }
+	GraphicsFactory*  PrimeApp::GetFactory()      { return Locator::ResolveService<GraphicsFactory>(); }
+	GraphicsRenderer* PrimeApp::GetRenderer()     { return Locator::ResolveService<GraphicsRenderer>(); }
 
 	PrimeApp::PrimeApp()
 	{
@@ -71,14 +71,13 @@ namespace Prime
 	{
 		PreRunInit();
 		OnStart();
+
 		auto gfx = Locator::ResolveService<GraphicsEngine>();
 		
 		while (m_window->ProcessMessages())
 		{
 			float deltaTime = m_appTimer->Mark();
-			
 			gfx->BeginFrame();
-			// Input polling here
 			OnUpdate(deltaTime);
 			OnRender(deltaTime);
 			gfx->EndFrame();

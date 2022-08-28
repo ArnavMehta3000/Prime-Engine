@@ -126,7 +126,7 @@ namespace Prime
 		case WM_SIZE:
 			s_clientWidth = LOWORD(lParam);
 			s_clientHeight = HIWORD(lParam);
-			if(wParam == SIZE_MAXIMIZED)
+			if(wParam == SIZE_MAXIMIZED || wParam == SIZE_RESTORED)
 				ResizeHandler::Resize(s_clientWidth, s_clientHeight);
 			break;
 
