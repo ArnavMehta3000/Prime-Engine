@@ -23,6 +23,7 @@ private:
 	std::shared_ptr<Prime::Texture2D>    m_texture;
 
 	std::shared_ptr<Prime::ConstantBuffer<Prime::WVPBuffer>> m_cameraCBuffer;
+	std::shared_ptr<Prime::ConstantBuffer<Prime::ColorBuffer>> m_pixelCBuffer;
 
 	float x = 0.0f;
 	float y = 0.0f;

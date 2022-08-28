@@ -90,9 +90,9 @@ public:
 		};
 
 		m_colorVS.reset(
-			GetFactory()->CreateVertexShader((SHADER_PATH + L"DefaultVertex.cso").c_str(), colorInputLayout, ARRAYSIZE(colorInputLayout)));
+			GetFactory()->CreateVertexShader((SHADER_PATH + L"ColorVertex.cso").c_str(), colorInputLayout, ARRAYSIZE(colorInputLayout)));
 		m_colorPS.reset(
-			GetFactory()->CreatePixelShader((SHADER_PATH + L"DefaultPixel.cso").c_str()));	
+			GetFactory()->CreatePixelShader((SHADER_PATH + L"ColorPixel.cso").c_str()));	
 
 		m_textureVS.reset(
 			GetFactory()->CreateVertexShader((SHADER_PATH + L"TexturedVertex.cso").c_str(), texturedInputLayout, ARRAYSIZE(texturedInputLayout)));

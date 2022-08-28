@@ -10,14 +10,14 @@ TestApp2D::TestApp2D()
 void TestApp2D::OnStart()
 {
 	// Create vertex buffer
-	const Prime::TexturedVertex quadVerts[] =
+	const Prime::SimpleVertetx quadVerts[] =
 	{
-		{ -1.0f, 1.0f, 0.0f, 0.0f, 0.0f },
-		{  1.0f, 1.0f, 0.0f, 1.0f, 0.0f },
-		{ -1.0f,-1.0f, 0.0f, 0.0f, 1.0f },
-		{  1.0f,-1.0f, 0.0f, 1.0f, 1.0f },
+		{ -1.0f, 1.0f, 0.0f },// 0.0f, 0.0f },
+		{  1.0f, 1.0f, 0.0f },// 1.0f, 0.0f },
+		{ -1.0f,-1.0f, 0.0f },// 0.0f, 1.0f },
+		{  1.0f,-1.0f, 0.0f },// 1.0f, 1.0f },
 	};
-	m_quadVB.reset(GetFactory()->CreateVertexBuffer(quadVerts, UINT(sizeof(Prime::TexturedVertex)), ARRAYSIZE(quadVerts)));
+	m_quadVB.reset(GetFactory()->CreateVertexBuffer(quadVerts, UINT(sizeof(Prime::SimpleVertetx)), ARRAYSIZE(quadVerts)));
 
 
 	// CReate index buffer
@@ -29,22 +29,26 @@ void TestApp2D::OnStart()
 	D3D11_INPUT_ELEMENT_DESC texturedInputLayout[] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
-	m_textureVS.reset(GetFactory()->CreateVertexShader((SHADER_PATH + L"TexturedVertex.cso").c_str(), texturedInputLayout, ARRAYSIZE(texturedInputLayout)));
-	m_texturePS.reset(GetFactory()->CreatePixelShader((SHADER_PATH + L"TexturedPixel.cso").c_str()));
+	m_textureVS.reset(GetFactory()->CreateVertexShader((SHADER_PATH + L"SimpleVertex.cso").c_str(), texturedInputLayout, ARRAYSIZE(texturedInputLayout)));
+	m_texturePS.reset(GetFactory()->CreatePixelShader((SHADER_PATH + L"SimplePixel.cso").c_str()));
 
 
 	m_cameraCBuffer.reset(GetFactory()->CreateConstantBuffer<Prime::WVPBuffer>());
+	m_pixelCBuffer.reset(GetFactory()->CreateConstantBuffer<Prime::ColorBuffer>());
 
 	m_texture.reset(GetFactory()->CreateTextureFromFile((ASSET_PATH + L"Test.png").c_str(), D3D11_USAGE_DEFAULT, D3D10_BIND_SHADER_RESOURCE, 0, 0, WIC_LOADER_DEFAULT));
+
+	m_pixelCBuffer->Data = { 1.0f, 0.0f, 0.0f, 1.0f };
+	GetRenderer()->UpdateConstantBuffer(m_pixelCBuffer);
 
 	GetRenderer()->BindDefaults();
 	GetRenderer()->Bind(m_quadVB);
 	GetRenderer()->Bind(m_quadIB);
 	GetRenderer()->Bind(Prime::ShaderType::PixelShader, m_texture);
 	GetRenderer()->Bind(Prime::ShaderType::VertexShader, m_cameraCBuffer);
+	GetRenderer()->Bind(Prime::ShaderType::PixelShader, m_pixelCBuffer);
 	GetGraphicsEngine()->SetWireframe(false);
 }
 
