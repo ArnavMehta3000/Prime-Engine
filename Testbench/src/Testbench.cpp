@@ -1,7 +1,6 @@
 #include "pch.h"
-#include <Prime.h>
-#define SHADER_PATH std::wstring(L"../PrimeEngine/Shaders/Compiled/")
-#define ASSET_PATH  std::wstring(L"../PrimeEngine/Assets/")
+#include "TestApp2D.h"
+#include <PrimeEntry.h>
 
 class TestApp : public Prime::PrimeApp
 {
@@ -226,5 +225,5 @@ private:
 
 Prime::PrimeApp* Prime::CreateApplication()
 {
-	return new TestApp();
+	return new TestApp2D();
 }

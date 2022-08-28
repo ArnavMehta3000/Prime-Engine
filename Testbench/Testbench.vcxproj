@@ -89,8 +89,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\TestApp2D.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TestApp2D.cpp" />
     <ClCompile Include="src\Testbench.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

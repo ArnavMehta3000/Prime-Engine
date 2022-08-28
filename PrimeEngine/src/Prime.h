@@ -12,4 +12,5 @@
 
 #include "Prime/Core/Cameras/OrthographicCamera.h"
 
-#include "PrimeEntry.h"
+// TODO: Remove this entry point in and include it in testbench layer/app class that needs entry point. [Multiple 'main' defined error]
+//#include "PrimeEntry.h"
