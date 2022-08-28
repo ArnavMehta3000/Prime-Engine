@@ -26,7 +26,6 @@ namespace Prime
 
 		ResizeHandler::RegisterFunction(PRIME_BIND_RESIZE_FN(GraphicsEngine::OnResize));
 		CreateRenderObjects(d3dInit);
-		SetWireframe(false);
 	}
 
 	void GraphicsEngine::CreateRenderObjects(D3D_INIT_PARAMS d3dInit)

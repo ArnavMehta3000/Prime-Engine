@@ -1,8 +1,10 @@
 #include <pch.h>
 #include "GraphicsRenderer.h"
+#include "Prime/Core/ServiceLocator/Locator.h"
 #include "Prime/Core/Graphics/Buffers.h"
 #include "Prime/Core/Graphics/Shaders.h"
 #include "Prime/Core/Texture2D.h"
+
 
 namespace Prime
 {
@@ -66,6 +68,14 @@ namespace Prime
 		m_device->CreateBlendState(&blendDesc, s_blendStateAlphaDisabled.GetAddressOf());		
 	}
 	
+
+	void GraphicsRenderer::BindDefaults()
+	{
+		Bind(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Bind(Prime::ShaderType::PixelShader, Prime::GraphicsRenderer::s_samplerLinearWrap);
+		Bind(Prime::GraphicsRenderer::s_blendStateAlphaEnabled);
+	}
+
 	void GraphicsRenderer::Bind(D3D11_PRIMITIVE_TOPOLOGY topology)
 	{
 		m_context->IASetPrimitiveTopology(topology);

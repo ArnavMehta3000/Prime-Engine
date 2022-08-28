@@ -24,6 +24,8 @@ namespace Prime
 		
 		void Init(ID3D11Device* device, ID3D11DeviceContext* context);
 
+		void BindDefaults();
+
 		void Bind(D3D11_PRIMITIVE_TOPOLOGY topology);
 	
 		void Bind(const std::shared_ptr<VertexBuffer>& vertexBuffer);
