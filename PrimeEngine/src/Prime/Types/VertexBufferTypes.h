@@ -2,7 +2,7 @@
 
 namespace Prime
 {
-	struct SimpleVertetx
+	struct SimpleVertex
 	{
 		struct
 		{

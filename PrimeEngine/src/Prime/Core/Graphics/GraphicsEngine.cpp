@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "GraphicsEngine.h"
-#include "Prime/Core/ServiceLocator/Locator.h"
 #include "Prime/Core/Graphics/ResizeHandler.h"
 
 namespace Prime
@@ -19,10 +18,16 @@ namespace Prime
 	{
 		m_initParams = d3dInit;
 		m_d3d->Init(d3dInit);
+		
+		TRACE("Initializing Graphics Engine Services");
 		Locator::RegisterService<GraphicsFactory>();
 		Locator::RegisterService<GraphicsRenderer>();
+		Locator::RegisterService<GraphicsRenderer2D>();
+
 		Locator::ResolveService<GraphicsFactory>()->Init(m_d3d->m_device.Get(), m_d3d->m_context.Get());
 		Locator::ResolveService<GraphicsRenderer>()->Init(m_d3d->m_device.Get(), m_d3d->m_context.Get());
+		Locator::ResolveService<GraphicsRenderer2D>()->Init2D(m_d3d->m_device.Get(), m_d3d->m_context.Get());
+		LOG("Initialized all graphics engine services");
 
 		ResizeHandler::RegisterFunction(PRIME_BIND_RESIZE_FN(GraphicsEngine::OnResize));
 		CreateRenderObjects(d3dInit);

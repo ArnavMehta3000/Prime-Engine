@@ -1,6 +1,5 @@
 #include <pch.h>
 #include "GraphicsRenderer.h"
-#include "Prime/Core/ServiceLocator/Locator.h"
 #include "Prime/Core/Graphics/Buffers.h"
 #include "Prime/Core/Graphics/Shaders.h"
 #include "Prime/Core/Texture2D.h"
@@ -66,6 +65,7 @@ namespace Prime
 
 		blendDesc.RenderTarget[0].BlendEnable = false;
 		m_device->CreateBlendState(&blendDesc, s_blendStateAlphaDisabled.GetAddressOf());		
+
 	}
 	
 

@@ -1,6 +1,9 @@
 #pragma once
 #include "Prime/Core/Graphics/GraphicsFactory.h"
 #include "Prime/Core/Graphics/GraphicsRenderer.h"
+#include "Prime/Core/Graphics/GraphicsRenderer2D.h"
+#include "Prime/Core/ServiceLocator/IService.h"
+
 
 namespace Prime
 {

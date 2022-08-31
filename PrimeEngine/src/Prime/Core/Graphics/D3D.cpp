@@ -66,8 +66,7 @@ namespace Prime
 				}
 			}
 		}
-		TRACE("Applied window width: "  << displayModeList[num].Width);
-		TRACE("Applied window height: "  << displayModeList[num].Height);
+
 		//TRACE("Refresh rate numerator: "  << numerator);
 		//TRACE("Refresh rate denominator: "  << denominator);
 

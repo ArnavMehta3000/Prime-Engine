@@ -21,6 +21,8 @@
 
 #include "Prime/Logger.h"
 #include "Prime/Core/Timer.h"
+#include "Prime/Core/ServiceLocator/IService.h"
+#include "Prime/Core/ServiceLocator/Locator.h"
 
 #include "SimpleMath.h"
 

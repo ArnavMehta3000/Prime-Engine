@@ -8,6 +8,7 @@ namespace Prime
 	GraphicsEngine* PrimeApp::GetGraphicsEngine() { return Locator::ResolveService<GraphicsEngine>(); }
 	GraphicsFactory*  PrimeApp::GetFactory()      { return Locator::ResolveService<GraphicsFactory>(); }
 	GraphicsRenderer* PrimeApp::GetRenderer()     { return Locator::ResolveService<GraphicsRenderer>(); }
+	GraphicsRenderer2D* PrimeApp::GetRenderer2D()     { return Locator::ResolveService<GraphicsRenderer2D>(); }
 
 	PrimeApp::PrimeApp()
 	{

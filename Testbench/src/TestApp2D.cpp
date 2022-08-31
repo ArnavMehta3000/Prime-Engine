@@ -9,46 +9,19 @@ TestApp2D::TestApp2D()
 
 void TestApp2D::OnStart()
 {
-	// Create vertex buffer
-	const Prime::SimpleVertetx quadVerts[] =
-	{
-		{ -1.0f, 1.0f, 0.0f },// 0.0f, 0.0f },
-		{  1.0f, 1.0f, 0.0f },// 1.0f, 0.0f },
-		{ -1.0f,-1.0f, 0.0f },// 0.0f, 1.0f },
-		{  1.0f,-1.0f, 0.0f },// 1.0f, 1.0f },
-	};
-	m_quadVB.reset(GetFactory()->CreateVertexBuffer(quadVerts, UINT(sizeof(Prime::SimpleVertetx)), ARRAYSIZE(quadVerts)));
-
-
-	// CReate index buffer
-	DWORD quadIndices[] = { 0, 1, 2, 2, 1, 3 };
-	m_quadIB.reset(
-		GetFactory()->CreateIndexBuffer(quadIndices, ARRAYSIZE(quadIndices)));
-
-
-	D3D11_INPUT_ELEMENT_DESC texturedInputLayout[] =
-	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-
-	m_textureVS.reset(GetFactory()->CreateVertexShader((SHADER_PATH + L"SimpleVertex.cso").c_str(), texturedInputLayout, ARRAYSIZE(texturedInputLayout)));
-	m_texturePS.reset(GetFactory()->CreatePixelShader((SHADER_PATH + L"SimplePixel.cso").c_str()));
-
-
+	// Create constant buffers
 	m_cameraCBuffer.reset(GetFactory()->CreateConstantBuffer<Prime::WVPBuffer>());
 	m_pixelCBuffer.reset(GetFactory()->CreateConstantBuffer<Prime::ColorBuffer>());
 
-	m_texture.reset(GetFactory()->CreateTextureFromFile((ASSET_PATH + L"Test.png").c_str(), D3D11_USAGE_DEFAULT, D3D10_BIND_SHADER_RESOURCE, 0, 0, WIC_LOADER_DEFAULT));
+	//m_texture.reset(GetFactory()->CreateTextureFromFile((ASSET_PATH + L"Test.png").c_str(), D3D11_USAGE_DEFAULT, D3D10_BIND_SHADER_RESOURCE, 0, 0, WIC_LOADER_DEFAULT));
 
-	m_pixelCBuffer->Data = { 1.0f, 0.0f, 0.0f, 1.0f };
+	GetRenderer2D()->SetPrimitivesColor(Color(0.0f, 0.0f, 1.0f));
+	auto col = GetRenderer2D()->GetPrimitivesColor();
+	m_pixelCBuffer->Data = { col.R(), col.G() , col.B() , col.A() };
 	GetRenderer()->UpdateConstantBuffer(m_pixelCBuffer);
 
-	GetRenderer()->BindDefaults();
-	GetRenderer()->Bind(m_quadVB);
-	GetRenderer()->Bind(m_quadIB);
-	GetRenderer()->Bind(Prime::ShaderType::PixelShader, m_texture);
-	GetRenderer()->Bind(Prime::ShaderType::VertexShader, m_cameraCBuffer);
-	GetRenderer()->Bind(Prime::ShaderType::PixelShader, m_pixelCBuffer);
+	GetRenderer2D()->Bind(Prime::ShaderType::VertexShader, m_cameraCBuffer);
+	GetRenderer2D()->Bind(Prime::ShaderType::PixelShader, m_pixelCBuffer);
 	GetGraphicsEngine()->SetWireframe(false);
 }
 
@@ -75,7 +48,6 @@ void TestApp2D::OnUpdate(float dt)
 	if (GetAsyncKeyState(VK_SHIFT))
 		scaleCube -= 1.0f * dt;
 
-
 	Vector3 camPos = m_orthoCam.GetPosition() + Vector3(x, y, 0.0f);
 	m_orthoCam.SetPosition(camPos);
 	m_orthoCam.SetRotation(z);
@@ -86,14 +58,12 @@ void TestApp2D::OnUpdate(float dt)
 	m_cameraCBuffer->Data.ViewMatrix       = m_orthoCam.GetViewMatrix().Transpose();
 	m_cameraCBuffer->Data.ProjectionMatrix = m_orthoCam.GetProjectionMatrix().Transpose();
 
-	GetRenderer()->UpdateConstantBuffer(m_cameraCBuffer);
+	GetRenderer2D()->UpdateConstantBuffer(m_cameraCBuffer);
 }
 
 void TestApp2D::OnRender(float dt)
 {
-	GetRenderer()->Bind(m_textureVS);
-	GetRenderer()->Bind(m_texturePS);
-	GetRenderer()->DrawIndexed(m_quadIB);
+	GetRenderer2D()->DrawQuad();
 }
 
 void TestApp2D::OnClose()

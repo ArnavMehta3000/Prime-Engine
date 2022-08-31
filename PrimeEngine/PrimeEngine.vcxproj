@@ -102,6 +102,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Prime\Core\Graphics\GraphicsRenderer2D.h" />
     <ClInclude Include="src\Prime\Core\Graphics\ResizeHandler.h" />
     <ClInclude Include="src\Prime\Core\Cameras\OrthographicCamera.h" />
     <ClInclude Include="src\Prime\Core\Graphics\GraphicsFactory.h" />
@@ -124,6 +125,7 @@
     <ClInclude Include="src\Prime\Core\Texture2D.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Prime\Core\Graphics\GraphicsRenderer2D.cpp" />
     <ClCompile Include="src\Prime\Core\Cameras\OrthographicCamera.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\GraphicsFactory.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\GraphicsEngine.cpp" />
