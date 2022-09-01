@@ -123,6 +123,14 @@ namespace Prime
 			DestroyWindow(hWnd);
 			break;
 
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			return 0;
+
+		case WM_KEYDOWN:
+			if (wParam == VK_ESCAPE) PostQuitMessage(0);
+			return 0;
+
 		case WM_SIZE:
 			s_clientWidth = LOWORD(lParam);
 			s_clientHeight = HIWORD(lParam);
@@ -147,10 +155,6 @@ namespace Prime
 		case WM_GETMINMAXINFO:
 			((MINMAXINFO*)lParam)->ptMinTrackSize.x = 800;
 			((MINMAXINFO*)lParam)->ptMinTrackSize.y = 600;
-			break;
-
-		case WM_DESTROY:
-			PostQuitMessage(0);
 			break;
 		}
 

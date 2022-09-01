@@ -25,6 +25,7 @@ void TestApp2D::OnUpdate(float dt)
 	const float cameraMoveSpeed = 5.0f;
 	const float cameraRotSpeed = 50.0f;
 	
+
 	if (GetAsyncKeyState(VK_LEFT))
 		x += cameraMoveSpeed * dt;
 	if (GetAsyncKeyState(VK_RIGHT))
@@ -58,21 +59,24 @@ void TestApp2D::OnUpdate(float dt)
 
 void TestApp2D::OnRender(float dt)
 {
+	static float t;
+	t += dt;
+
 	GetRenderer2D()->SetPrimitivesColor(Color(1.0f, 0.0f, 1.0f));
 	auto col = GetRenderer2D()->GetPrimitivesColor();
 	m_pixelCBuffer->Data = { col.R(), col.G() , col.B() , col.A() };
-	m_cameraCBuffer->Data.WorldMatrix = Matrix::CreateTranslation(Vector3(1.0f, 0.0f, 0.0f)).Transpose();
+	m_cameraCBuffer->Data.WorldMatrix = Matrix::CreateTranslation(Vector3(cos(t) * 2.0f, 0.0f, 0.0f)).Transpose();
 
 	GetRenderer()->UpdateConstantBuffer(m_pixelCBuffer);
 	GetRenderer2D()->UpdateConstantBuffer(m_cameraCBuffer);
 	GetRenderer2D()->DrawQuad();
-
+	
 
 
 	GetRenderer2D()->SetPrimitivesColor(Color(0.0f, 1.0f, 1.0f));
 	col = GetRenderer2D()->GetPrimitivesColor();
 	m_pixelCBuffer->Data = { col.R(), col.G() , col.B() , col.A() };
-	m_cameraCBuffer->Data.WorldMatrix = Matrix::CreateTranslation(Vector3(-1.0f, 0.0f, 0.0f)).Transpose();
+	m_cameraCBuffer->Data.WorldMatrix = Matrix::CreateTranslation(Vector3(sin(t) * 2.0f, 0.0f, 0.0f)).Transpose();
 
 	GetRenderer()->UpdateConstantBuffer(m_pixelCBuffer);
 	GetRenderer2D()->UpdateConstantBuffer(m_cameraCBuffer);

@@ -111,7 +111,7 @@ public:
 		GetRenderer()->Bind(Prime::ShaderType::PixelShader, m_texture);
 		GetRenderer()->Bind(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		GetRenderer()->Bind(Prime::ShaderType::VertexShader, m_cameraCBuffer);
-		GetGraphicsEngine()->SetWireframe(false);
+		GetGraphicsEngine()->SetWireframe(true);
 	}
 
 	virtual void OnUpdate(float dt) override

@@ -72,6 +72,15 @@
 	}\
 }
 
+// HACK: Use this method to get the HRESULT error, not the comdef way.
+//		 This gives a string instead of a weird com error object
+//std::string msg = "Test message";
+//HRESULT hr = E_ACCESSDENIED;
+//char hr_msg[512];
+//FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, hr, 0, hr_msg, ARRAYSIZE(hr_msg), nullptr);
+//std::string error_msg = msg + ".\nError! " + hr_msg;
+//MessageBoxA(NULL, error_msg.c_str(), "Error", MB_OK);
+
 #define RELEASE(x)\
 {\
 	if (x)\

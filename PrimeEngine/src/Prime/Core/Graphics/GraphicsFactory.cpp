@@ -102,7 +102,7 @@ namespace Prime
 			vs->GetBlob()->GetBufferSize(),
 			vs->GetInputLayout().GetAddressOf()),
 			"Failed to create input layout");
-		
+
 		auto path = CW2A(filepath);
 		TRACE("Created Vertex Shader from file: " << path.m_psz);
 		return vs;

@@ -157,7 +157,7 @@ namespace Prime
 		hr = m_d3d->m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&pBuffer);
 		THROW_HR(hr, "Failed to get back buffer");
 
-		hr = m_d3d->m_device->CreateRenderTargetView(pBuffer, NULL, &m_d3d->m_renderTargetView);
+		hr = m_d3d->m_device->CreateRenderTargetView(pBuffer, NULL, m_d3d->m_renderTargetView.GetAddressOf());
 		THROW_HR(hr, "Failed to resize and create render target view");
 
 		pBuffer->Release();
