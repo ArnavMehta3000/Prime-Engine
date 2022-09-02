@@ -146,7 +146,6 @@ namespace Prime
 			if (!(s_clientWidth == 0 || s_clientHeight == 0))
 			{
 				ResizeHandler::m_isResizeOrMoving = false;
-				WARN("Exit window move / resize dimensions: [" << s_clientWidth << ", " << s_clientHeight << "]");
 				ResizeHandler::Resize(s_clientWidth, s_clientHeight);
 			}
 			break;

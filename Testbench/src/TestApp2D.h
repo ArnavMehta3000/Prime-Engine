@@ -1,7 +1,5 @@
 #pragma once
 #include <Prime.h>
-#define SHADER_PATH std::wstring(L"../PrimeEngine/Shaders/Compiled/")
-#define ASSET_PATH  std::wstring(L"../PrimeEngine/Assets/")
 
 class TestApp2D : public Prime::PrimeApp
 {

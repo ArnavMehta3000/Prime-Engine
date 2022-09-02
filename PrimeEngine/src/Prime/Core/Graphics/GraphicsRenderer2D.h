@@ -27,6 +27,7 @@ namespace Prime
 		std::shared_ptr<IndexBuffer> m_quadIB;
 
 		std::shared_ptr<VertexShader> m_primitivesVS;
+		std::shared_ptr<VertexShader> m_instanceVS;
 		std::shared_ptr<PixelShader> m_primitivesPS;
 
 		Color m_primitiveColor;

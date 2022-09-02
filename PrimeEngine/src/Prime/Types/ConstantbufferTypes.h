@@ -2,6 +2,13 @@
 
 namespace Prime
 {
+	struct PrimitivesBuffer
+	{
+		SimpleMath::Matrix WVP;
+		UINT InstanceID;
+		float Padding[3];
+	};
+
 	struct WVPBuffer
 	{
 		SimpleMath::Matrix WorldMatrix;

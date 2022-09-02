@@ -66,6 +66,18 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>@RD /S /Q "$(OutDir)Assets"</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Deleting old assets</Message>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)Assets\" "$(OutDir)Assets\"</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying new assets to output directory</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -87,6 +99,18 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>true</Profile>
     </Link>
+    <PreBuildEvent>
+      <Command>@RD /S /Q "$(OutDir)Assets"</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Deleting old assets</Message>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)Assets\" "$(OutDir)Assets\"</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying new assets to output directory</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
