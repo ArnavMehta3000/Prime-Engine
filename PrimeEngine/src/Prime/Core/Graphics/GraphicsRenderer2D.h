@@ -15,7 +15,7 @@ namespace Prime
 		inline void SetPrimitivesColor(const Color& col) { m_primitiveColor = col; }
 
 		void DrawQuad();
-		void DrawInstancedQuads();
+		//void DrawInstancedQuads();
 
 	private:
 		void InitQuad();

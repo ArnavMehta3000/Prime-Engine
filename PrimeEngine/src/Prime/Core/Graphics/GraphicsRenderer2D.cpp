@@ -113,7 +113,7 @@ namespace Prime
 		DrawIndexed(m_quadIB);
 	}
 
-	void GraphicsRenderer2D::DrawInstancedQuads()
+	/*void GraphicsRenderer2D::DrawInstancedQuads()
 	{
 		struct InstanceData
 		{
@@ -128,5 +128,5 @@ namespace Prime
 		Bind(m_quadIB);
 		m_context->IAGetVertexBuffers(0, 2, vertInstbuffer, strides, offset);
 		m_context->DrawIndexedInstanced(m_quadIB->GetCount(), 3 * 3, 0, 0, 0);
-	}
+	}*/
 }
