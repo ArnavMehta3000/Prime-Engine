@@ -15,6 +15,7 @@ namespace Prime
 		inline void SetPrimitivesColor(const Color& col) { m_primitiveColor = col; }
 
 		void DrawQuad();
+		void DrawInstancedQuads();
 
 	private:
 		void InitQuad();
@@ -25,6 +26,8 @@ namespace Prime
 
 		std::shared_ptr<VertexBuffer> m_quadVB;
 		std::shared_ptr<IndexBuffer> m_quadIB;
+
+		//ComPtr<ID3D11Buffer> m_instanceBuffer;  TODO: For future instance rendering
 
 		std::shared_ptr<VertexShader> m_primitivesVS;
 		std::shared_ptr<VertexShader> m_instanceVS;

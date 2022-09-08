@@ -132,7 +132,6 @@
   <ItemGroup>
     <FxCompile Include="Shaders\ColorPixel.hlsl" />
     <FxCompile Include="Shaders\ColorVertex.hlsl" />
-    <FxCompile Include="Shaders\PrimitiveVertex.hlsl" />
     <FxCompile Include="Shaders\SimplePixel.hlsl" />
     <FxCompile Include="Shaders\SimpleVertex.hlsl" />
     <FxCompile Include="Shaders\TexturedPixel.hlsl" />

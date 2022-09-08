@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "GraphicsRenderer2D.h"
-#include <filesystem>
 #include "Prime/Types/VertexBufferTypes.h"
 #include "Prime/Core/Graphics/GraphicsFactory.h"
+#include <SpriteBatch.h>
 
 
 namespace Prime
@@ -31,7 +31,7 @@ namespace Prime
 	void GraphicsRenderer2D::InitQuad()
 	{
 		auto factory = Locator::ResolveService<GraphicsFactory>();
-		LOG("Directory:" << std::filesystem::current_path());
+
 		const SimpleVertex quadVerts[] =
 		{
 			{ -1.0f, 1.0f, 0.0f },
@@ -49,17 +49,58 @@ namespace Prime
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
-		D3D11_INPUT_ELEMENT_DESC instanceLayout[] =
-		{
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "SV_InstanceID", 0, DXGI_FORMAT_R32_UINT, 0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 0},
-		};
-		//m_instanceVS.reset(factory->CreateVertexShader((SHADER_PATH + L"PrimitiveVertex.cso").c_str(), instanceLayout, ARRAYSIZE(instanceLayout)));
-		
+		//D3D11_INPUT_ELEMENT_DESC instanceLayout[] =
+		//{
+		//	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		//	//{ "SV_InstanceID", 0, DXGI_FORMAT_R32_UINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 0 },
+		//	{ "INSTANCEPOS", 0, DXGI_FORMAT_R32G32B32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 0 },
+		//};
+
+		//m_instanceVS.reset(factory->CreateVertexShader(L"Shaders/PrimitiveVertex.cso", instanceLayout, ARRAYSIZE(instanceLayout)));
+
 		m_primitivesVS.reset(factory->CreateVertexShader(L"Shaders/SimpleVertex.cso", inputLayout, ARRAYSIZE(inputLayout)));
 		m_primitivesPS.reset(factory->CreatePixelShader(L"Shaders/SimplePixel.cso"));
-		
-		m_primitiveColor = Color(1.0f, 0.0f, 0.0f, 1.0f);
+
+		m_primitiveColor = Colors::Magenta;
+
+
+
+
+
+		/*struct InstanceData
+		{
+			Vector3 position = Vector3();
+		};
+
+		constexpr int rows = 3;
+		constexpr int cols = 3;
+		std::vector<InstanceData> data(rows * cols);
+
+		int i = 0;
+		for (int row = 0; row < rows; row++)
+		{
+			for (int col = 0; col < cols; col++)
+			{
+				Vector3 pos((float)row, (float)col, 0.0f);
+				data[i].position = pos;
+				i++;
+			}
+		}
+
+		D3D11_BUFFER_DESC instDesc{};
+		ZeroMemory(&instDesc, sizeof(D3D11_BUFFER_DESC));
+		instDesc.Usage = D3D11_USAGE_DEFAULT;
+		instDesc.ByteWidth = sizeof(InstanceData);
+		instDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		instDesc.CPUAccessFlags = 0;
+		instDesc.MiscFlags = 0;
+
+		D3D11_SUBRESOURCE_DATA instData{};
+		ZeroMemory(&instData, sizeof(D3D11_SUBRESOURCE_DATA));
+		instData.pSysMem = &data[0];
+		THROW_HR(m_device->CreateBuffer(&instDesc, &instData, m_instanceBuffer.GetAddressOf()), "Failed to create instance buffer");*/
+
+
 	}
 
 
@@ -69,7 +110,23 @@ namespace Prime
 		Bind(m_quadVB);
 		Bind(m_primitivesVS);
 		Bind(m_primitivesPS);
-		//m_context->DrawIndexedInstanced(m_quadIB->GetCount(), 25u, 0u, 0u, 0u);
 		DrawIndexed(m_quadIB);
+	}
+
+	void GraphicsRenderer2D::DrawInstancedQuads()
+	{
+		struct InstanceData
+		{
+			Vector3 position = Vector3();
+		};
+
+		ID3D11Buffer* vertInstbuffer[2] = { m_quadVB->GetCOM().Get(), m_instanceBuffer.Get() };
+		UINT strides[2]                 = { sizeof(SimpleVertex), sizeof(InstanceData) };
+		UINT offset[2]                  = { 0,0 };
+
+		Bind(m_instanceVS);
+		Bind(m_quadIB);
+		m_context->IAGetVertexBuffers(0, 2, vertInstbuffer, strides, offset);
+		m_context->DrawIndexedInstanced(m_quadIB->GetCount(), 3 * 3, 0, 0, 0);
 	}
 }
