@@ -111,7 +111,7 @@ public:
 		GetRenderer()->Bind(Prime::ShaderType::PixelShader, m_texture);
 		GetRenderer()->Bind(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		GetRenderer()->Bind(Prime::ShaderType::VertexShader, m_cameraCBuffer);
-		GetGraphicsEngine()->SetWireframe(true);
+		GetGraphicsEngine()->SetWireframe(false);
 	}
 
 	virtual void OnUpdate(float dt) override
@@ -225,5 +225,5 @@ private:
 
 Prime::PrimeApp* Prime::CreateApplication()
 {
-	return new TestApp2D();
+	return new TestApp();
 }
