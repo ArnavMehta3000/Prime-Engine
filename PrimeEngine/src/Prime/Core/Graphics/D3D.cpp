@@ -127,7 +127,7 @@ namespace Prime
 		
 		backBuffer->Release();
 		backBuffer = nullptr;
-
+		
 		// Setup the viewport for rendering.
 		D3D11_VIEWPORT viewport{};
 		viewport.Width = static_cast<float>(p.Window.Width);
