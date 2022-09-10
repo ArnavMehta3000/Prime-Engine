@@ -87,3 +87,36 @@ void TestApp2D::OnClose()
 {
 
 }
+
+// NOTE: How to create a white texture on the gpu and save it there
+/*
+* How to create a complete ehite texture
+* Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pWhiteTexture;
+
+    static const uint32_t s_pixel = 0xffffffff;
+
+    D3D11_SUBRESOURCE_DATA initData = { &s_pixel, sizeof(uint32_t), 0 };
+
+    D3D11_TEXTURE2D_DESC desc;
+    memset( &desc, 0, sizeof(desc) );
+    desc.Width = desc.Height = desc.MipLevels = desc.ArraySize = 1;
+    desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    desc.SampleDesc.Count = 1;
+    desc.Usage = D3D11_USAGE_IMMUTABLE;
+    desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+
+    Microsoft::WRL::ComPtr<ID3D11Texture2D> tex;
+    HRESULT hr = mDevice->CreateTexture2D( &desc, &initData, &tex );
+
+    DX::ThrowIfFailed(hr);
+
+    D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc;
+    memset( &SRVDesc, 0, sizeof( SRVDesc ) );
+    SRVDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    SRVDesc.Texture2D.MipLevels = 1;
+
+    hr = mDevice->CreateShaderResourceView( tex.Get(), &SRVDesc, &pWhiteTexture );
+
+    DX::ThrowIfFailed(hr);
+*/
