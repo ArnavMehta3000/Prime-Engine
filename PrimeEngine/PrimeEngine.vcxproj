@@ -102,6 +102,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Prime\Core\CpuTimer.h" />
     <ClInclude Include="src\Prime\Core\Graphics\GraphicsRenderer2D.h" />
     <ClInclude Include="src\Prime\Core\Graphics\ResizeHandler.h" />
     <ClInclude Include="src\Prime\Core\Cameras\OrthographicCamera.h" />
@@ -110,7 +111,6 @@
     <ClInclude Include="src\Prime\Core\Graphics\GraphicsEngine.h" />
     <ClInclude Include="src\Prime\Core\Graphics\GraphicsRenderer.h" />
     <ClInclude Include="src\Prime\Core\Graphics\Shaders.h" />
-    <ClInclude Include="src\Prime\Core\Timer.h" />
     <ClInclude Include="src\Prime\Core\ServiceLocator\Locator.h" />
     <ClInclude Include="src\Prime\Core\Graphics\D3D.h" />
     <ClInclude Include="src\Prime\Core\ServiceLocator\IService.h" />
@@ -125,6 +125,7 @@
     <ClInclude Include="src\Prime\Core\Texture2D.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Prime\Core\CpuTimer.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\GraphicsRenderer2D.cpp" />
     <ClCompile Include="src\Prime\Core\Cameras\OrthographicCamera.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\GraphicsFactory.cpp" />
@@ -133,7 +134,6 @@
     <ClCompile Include="src\Prime\Core\Graphics\ResizeHandler.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\Shaders.cpp" />
     <ClCompile Include="src\Prime\Core\Texture2D.cpp" />
-    <ClCompile Include="src\Prime\Core\Timer.cpp" />
     <ClCompile Include="src\Prime\Core\ServiceLocator\Locator.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\D3D.cpp" />
     <ClCompile Include="src\Prime\Core\ServiceLocator\IService.cpp" />

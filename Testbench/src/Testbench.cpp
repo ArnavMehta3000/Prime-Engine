@@ -225,5 +225,5 @@ private:
 
 Prime::PrimeApp* Prime::CreateApplication()
 {
-	return new TestApp();
+	return new TestApp2D();
 }

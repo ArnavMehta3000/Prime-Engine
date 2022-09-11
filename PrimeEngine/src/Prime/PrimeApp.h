@@ -3,7 +3,8 @@
 #include "Prime/Core/Graphics/GraphicsEngine.h"
 #include "Prime/Types/VertexBufferTypes.h"
 #include "Prime/Types/ConstantbufferTypes.h"
-#include "Prime/Core/Timer.h"
+#include "Prime/Core/CpuTimer.h"
+
 
 namespace Prime
 {
@@ -24,6 +25,8 @@ namespace Prime
 		void ShutDown();
 		void CreateAndAttachConsole();
 
+		void PrintDebug();
+
 	protected:
 		GraphicsEngine*   GetGraphicsEngine();
 		GraphicsFactory*  GetFactory();
@@ -34,7 +37,7 @@ namespace Prime
 		PrimeWindow* m_window;
 
 	private:
-		std::unique_ptr<Timer> m_appTimer;
+		CpuTimer m_cpuTimer;
 	};
 
 	PrimeApp* CreateApplication();

@@ -10,7 +10,8 @@ namespace Prime
 	GraphicsRenderer* PrimeApp::GetRenderer()     { return Locator::ResolveService<GraphicsRenderer>(); }
 	GraphicsRenderer2D* PrimeApp::GetRenderer2D() { return Locator::ResolveService<GraphicsRenderer2D>(); }
 
-	PrimeApp::PrimeApp()
+	PrimeApp::PrimeApp() :
+		m_cpuTimer(CpuTimer())
 	{
 		m_window = nullptr;
 		CreateAndAttachConsole();		
@@ -44,6 +45,13 @@ namespace Prime
 		LOG("Successfully attached console");
 #endif // _DEBUG
 	}
+
+	void PrimeApp::PrintDebug()
+	{
+		TRACE("")
+		TRACE("FPS:" << 1.0f / m_cpuTimer.DeltaTime());
+		TRACE("Delta Time: " << m_cpuTimer.DeltaTime());
+	}
 	
 	void Prime::PrimeApp::PreRunInit()
 	{
@@ -63,27 +71,47 @@ namespace Prime
 
 		ResizeHandler::Resize(PrimeWindow::s_clientWidth, PrimeWindow::s_clientHeight);
 		
-		m_appTimer = std::make_unique<Timer>();
 
 		LOG_LOAD("Pre-run Initialise complete");
 	}
 
 	void PrimeApp::Run()
 	{
+#ifdef _DEBUG
+		const float printTime = 5.0f;
+		float currTime = printTime;
+#endif // _DEBUG
+
+
 		PreRunInit();
 		OnStart();
 
+		m_cpuTimer.Reset();
+		m_cpuTimer.Start();
+
 		auto gfx = Locator::ResolveService<GraphicsEngine>();
-		
+
 		while (m_window->ProcessMessages())
 		{
-			float deltaTime = m_appTimer->Mark();
+			m_cpuTimer.Tick();
+
 			gfx->BeginFrame();
-			OnUpdate(deltaTime);
-			OnRender(deltaTime);
+			OnUpdate(m_cpuTimer);
+			OnRender(m_cpuTimer);
 			gfx->EndFrame();
+
+#ifdef _DEBUG
+			currTime -= m_cpuTimer;
+			if (currTime <= 0.0f)
+			{
+				PrintDebug();
+				currTime = printTime;
+			}
+#endif // DEBUG
+
 			Sleep(0);
 		}
+
 		OnClose();
 		ShutDown();
 	}

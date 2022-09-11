@@ -22,7 +22,7 @@
 #include <wrl.h>
 
 #include "Prime/Logger.h"
-#include "Prime/Core/Timer.h"
+#include "Prime/Core/CpuTimer.h"
 #include "Prime/Core/ServiceLocator/IService.h"
 #include "Prime/Core/ServiceLocator/Locator.h"
 
