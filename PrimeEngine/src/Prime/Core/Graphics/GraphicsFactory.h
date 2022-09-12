@@ -18,7 +18,6 @@ namespace Prime
 
 		void Init(ID3D11Device* device, ID3D11DeviceContext* context);
 
-		
 		VertexBuffer* CreateVertexBuffer(const void* data, UINT dataTypeSize, UINT numVertices);
 		IndexBuffer* CreateIndexBuffer(const DWORD* data, UINT numIndices);
 		
@@ -47,6 +46,7 @@ namespace Prime
 			return cBuffer;
 		}
 		
+		VertexShader* CreateVertexShaderFromFile(const VertexShader::VSCompileDesc& desc);
 		VertexShader* CreateVertexShader(LPCWSTR filepath, D3D11_INPUT_ELEMENT_DESC* desc, UINT numElements);
 		PixelShader* CreatePixelShader(LPCWSTR filepath);
 

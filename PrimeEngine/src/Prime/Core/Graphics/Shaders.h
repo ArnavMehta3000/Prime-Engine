@@ -2,9 +2,23 @@
 
 namespace Prime
 {
+	struct ShaderCompileDesc
+	{
+		LPCWSTR SourceFile;
+		LPCSTR EntryPoint;
+		LPCSTR Profile;
+	};
+
 	//------------------- Vertex Shader -------------------
 	class VertexShader
-	{		
+	{
+	public:
+		struct VSCompileDesc : public ShaderCompileDesc
+		{
+			D3D11_INPUT_ELEMENT_DESC* InputDesc;
+			UINT NumElements;
+		};
+
 	public:
 		VertexShader() {}
 		~VertexShader() {}

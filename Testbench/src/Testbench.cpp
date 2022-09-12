@@ -89,8 +89,18 @@ public:
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
+		// Test code for checking compile via hlsl file
+		/*Prime::VertexShader::VSCompileDesc colorVSDesc{};
+		colorVSDesc.SourceFile  = L"Assets/SpriteShader.hlsl";
+		colorVSDesc.EntryPoint  = "VSmain";
+		colorVSDesc.Profile     = "vs_5_0";
+		colorVSDesc.InputDesc   = colorInputLayout;
+		colorVSDesc.NumElements = ARRAYSIZE(colorInputLayout);*/
+		//m_colorVS.reset(	GetFactory()->CreateVertexShaderFromFile(colorVSDesc));
+
 		m_colorVS.reset(
 			GetFactory()->CreateVertexShader(L"Shaders/ColorVertex.cso", colorInputLayout, ARRAYSIZE(colorInputLayout)));
+		
 		m_colorPS.reset(
 			GetFactory()->CreatePixelShader(L"Shaders/ColorPixel.cso"));	
 
@@ -225,5 +235,5 @@ private:
 
 Prime::PrimeApp* Prime::CreateApplication()
 {
-	return new TestApp2D();
+	return new TestApp();
 }

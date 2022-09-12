@@ -64,10 +64,9 @@ namespace Prime
 		d3dInit.Window.Width  = PrimeWindow::s_clientWidth;
 		d3dInit.Window.Height = PrimeWindow::s_clientHeight;
 		d3dInit.Window.Handle = m_window->GetHWND();
-		d3dInit.VSync         = false;
+		d3dInit.VSync         = true;
 
-		auto gfx = Locator::ResolveService<GraphicsEngine>();
-		gfx->InitCore(d3dInit);
+		Locator::ResolveService<GraphicsEngine>()->InitCore(d3dInit);
 
 		ResizeHandler::Resize(PrimeWindow::s_clientWidth, PrimeWindow::s_clientHeight);
 		
@@ -96,8 +95,8 @@ namespace Prime
 			m_cpuTimer.Tick();
 
 			gfx->BeginFrame();
-			OnUpdate(m_cpuTimer);
-			OnRender(m_cpuTimer);
+			OnUpdate((float)m_cpuTimer);
+			OnRender((float)m_cpuTimer);
 			gfx->EndFrame();
 
 #ifdef _DEBUG

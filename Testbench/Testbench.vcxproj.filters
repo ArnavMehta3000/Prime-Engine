@@ -37,6 +37,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\Testvertex.hlsl" />
+    <FxCompile Include="Assets\SpriteShader.hlsl" />
   </ItemGroup>
 </Project>
