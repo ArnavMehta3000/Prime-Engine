@@ -89,21 +89,38 @@ public:
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
-		m_colorVS.reset(
-			GetFactory()->CreateVertexShader(L"Shaders/ColorVertex.cso", colorInputLayout, ARRAYSIZE(colorInputLayout)));
-		m_colorPS.reset(
-			GetFactory()->CreatePixelShader(L"Shaders/ColorPixel.cso"));	
+		Prime::VertexShader::VSCompileDesc colorVSDesc{};
+		colorVSDesc.SourceFile  = L"Shaders/ColorVertex.hlsl";
+		colorVSDesc.EntryPoint  = "main";
+		colorVSDesc.Profile	    = Prime::VertexShader::GetProfile();
+		colorVSDesc.InputDesc   = colorInputLayout;
+		colorVSDesc.NumElements = ARRAYSIZE(colorInputLayout);
 
-		m_textureVS.reset(
-			GetFactory()->CreateVertexShader(L"Shaders/TexturedVertex.cso", texturedInputLayout, ARRAYSIZE(texturedInputLayout)));
-		m_texturePS.reset(
-			GetFactory()->CreatePixelShader(L"Shaders/TexturedPixel.cso"));
+		Prime::PixelShader::PSCompileDesc colorPSDesc{};
+		colorPSDesc.SourceFile = L"Shaders/ColorPixel.hlsl";
+		colorPSDesc.EntryPoint = "main";
+		colorPSDesc.Profile    = Prime::PixelShader::GetProfile();
 
-		m_cameraCBuffer.reset(
-			GetFactory()->CreateConstantBuffer<Prime::WVPBuffer>());
+		Prime::VertexShader::VSCompileDesc textureVSDesc{};
+		textureVSDesc.SourceFile  = L"Shaders/TexturedVertex.hlsl";
+		textureVSDesc.EntryPoint  = "main";
+		textureVSDesc.Profile     = Prime::VertexShader::GetProfile();
+		textureVSDesc.InputDesc   = texturedInputLayout;
+		textureVSDesc.NumElements = ARRAYSIZE(texturedInputLayout);
 
-		m_texture.reset(
-			GetFactory()->CreateTextureFromFile(L"Assets/Test.png",	D3D11_USAGE_DEFAULT, D3D10_BIND_SHADER_RESOURCE, 0, 0, WIC_LOADER_DEFAULT));
+		Prime::PixelShader::PSCompileDesc texturePSDesc{};
+		texturePSDesc.SourceFile = L"Shaders/TexturedPixel.hlsl";
+		texturePSDesc.EntryPoint = "main";
+		texturePSDesc.Profile    = Prime::PixelShader::GetProfile();
+
+		m_colorVS.reset(	GetFactory()->CreateVertexShaderFromFile(colorVSDesc));
+		m_colorPS.reset(	GetFactory()->CreatePixelShaderFromFile(colorPSDesc));	
+		m_textureVS.reset(GetFactory()->CreateVertexShaderFromFile(textureVSDesc));
+		m_texturePS.reset(GetFactory()->CreatePixelShaderFromFile(texturePSDesc));
+
+		m_cameraCBuffer.reset(GetFactory()->CreateConstantBuffer<Prime::WVPBuffer>());
+
+		m_texture.reset(	GetFactory()->CreateTextureFromFile(L"Assets/Test.png",	D3D11_USAGE_DEFAULT, D3D10_BIND_SHADER_RESOURCE, 0, 0, WIC_LOADER_DEFAULT));
 
 
 		GetRenderer()->Bind(Prime::ShaderType::PixelShader, Prime::GraphicsRenderer::s_samplerLinearWrap);

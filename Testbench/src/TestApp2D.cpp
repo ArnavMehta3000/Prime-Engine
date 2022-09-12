@@ -39,10 +39,6 @@ void TestApp2D::OnUpdate(float dt)
 	if (GetAsyncKeyState(VK_NEXT))
 		z -= cameraRotSpeed * dt;
 
-	if (GetAsyncKeyState(VK_CONTROL))
-		scaleCube += 1.0f * dt;
-	if (GetAsyncKeyState(VK_SHIFT))
-		scaleCube -= 1.0f * dt;
 
 	Vector3 camPos = m_orthoCam.GetPosition() + Vector3(x, y, 0.0f);
 	m_orthoCam.SetPosition(camPos);
@@ -76,7 +72,7 @@ void TestApp2D::OnRender(float dt)
 	GetRenderer2D()->SetPrimitivesColor(Color(Colors::DarkMagenta));
 	col = GetRenderer2D()->GetPrimitivesColor();
 	m_pixelCBuffer->Data = { col.R(), col.G() , col.B() , col.A() };
-	m_cameraCBuffer->Data.WorldMatrix = Matrix::CreateTranslation(Vector3(sin(t) * 2.0f, 0.0f, 0.0f)).Transpose();
+	m_cameraCBuffer->Data.WorldMatrix = Matrix::CreateTranslation(Vector3(sin(t) * 2.0f, 0.0f, 1.0f)).Transpose();
 
 	GetRenderer()->UpdateConstantBuffer(m_pixelCBuffer);
 	GetRenderer2D()->UpdateConstantBuffer(m_cameraCBuffer);

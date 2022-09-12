@@ -2,12 +2,28 @@
 
 namespace Prime
 {
+	struct ShaderCompileDesc
+	{
+		LPCWSTR SourceFile;
+		LPCSTR EntryPoint;
+		LPCSTR Profile;
+	};
+
 	//------------------- Vertex Shader -------------------
 	class VertexShader
-	{		
+	{
+	public:
+		struct VSCompileDesc : public ShaderCompileDesc
+		{
+			D3D11_INPUT_ELEMENT_DESC* InputDesc;
+			UINT NumElements;
+		};
+
 	public:
 		VertexShader() {}
 		~VertexShader() {}
+
+		static LPCSTR GetProfile() { return (LPCSTR)"vs_5_0"; }
 
 		void Release()
 		{
@@ -34,8 +50,15 @@ namespace Prime
 	class PixelShader
 	{
 	public:
+		struct PSCompileDesc : public ShaderCompileDesc
+		{
+			// Empty struct with same data as base shader description
+		};
+	public:
 		PixelShader() {}
 		~PixelShader() {}
+
+		static LPCSTR GetProfile() { return (LPCSTR)"ps_5_0"; }
 
 		void Release()
 		{

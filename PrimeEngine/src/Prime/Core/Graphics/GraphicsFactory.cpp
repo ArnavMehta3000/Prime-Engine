@@ -86,6 +86,55 @@ namespace Prime
 		return texture;
 	}
 
+	VertexShader* GraphicsFactory::CreateVertexShaderFromFile(const VertexShader::VSCompileDesc& desc)
+	{
+		UINT flags = D3DCOMPILE_ENABLE_STRICTNESS;
+#if defined( DEBUG ) || defined( _DEBUG )
+		flags |= D3DCOMPILE_DEBUG;
+#endif
+
+		const D3D_SHADER_MACRO defines[] = { NULL };
+
+		VertexShader* vs = new VertexShader;
+
+		ID3DBlob* errorBlob;
+
+		HRESULT hr = D3DCompileFromFile(
+			desc.SourceFile,
+			defines,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE,
+			desc.EntryPoint,
+			desc.Profile,
+			flags,
+			0,
+			vs->GetBlob().ReleaseAndGetAddressOf(),
+			&errorBlob
+		);
+
+		auto path = CW2A(desc.SourceFile);
+
+		if (errorBlob)
+		{
+			THROW_HR(hr, "Failed to compile (create blob) vertex shader from file: " << path.m_psz);
+			FATAL((char*)errorBlob->GetBufferPointer());
+			errorBlob->Release();
+		}
+
+		THROW_HR(m_device->CreateVertexShader(vs->GetBlob()->GetBufferPointer(), vs->GetBlob()->GetBufferSize(), nullptr, vs->GetShader().GetAddressOf()),
+			"Failed to create vertex shader object");
+
+		THROW_HR(m_device->CreateInputLayout(
+			desc.InputDesc,
+			desc.NumElements,
+			vs->GetBlob()->GetBufferPointer(),
+			vs->GetBlob()->GetBufferSize(),
+			vs->GetInputLayout().GetAddressOf()),
+			"Failed to create input layout");
+
+		TRACE("Created Vertex Shader from file: " << path.m_psz);
+		return vs;
+	}
+
 	VertexShader* GraphicsFactory::CreateVertexShader(LPCWSTR filepath, D3D11_INPUT_ELEMENT_DESC* desc, UINT numElements)
 	{
 		VertexShader* vs = new VertexShader;
@@ -106,6 +155,48 @@ namespace Prime
 		auto path = CW2A(filepath);
 		TRACE("Created Vertex Shader from file: " << path.m_psz);
 		return vs;
+	}
+
+	PixelShader* GraphicsFactory::CreatePixelShaderFromFile(const PixelShader::PSCompileDesc& desc)
+	{
+		UINT flags = D3DCOMPILE_ENABLE_STRICTNESS;
+#if defined(DEBUG) || defined(_DEBUG)
+		flags |= D3DCOMPILE_DEBUG;
+#endif
+
+		const D3D_SHADER_MACRO defines[] = { NULL };
+
+		PixelShader* ps = new PixelShader;
+
+		ID3DBlob* errorBlob;
+
+		HRESULT hr = D3DCompileFromFile(
+			desc.SourceFile,
+			defines,
+			D3D_COMPILE_STANDARD_FILE_INCLUDE,
+			desc.EntryPoint,
+			desc.Profile,
+			flags,
+			0,
+			ps->GetBlob().ReleaseAndGetAddressOf(),
+			&errorBlob
+		);
+
+		auto path = CW2A(desc.SourceFile);
+
+
+		if (errorBlob)
+		{
+			THROW_HR(hr, "Failed to compile (create blob) pixel shader from file: " << path.m_psz << std::endl);
+			FATAL((char*)errorBlob->GetBufferPointer());
+			errorBlob->Release();
+		}
+
+		THROW_HR(m_device->CreatePixelShader(ps->GetBlob()->GetBufferPointer(), ps->GetBlob()->GetBufferSize(), nullptr, ps->GetShader().GetAddressOf()),
+			"Failed to create pixel shader object");
+
+		TRACE("Created Pixel Shader from file: " << path.m_psz);
+		return ps;
 	}
 
 	PixelShader* GraphicsFactory::CreatePixelShader(LPCWSTR filepath)

@@ -26,7 +26,6 @@ private:
 	float x = 0.0f;
 	float y = 0.0f;
 	float z = 0.0f;
-	float scaleCube = 0.5f;
 
 	Prime::OrthographicCamera m_orthoCam;
 };

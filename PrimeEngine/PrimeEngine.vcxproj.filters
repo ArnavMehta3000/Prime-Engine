@@ -129,12 +129,4 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Shaders\ColorPixel.hlsl" />
-    <FxCompile Include="Shaders\ColorVertex.hlsl" />
-    <FxCompile Include="Shaders\SimplePixel.hlsl" />
-    <FxCompile Include="Shaders\SimpleVertex.hlsl" />
-    <FxCompile Include="Shaders\TexturedPixel.hlsl" />
-    <FxCompile Include="Shaders\TexturedVertex.hlsl" />
-  </ItemGroup>
 </Project>

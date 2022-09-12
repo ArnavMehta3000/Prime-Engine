@@ -9,6 +9,7 @@ namespace Prime
 	void ResizeHandler::RegisterFunction(std::function<void(int, int)> func)
 	{
 		s_resizeFunctions.push_back(func);
+		TRACE("Registered Resize functions count: " << s_resizeFunctions.size());
 	}
 
 	void ResizeHandler::Resize(int w, int h)
