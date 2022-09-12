@@ -39,10 +39,6 @@ void TestApp2D::OnUpdate(float dt)
 	if (GetAsyncKeyState(VK_NEXT))
 		z -= cameraRotSpeed * dt;
 
-	if (GetAsyncKeyState(VK_CONTROL))
-		scaleCube += 1.0f * dt;
-	if (GetAsyncKeyState(VK_SHIFT))
-		scaleCube -= 1.0f * dt;
 
 	Vector3 camPos = m_orthoCam.GetPosition() + Vector3(x, y, 0.0f);
 	m_orthoCam.SetPosition(camPos);

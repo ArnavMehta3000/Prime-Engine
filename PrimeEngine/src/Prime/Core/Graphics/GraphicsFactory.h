@@ -48,6 +48,8 @@ namespace Prime
 		
 		VertexShader* CreateVertexShaderFromFile(const VertexShader::VSCompileDesc& desc);
 		VertexShader* CreateVertexShader(LPCWSTR filepath, D3D11_INPUT_ELEMENT_DESC* desc, UINT numElements);
+
+		PixelShader* CreatePixelShaderFromFile(const PixelShader::PSCompileDesc& desc);
 		PixelShader* CreatePixelShader(LPCWSTR filepath);
 
 	private:

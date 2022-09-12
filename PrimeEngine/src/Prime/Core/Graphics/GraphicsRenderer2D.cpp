@@ -58,8 +58,20 @@ namespace Prime
 
 		//m_instanceVS.reset(factory->CreateVertexShader(L"Shaders/PrimitiveVertex.cso", instanceLayout, ARRAYSIZE(instanceLayout)));
 
-		m_primitivesVS.reset(factory->CreateVertexShader(L"Shaders/SimpleVertex.cso", inputLayout, ARRAYSIZE(inputLayout)));
-		m_primitivesPS.reset(factory->CreatePixelShader(L"Shaders/SimplePixel.cso"));
+		VertexShader::VSCompileDesc vsDesc{};
+		vsDesc.SourceFile  = L"Shaders/SimpleVertex.hlsl";
+		vsDesc.EntryPoint  = "main";
+		vsDesc.Profile     = Prime::VertexShader::GetProfile();
+		vsDesc.InputDesc   = inputLayout;
+		vsDesc.NumElements = ARRAYSIZE(inputLayout);
+
+		PixelShader::PSCompileDesc psDesc{};
+		psDesc.SourceFile = L"Shaders/SimplePixel.hlsl";
+		psDesc.EntryPoint = "main";
+		psDesc.Profile    = Prime::PixelShader::GetProfile();
+
+		m_primitivesVS.reset(factory->CreateVertexShaderFromFile(vsDesc));
+		m_primitivesPS.reset(factory->CreatePixelShaderFromFile(psDesc));
 
 		m_primitiveColor = Colors::Magenta;
 

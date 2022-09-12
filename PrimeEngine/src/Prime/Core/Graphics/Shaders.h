@@ -23,6 +23,8 @@ namespace Prime
 		VertexShader() {}
 		~VertexShader() {}
 
+		static LPCSTR GetProfile() { return (LPCSTR)"vs_5_0"; }
+
 		void Release()
 		{
 			m_blob->Release();
@@ -48,8 +50,15 @@ namespace Prime
 	class PixelShader
 	{
 	public:
+		struct PSCompileDesc : public ShaderCompileDesc
+		{
+			// Empty struct with same data as base shader description
+		};
+	public:
 		PixelShader() {}
 		~PixelShader() {}
+
+		static LPCSTR GetProfile() { return (LPCSTR)"ps_5_0"; }
 
 		void Release()
 		{
