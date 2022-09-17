@@ -24,6 +24,7 @@ namespace Prime
 		~VertexShader() {}
 
 		static LPCSTR GetProfile() { return (LPCSTR)"vs_5_0"; }
+		static LPCSTR GetDeafultEntryPoint() { return (LPCSTR)"VSmain"; }
 
 		void Release()
 		{
@@ -59,6 +60,7 @@ namespace Prime
 		~PixelShader() {}
 
 		static LPCSTR GetProfile() { return (LPCSTR)"ps_5_0"; }
+		static LPCSTR GetDeafultEntryPoint() { return (LPCSTR)"PSmain"; }
 
 		void Release()
 		{

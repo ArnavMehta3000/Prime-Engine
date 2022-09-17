@@ -43,5 +43,7 @@
     <FxCompile Include="Shaders\SimpleVertex.hlsl" />
     <FxCompile Include="Shaders\TexturedPixel.hlsl" />
     <FxCompile Include="Shaders\TexturedVertex.hlsl" />
+    <FxCompile Include="Shaders\PrimitiveVS.hlsl" />
+    <FxCompile Include="Shaders\PrimitivePS.hlsl" />
   </ItemGroup>
 </Project>

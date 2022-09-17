@@ -17,14 +17,14 @@ void TestApp2D::OnStart()
 
 	GetRenderer2D()->Bind(Prime::ShaderType::VertexShader, m_cameraCBuffer);
 	GetRenderer2D()->Bind(Prime::ShaderType::PixelShader, m_pixelCBuffer);
-
+	z = m_orthoCam.GetOrthoScale();
 	GetGraphicsEngine()->SetWireframe(0);
 }
 
 void TestApp2D::OnUpdate(float dt)
 {
 	const float cameraMoveSpeed = 5.0f;
-	const float cameraRotSpeed = 50.0f;
+	const float cameraRotSpeed = 20.0f;
 	
 	if (GetAsyncKeyState(VK_LEFT))
 		x += cameraMoveSpeed * dt;
@@ -42,9 +42,9 @@ void TestApp2D::OnUpdate(float dt)
 
 	Vector3 camPos = m_orthoCam.GetPosition() + Vector3(x, y, 0.0f);
 	m_orthoCam.SetPosition(camPos);
-	m_orthoCam.SetRotation(z);
-	x = y = 0;
+	m_orthoCam.SetOrthoScale(z);
 
+	x = y = 0;
 
 	m_cameraCBuffer->Data.WorldMatrix      = Matrix::Identity.Transpose();
 	m_cameraCBuffer->Data.ViewMatrix       = m_orthoCam.GetViewMatrix().Transpose();
@@ -56,27 +56,23 @@ void TestApp2D::OnUpdate(float dt)
 void TestApp2D::OnRender(float dt)
 {
 	static float t;
-	t += dt;
-	//GetRenderer2D()->DrawInstancedQuads();
-	GetRenderer2D()->SetPrimitivesColor(Color(Colors::AliceBlue));
-	auto col = GetRenderer2D()->GetPrimitivesColor();
-	m_pixelCBuffer->Data = { col.R(), col.G() , col.B() , col.A()	 };
-	m_cameraCBuffer->Data.WorldMatrix = Matrix::CreateTranslation(Vector3(cos(t) * 2.0f, 0.0f, 0.0f)).Transpose();
-
-	GetRenderer()->UpdateConstantBuffer(m_pixelCBuffer);
-	GetRenderer2D()->UpdateConstantBuffer(m_cameraCBuffer);
-	GetRenderer2D()->DrawQuad();
+	t += dt;\
+	GetRenderer2D()->BeginQuadBatch(m_orthoCam.GetViewMatrix(), m_orthoCam.GetProjectionMatrix());
+	int rows = 10;
+	int cols = 10;
+	Vector3 pos;
+	for (int r = -rows; r < rows; r++)
+	{
+		for (int c = -cols; c < cols; c++)
+		{
+			Matrix world = Matrix::CreateScale(0.5f) * Matrix::CreateTranslation(Vector3((float)r, (float)c, 0.0f));
+			float red = (float)r / (float)rows;
+			float green = (float)c / (float)cols;
+			Color color = Color(abs(red), abs(green), 0.0f, 1.0f);
+			GetRenderer2D()->DrawQuadBatch(world, color);
+		}
+	}
 	
-
-
-	GetRenderer2D()->SetPrimitivesColor(Color(Colors::DarkMagenta));
-	col = GetRenderer2D()->GetPrimitivesColor();
-	m_pixelCBuffer->Data = { col.R(), col.G() , col.B() , col.A() };
-	m_cameraCBuffer->Data.WorldMatrix = Matrix::CreateTranslation(Vector3(sin(t) * 2.0f, 0.0f, 1.0f)).Transpose();
-
-	GetRenderer()->UpdateConstantBuffer(m_pixelCBuffer);
-	GetRenderer2D()->UpdateConstantBuffer(m_cameraCBuffer);
-	GetRenderer2D()->DrawQuad();
 }
 
 void TestApp2D::OnClose()

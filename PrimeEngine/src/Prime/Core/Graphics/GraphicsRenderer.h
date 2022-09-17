@@ -36,15 +36,15 @@ namespace Prime
 		void Bind(const std::shared_ptr<PixelShader>& pixelShader);
 
 		template <typename T>
-		void Bind(ShaderType shaderType, const std::shared_ptr<ConstantBuffer<T>>& constantBuffer)
+		void Bind(ShaderType shaderType, const std::shared_ptr<ConstantBuffer<T>>& constantBuffer, UINT cbRegister = 0)
 		{
 			switch (shaderType)
 			{
 			case Prime::ShaderType::VertexShader:
-				m_context->VSSetConstantBuffers(0, 1, constantBuffer->GetCOM().GetAddressOf());
+				m_context->VSSetConstantBuffers(cbRegister, 1, constantBuffer->GetCOM().GetAddressOf());
 				return;
 			case Prime::ShaderType::PixelShader:
-				m_context->PSSetConstantBuffers(0, 1, constantBuffer->GetCOM().GetAddressOf());
+				m_context->PSSetConstantBuffers(cbRegister, 1, constantBuffer->GetCOM().GetAddressOf());
 				return;
 			}
 		}

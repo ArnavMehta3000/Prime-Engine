@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "GraphicsRenderer2D.h"
 #include "Prime/Types/VertexBufferTypes.h"
+#include "Prime/Types/ConstantbufferTypes.h"
 #include "Prime/Core/Graphics/GraphicsFactory.h"
 #include <SpriteBatch.h>
 
@@ -43,102 +44,51 @@ namespace Prime
 
 		DWORD quadIndices[] = { 0, 1, 2, 2, 1, 3 };
 		m_quadIB.reset(factory->CreateIndexBuffer(quadIndices, ARRAYSIZE(quadIndices)));
-
-		D3D11_INPUT_ELEMENT_DESC inputLayout[] =
+		D3D11_INPUT_ELEMENT_DESC primitiveInputLayout[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
-		//D3D11_INPUT_ELEMENT_DESC instanceLayout[] =
-		//{
-		//	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		//	//{ "SV_InstanceID", 0, DXGI_FORMAT_R32_UINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 0 },
-		//	{ "INSTANCEPOS", 0, DXGI_FORMAT_R32G32B32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 0 },
-		//};
+		VertexShader::VSCompileDesc vd{}; 
+		vd.SourceFile  = L"Shaders/PrimitiveVS.hlsl";
+		vd.EntryPoint  = Prime::VertexShader::GetDeafultEntryPoint();
+		vd.Profile     = Prime::VertexShader::GetProfile();
+		vd.InputDesc   = primitiveInputLayout;
+		vd.NumElements = ARRAYSIZE(primitiveInputLayout);
+		m_primitiveVS.reset(factory->CreateVertexShaderFromFile(vd));
 
-		//m_instanceVS.reset(factory->CreateVertexShader(L"Shaders/PrimitiveVertex.cso", instanceLayout, ARRAYSIZE(instanceLayout)));
-
-		VertexShader::VSCompileDesc vsDesc{};
-		vsDesc.SourceFile  = L"Shaders/SimpleVertex.hlsl";
-		vsDesc.EntryPoint  = "main";
-		vsDesc.Profile     = Prime::VertexShader::GetProfile();
-		vsDesc.InputDesc   = inputLayout;
-		vsDesc.NumElements = ARRAYSIZE(inputLayout);
-
-		PixelShader::PSCompileDesc psDesc{};
-		psDesc.SourceFile = L"Shaders/SimplePixel.hlsl";
-		psDesc.EntryPoint = "main";
-		psDesc.Profile    = Prime::PixelShader::GetProfile();
-
-		m_primitivesVS.reset(factory->CreateVertexShaderFromFile(vsDesc));
-		m_primitivesPS.reset(factory->CreatePixelShaderFromFile(psDesc));
-
-		m_primitiveColor = Colors::Magenta;
+		PixelShader::PSCompileDesc pd{};
+		pd.SourceFile = L"Shaders/PrimitivePS.hlsl";
+		pd.EntryPoint = Prime::PixelShader::GetDeafultEntryPoint();
+		pd.Profile    = Prime::PixelShader::GetProfile();
+		m_primitivePS.reset(factory->CreatePixelShaderFromFile(pd));
 
 
-
-
-
-		/*struct InstanceData
-		{
-			Vector3 position = Vector3();
-		};
-
-		constexpr int rows = 3;
-		constexpr int cols = 3;
-		std::vector<InstanceData> data(rows * cols);
-
-		int i = 0;
-		for (int row = 0; row < rows; row++)
-		{
-			for (int col = 0; col < cols; col++)
-			{
-				Vector3 pos((float)row, (float)col, 0.0f);
-				data[i].position = pos;
-				i++;
-			}
-		}
-
-		D3D11_BUFFER_DESC instDesc{};
-		ZeroMemory(&instDesc, sizeof(D3D11_BUFFER_DESC));
-		instDesc.Usage = D3D11_USAGE_DEFAULT;
-		instDesc.ByteWidth = sizeof(InstanceData);
-		instDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		instDesc.CPUAccessFlags = 0;
-		instDesc.MiscFlags = 0;
-
-		D3D11_SUBRESOURCE_DATA instData{};
-		ZeroMemory(&instData, sizeof(D3D11_SUBRESOURCE_DATA));
-		instData.pSysMem = &data[0];
-		THROW_HR(m_device->CreateBuffer(&instDesc, &instData, m_instanceBuffer.GetAddressOf()), "Failed to create instance buffer");*/
-
-
+		cbFrame.reset(factory->CreateConstantBuffer<PrimitivesFrameBufferVS>());
+		cbObject.reset(factory->CreateConstantBuffer<PrimitivesObjectBufferVS>());
 	}
 
-
-	void GraphicsRenderer2D::DrawQuad()
+	void GraphicsRenderer2D::BeginQuadBatch(const Matrix& view, const Matrix& proj)
 	{
+		cbFrame->Data.ViewMatrix       = view.Transpose();
+		cbFrame->Data.ProjectionMatrix = proj.Transpose();
+
+		UpdateConstantBuffer(cbFrame);
+
+		Bind(ShaderType::VertexShader, cbFrame, 0);
+		Bind(ShaderType::VertexShader, cbObject, 1);
+		Bind(m_primitiveVS);
+		Bind(m_primitivePS);
 		Bind(m_quadIB);
 		Bind(m_quadVB);
-		Bind(m_primitivesVS);
-		Bind(m_primitivesPS);
+	}
+	void GraphicsRenderer2D::DrawQuadBatch(const Matrix& world, const Color& col)
+	{
+		cbObject->Data.WorldMatrix = world.Transpose();
+		cbObject->Data.Color       = col;
+
+		UpdateConstantBuffer(cbObject);
 		DrawIndexed(m_quadIB);
 	}
-
-	/*void GraphicsRenderer2D::DrawInstancedQuads()
-	{
-		struct InstanceData
-		{
-			Vector3 position = Vector3();
-		};
-
-		ID3D11Buffer* vertInstbuffer[2] = { m_quadVB->GetCOM().Get(), m_instanceBuffer.Get() };
-		UINT strides[2]                 = { sizeof(SimpleVertex), sizeof(InstanceData) };
-		UINT offset[2]                  = { 0,0 };
-
-		Bind(m_instanceVS);
-		Bind(m_quadIB);
-		m_context->IAGetVertexBuffers(0, 2, vertInstbuffer, strides, offset);
-		m_context->DrawIndexedInstanced(m_quadIB->GetCount(), 3 * 3, 0, 0, 0);
-	}*/
 }

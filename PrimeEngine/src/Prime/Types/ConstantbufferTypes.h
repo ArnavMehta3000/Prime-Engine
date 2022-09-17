@@ -2,11 +2,16 @@
 
 namespace Prime
 {
-	struct PrimitivesBuffer
+	struct PrimitivesFrameBufferVS
 	{
-		SimpleMath::Matrix WVP;
-		UINT InstanceID;
-		float Padding[3];
+		SimpleMath::Matrix ViewMatrix;
+		SimpleMath::Matrix ProjectionMatrix;
+	};
+
+	struct PrimitivesObjectBufferVS
+	{
+		SimpleMath::Matrix WorldMatrix;
+		SimpleMath::Color Color;
 	};
 
 	struct WVPBuffer

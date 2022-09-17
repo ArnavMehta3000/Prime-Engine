@@ -3,6 +3,9 @@
 
 namespace Prime
 {
+	struct PrimitivesFrameBufferVS;
+	struct PrimitivesObjectBufferVS;
+
 	class GraphicsRenderer2D : public GraphicsRenderer
 	{
 	public:
@@ -11,10 +14,8 @@ namespace Prime
 
 		void Init2D(ID3D11Device* device, ID3D11DeviceContext* context);
 
-		inline Color GetPrimitivesColor() { return m_primitiveColor; }
-		inline void SetPrimitivesColor(const Color& col) { m_primitiveColor = col; }
-
-		void DrawQuad();
+		void BeginQuadBatch(const Matrix& view, const Matrix& proj);
+		void DrawQuadBatch(const Matrix& world, const Color& col);
 		//void DrawInstancedQuads();
 
 	private:
@@ -27,13 +28,11 @@ namespace Prime
 		std::shared_ptr<VertexBuffer> m_quadVB;
 		std::shared_ptr<IndexBuffer> m_quadIB;
 
-		//ComPtr<ID3D11Buffer> m_instanceBuffer;  TODO: For future instance rendering
+		std::shared_ptr<VertexShader> m_primitiveVS;
+		std::shared_ptr<PixelShader> m_primitivePS;
 
-		std::shared_ptr<VertexShader> m_primitivesVS;
-		std::shared_ptr<VertexShader> m_instanceVS;
-		std::shared_ptr<PixelShader> m_primitivesPS;
-
-		Color m_primitiveColor;
+		std::shared_ptr<ConstantBuffer<PrimitivesFrameBufferVS>> cbFrame;
+		std::shared_ptr<ConstantBuffer<PrimitivesObjectBufferVS>> cbObject;
 	};
 }
 
