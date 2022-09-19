@@ -1,5 +1,6 @@
 #pragma once
 #include "Prime/Core/PrimeWindow.h"
+#include "Prime/Core/Input.h"
 #include "Prime/Core/Graphics/GraphicsEngine.h"
 #include "Prime/Types/VertexBufferTypes.h"
 #include "Prime/Types/ConstantbufferTypes.h"
@@ -35,6 +36,7 @@ namespace Prime
 
 	protected:
 		PrimeWindow* m_window;
+		Input* m_input;
 
 	private:
 		CpuTimer m_cpuTimer;

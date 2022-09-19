@@ -1,5 +1,6 @@
 #pragma once
 #include "Prime/PrimeApp.h"
+#include "Prime/Core/Input.h"
 #include "Prime/Logger.h"
 #include "Prime/Core/Graphics/ResizeHandler.h"
 

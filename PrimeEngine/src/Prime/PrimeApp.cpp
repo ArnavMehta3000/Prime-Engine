@@ -59,6 +59,9 @@ namespace Prime
 		
 		m_window = new PrimeWindow(800, 600, true);
 		Locator::RegisterService<GraphicsEngine>();
+		Locator::RegisterService<Input>();
+		m_input = Locator::ResolveService<Input>();
+
 
 		D3D_INIT_PARAMS d3dInit{};
 		d3dInit.Window.Width  = PrimeWindow::s_clientWidth;
@@ -93,7 +96,7 @@ namespace Prime
 		while (m_window->ProcessMessages())
 		{
 			m_cpuTimer.Tick();
-
+			m_input->Poll();
 			gfx->BeginFrame();
 			OnUpdate((float)m_cpuTimer);
 			OnRender((float)m_cpuTimer);

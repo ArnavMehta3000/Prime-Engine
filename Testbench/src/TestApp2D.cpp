@@ -25,6 +25,7 @@ void TestApp2D::OnUpdate(float dt)
 {
 	const float cameraMoveSpeed = 5.0f;
 	const float cameraRotSpeed = 20.0f;
+
 	
 	if (GetAsyncKeyState(VK_LEFT))
 		x += cameraMoveSpeed * dt;

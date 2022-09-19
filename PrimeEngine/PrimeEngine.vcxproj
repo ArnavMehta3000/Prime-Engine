@@ -111,6 +111,7 @@
     <ClInclude Include="src\Prime\Core\Graphics\GraphicsEngine.h" />
     <ClInclude Include="src\Prime\Core\Graphics\GraphicsRenderer.h" />
     <ClInclude Include="src\Prime\Core\Graphics\Shaders.h" />
+    <ClInclude Include="src\Prime\Core\Input.h" />
     <ClInclude Include="src\Prime\Core\ServiceLocator\Locator.h" />
     <ClInclude Include="src\Prime\Core\Graphics\D3D.h" />
     <ClInclude Include="src\Prime\Core\ServiceLocator\IService.h" />
@@ -133,6 +134,7 @@
     <ClCompile Include="src\Prime\Core\Graphics\GraphicsRenderer.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\ResizeHandler.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\Shaders.cpp" />
+    <ClCompile Include="src\Prime\Core\Input.cpp" />
     <ClCompile Include="src\Prime\Core\Texture2D.cpp" />
     <ClCompile Include="src\Prime\Core\ServiceLocator\Locator.cpp" />
     <ClCompile Include="src\Prime\Core\Graphics\D3D.cpp" />
