@@ -16,7 +16,6 @@ namespace Prime
 
 		void BeginQuadBatch(const Matrix& view, const Matrix& proj);
 		void DrawQuadBatch(const Matrix& world, const Color& col);
-		//void DrawInstancedQuads();
 
 	private:
 		void InitQuad();
@@ -24,6 +23,8 @@ namespace Prime
 	private:
 		ID3D11Device* m_device;
 		ID3D11DeviceContext* m_context;
+
+		ComPtr<ID3D11ShaderResourceView> m_whiteTexture;
 
 		std::shared_ptr<VertexBuffer> m_quadVB;
 		std::shared_ptr<IndexBuffer> m_quadIB;

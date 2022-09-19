@@ -33,21 +33,22 @@ namespace Prime
 	{
 		auto factory = Locator::ResolveService<GraphicsFactory>();
 
-		const SimpleVertex quadVerts[] =
+		const TexturedVertex quadVerts[] =
 		{
-			{ -1.0f, 1.0f, 0.0f },
-			{  1.0f, 1.0f, 0.0f },
-			{ -1.0f,-1.0f, 0.0f },
-			{  1.0f,-1.0f, 0.0f },
+			{ -1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+			{  1.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+			{ -1.0f,-1.0f, 0.0f, 0.0f, 0.0f },
+			{  1.0f,-1.0f, 0.0f, 1.0f, 0.0f },
 		};
-		m_quadVB.reset(factory->CreateVertexBuffer(quadVerts, UINT(sizeof(SimpleVertex)), ARRAYSIZE(quadVerts)));
+		m_quadVB.reset(factory->CreateVertexBuffer(quadVerts, UINT(sizeof(TexturedVertex)), ARRAYSIZE(quadVerts)));
 
 		DWORD quadIndices[] = { 0, 1, 2, 2, 1, 3 };
 		m_quadIB.reset(factory->CreateIndexBuffer(quadIndices, ARRAYSIZE(quadIndices)));
 		D3D11_INPUT_ELEMENT_DESC primitiveInputLayout[] =
 		{
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "POSITION",      0, DXGI_FORMAT_R32G32B32_FLOAT, 0,                            0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD",      0, DXGI_FORMAT_R32G32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			//{ "SV_InstanceID", 0, DXGI_FORMAT_R32_FLOAT,       0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
 		VertexShader::VSCompileDesc vd{}; 
@@ -67,6 +68,30 @@ namespace Prime
 
 		cbFrame.reset(factory->CreateConstantBuffer<PrimitivesFrameBufferVS>());
 		cbObject.reset(factory->CreateConstantBuffer<PrimitivesObjectBufferVS>());
+	
+		
+		// Create default 1x1 white texture
+		const uint32_t pixel = 0xffffffff;
+		
+		D3D11_SUBRESOURCE_DATA initData = { &pixel, sizeof(uint32_t), 0 };
+		
+		D3D11_TEXTURE2D_DESC desc{};
+		ZeroMemory(&desc, sizeof(desc));
+		desc.Width            = desc.Height = desc.MipLevels = desc.ArraySize = 1;
+		desc.Format           = DXGI_FORMAT_R8G8B8A8_UNORM;
+		desc.SampleDesc.Count = 1;
+		desc.Usage            = D3D11_USAGE_IMMUTABLE;
+		desc.BindFlags        = D3D11_BIND_SHADER_RESOURCE;
+
+		ComPtr<ID3D11Texture2D> tex;
+		THROW_HR(m_device->CreateTexture2D(&desc, &initData, tex.GetAddressOf()), "Failed to create 1x1 white pixel texture");
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+		ZeroMemory(&srvDesc, sizeof(srvDesc));
+		srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MipLevels = 1;
+		THROW_HR(m_device->CreateShaderResourceView(tex.Get(), &srvDesc, m_whiteTexture.GetAddressOf()), "Failed to create 1x1 white pixel shader resource view");
 	}
 
 	void GraphicsRenderer2D::BeginQuadBatch(const Matrix& view, const Matrix& proj)
@@ -75,7 +100,10 @@ namespace Prime
 		cbFrame->Data.ProjectionMatrix = proj.Transpose();
 
 		UpdateConstantBuffer(cbFrame);
-
+		
+		Bind(ShaderType::PixelShader, s_samplerLinearWrap);
+		m_context->PSSetShaderResources(0, 1, m_whiteTexture.GetAddressOf());
+		Bind(s_blendStateAlphaEnabled);
 		Bind(ShaderType::VertexShader, cbFrame, 0);
 		Bind(ShaderType::VertexShader, cbObject, 1);
 		Bind(m_primitiveVS);
@@ -89,6 +117,7 @@ namespace Prime
 		cbObject->Data.Color       = col;
 
 		UpdateConstantBuffer(cbObject);
+		
 		DrawIndexed(m_quadIB);
 	}
 }

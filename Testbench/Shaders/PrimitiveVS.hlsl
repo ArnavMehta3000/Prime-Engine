@@ -12,11 +12,14 @@ cbuffer cbPerObject : register(b1)
 
 struct VS_INPUT
 {
-    float3 Pos : POSITION; /*float2 TexCoord : TEXCOORD0;*/
+    float3 Pos    : POSITION;
+    float2 UV     : TEXCOORD0;
+    uint Instance : SV_InstanceID;
 };
 struct VS_OUTPUT
 {
-    float4 Pos : SV_POSITION; /*float2 TexCoord : TEXCOORD0;*/
+    float4 Pos   : SV_POSITION;
+    float2 UV    : TEXCOORD0;
     float4 Color : COLOR;
 };
 
@@ -32,8 +35,8 @@ VS_OUTPUT VSmain(VS_INPUT input)
     pos = mul(pos, ProjectionMatrix);
     
     output.Pos = pos;
-   // output.TexCoord = input.TexCoord;
-    output.Color = Color;
+    output.UV= input.UV;
+    output.Color= Color;
     
     return output;
 }

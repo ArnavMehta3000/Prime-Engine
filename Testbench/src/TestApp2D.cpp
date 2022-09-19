@@ -61,7 +61,7 @@ void TestApp2D::OnRender(float dt)
 	int rows = 10;
 	int cols = 10;
 	Vector3 pos;
-	for (int r = -rows; r < rows; r++)
+	/*for (int r = -rows; r < rows; r++)
 	{
 		for (int c = -cols; c < cols; c++)
 		{
@@ -71,7 +71,9 @@ void TestApp2D::OnRender(float dt)
 			Color color = Color(abs(red), abs(green), 0.0f, 1.0f);
 			GetRenderer2D()->DrawQuadBatch(world, color);
 		}
-	}
+	}*/
+
+	GetRenderer2D()->DrawQuadBatch(Matrix::Identity, Color(Colors::Tomato));
 	
 }
 

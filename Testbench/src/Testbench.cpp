@@ -113,8 +113,8 @@ public:
 		texturePSDesc.EntryPoint = "main";
 		texturePSDesc.Profile    = Prime::PixelShader::GetProfile();
 
-		m_colorVS.reset(	GetFactory()->CreateVertexShaderFromFile(colorVSDesc));
-		m_colorPS.reset(	GetFactory()->CreatePixelShaderFromFile(colorPSDesc));	
+		m_colorVS.reset(GetFactory()->CreateVertexShaderFromFile(colorVSDesc));
+		m_colorPS.reset(GetFactory()->CreatePixelShaderFromFile(colorPSDesc));	
 		m_textureVS.reset(GetFactory()->CreateVertexShaderFromFile(textureVSDesc));
 		m_texturePS.reset(GetFactory()->CreatePixelShaderFromFile(texturePSDesc));
 
