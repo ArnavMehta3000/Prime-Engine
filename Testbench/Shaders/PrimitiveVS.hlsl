@@ -34,9 +34,9 @@ VS_OUTPUT VSmain(VS_INPUT input)
     pos = mul(pos, ViewMatrix);
     pos = mul(pos, ProjectionMatrix);
     
-    output.Pos = pos;
-    output.UV= input.UV;
-    output.Color= Color;
+    output.Pos   = pos;
+    output.UV    = input.UV;
+    output.Color = Color;
     
     return output;
 }

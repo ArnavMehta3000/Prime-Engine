@@ -25,7 +25,6 @@ void TestApp2D::OnUpdate(float dt)
 {
 	const float cameraMoveSpeed = 5.0f;
 	const float cameraRotSpeed = 20.0f;
-
 	
 	if (GetAsyncKeyState(VK_LEFT))
 		x += cameraMoveSpeed * dt;
@@ -75,7 +74,9 @@ void TestApp2D::OnRender(float dt)
 	}*/
 
 	GetRenderer2D()->DrawQuadBatch(Matrix::Identity, Color(Colors::Tomato));
-	
+	GetRenderer2D()->DrawQuadBatch(Matrix::CreateTranslation(2, 2, 0), Color(Colors::Blue));
+	//GetRenderer2D()->DrawQuadBatch(Matrix::CreateTranslation(-2, -2, 0), Color(Colors::Green));
+	GetRenderer2D()->EndQuadBatch();
 }
 
 void TestApp2D::OnClose()
